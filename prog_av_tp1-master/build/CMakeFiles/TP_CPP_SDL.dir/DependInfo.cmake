@@ -4,8 +4,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/sprite.cpp" "/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles/TP_CPP_SDL.dir/sprite.cpp.o"
   "/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/surface.cpp" "/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles/TP_CPP_SDL.dir/surface.cpp.o"
   "/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/tp1.cpp" "/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o"
+  "/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/window_surface.cpp" "/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

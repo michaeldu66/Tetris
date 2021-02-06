@@ -7,6 +7,12 @@
 //     cout << "winSurface created" << endl;
 // }
 
-WindowSurface::WindowSurface* get_window(){
+// SDL_Window* WindowSurface::get_w(){
+//     return this->pWindow;
+// }
+
+
+SDL_Window* WindowSurface::get_w()
+{
     return this->pWindow;
 }

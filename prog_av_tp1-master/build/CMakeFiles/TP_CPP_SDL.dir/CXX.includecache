@@ -12,6 +12,10 @@ SDL.h
 iostream
 -
 
+/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/sprite.cpp
+sprite.h
+/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/sprite.h
+
 /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/sprite.h
 SDL.h
 -
@@ -19,6 +23,10 @@ surface.h
 /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/surface.h
 iostream
 -
+
+/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/surface.cpp
+surface.h
+/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/surface.h
 
 /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/surface.h
 SDL.h
@@ -41,6 +49,10 @@ sprite.h
 /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/sprite.h
 ball.h
 /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/ball.h
+
+/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/window_surface.cpp
+window_surface.h
+/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/window_surface.h
 
 /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/window_surface.h
 SDL.h
@@ -473,16 +485,6 @@ close_code.h
 /usr/include/SDL2/SDL_scancode.h
 SDL_stdinc.h
 /usr/include/SDL2/SDL_stdinc.h
-
-/usr/include/SDL2/SDL_sensor.h
-SDL_stdinc.h
-/usr/include/SDL2/SDL_stdinc.h
-SDL_error.h
-/usr/include/SDL2/SDL_error.h
-begin_code.h
-/usr/include/SDL2/begin_code.h
-close_code.h
-/usr/include/SDL2/close_code.h
 
 /usr/include/SDL2/SDL_shape.h
 SDL_stdinc.h

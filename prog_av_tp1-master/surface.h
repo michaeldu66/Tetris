@@ -14,7 +14,7 @@ class Surface
     public:
     Surface(void);
     SDL_Surface* get_surf();
-    void set_surf(string link_sprite);
+    void set_surf(const char* link_sprite);
     void set_surf(SDL_Window* pWindow);
 };
 

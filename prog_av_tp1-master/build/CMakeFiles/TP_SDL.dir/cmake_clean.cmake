@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/TP_SDL.dir/base_tp1.cpp.o"
-  "TP_SDL"
   "TP_SDL.pdb"
+  "TP_SDL"
 )
 
 # Per-language clean rules from dependency scanning.

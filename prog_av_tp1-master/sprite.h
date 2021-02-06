@@ -10,7 +10,8 @@ class WindSurface;
 class Sprite : public Surface
 {
     public :
-    Sprite();
+    SDL_Rect srcBg = { 0,128, 96,128 }; 
+    Sprite(const char* link_sprite);
 
 };
 #endif
