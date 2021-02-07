@@ -115,7 +115,7 @@ int showmenu(SDL_Surface *screen, TTF_Font *font)
 	pos[1].x = screen->clip_rect.w / 2 - menu[0]->clip_rect.w / 2;
 	pos[1].y = screen->clip_rect.h / 2 - menu[0]->clip_rect.h / 2;
 
-	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); // screen black 
+	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0x00, 0x00, 0x00)); // fill the screen with  black 
 
 	SDL_Event event;
 	while (1)
