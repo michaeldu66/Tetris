@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o"
+  "CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.o"
   "CMakeFiles/TP_CPP_SDL.dir/surface.cpp.o"
   "CMakeFiles/TP_CPP_SDL.dir/sprite.cpp.o"
   "CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o"

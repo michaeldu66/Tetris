@@ -217,6 +217,33 @@ surface.cpp.s:
 	$(MAKE) -f CMakeFiles/TP_CPP_SDL.dir/build.make CMakeFiles/TP_CPP_SDL.dir/surface.cpp.s
 .PHONY : surface.cpp.s
 
+tetrimino.o: tetrimino.cpp.o
+
+.PHONY : tetrimino.o
+
+# target to build an object file
+tetrimino.cpp.o:
+	$(MAKE) -f CMakeFiles/TP_CPP_SDL.dir/build.make CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.o
+.PHONY : tetrimino.cpp.o
+
+tetrimino.i: tetrimino.cpp.i
+
+.PHONY : tetrimino.i
+
+# target to preprocess a source file
+tetrimino.cpp.i:
+	$(MAKE) -f CMakeFiles/TP_CPP_SDL.dir/build.make CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.i
+.PHONY : tetrimino.cpp.i
+
+tetrimino.s: tetrimino.cpp.s
+
+.PHONY : tetrimino.s
+
+# target to generate assembly for a file
+tetrimino.cpp.s:
+	$(MAKE) -f CMakeFiles/TP_CPP_SDL.dir/build.make CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.s
+.PHONY : tetrimino.cpp.s
+
 tp1.o: tp1.cpp.o
 
 .PHONY : tp1.o
@@ -290,6 +317,9 @@ help:
 	@echo "... surface.o"
 	@echo "... surface.i"
 	@echo "... surface.s"
+	@echo "... tetrimino.o"
+	@echo "... tetrimino.i"
+	@echo "... tetrimino.s"
 	@echo "... tp1.o"
 	@echo "... tp1.i"
 	@echo "... tp1.s"
