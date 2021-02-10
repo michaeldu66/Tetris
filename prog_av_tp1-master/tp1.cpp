@@ -34,7 +34,7 @@ void Game::init()
 {
 	win = new WindowSurface;
 	planche = new Sprite("./sprites.bmp");
-	piece = new Tetrimino(0, 0, 3, L_REVERSE, RED);
+	piece = new Tetrimino(0, 0, 4, BARRE, RED);
 	piece->print_tetrimino();
 }
 
@@ -94,6 +94,8 @@ void Game::loop()
 		draw(delta_t);
 		// affiche la surface
 		SDL_UpdateWindowSurface(win->get_w());
+
+		win->render(piece);
 	}
 	SDL_Quit();
 }

@@ -195,6 +195,7 @@ CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o: /usr/include/SDL2/begin_code.h
 CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o: /usr/include/SDL2/close_code.h
 
 CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o: ../surface.h
+CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o: ../tetrimino.h
 CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o: ../window_surface.cpp
 CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o: ../window_surface.h
 CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o: /usr/include/SDL2/SDL.h
