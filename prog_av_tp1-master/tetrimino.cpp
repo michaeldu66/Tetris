@@ -1,6 +1,36 @@
 #include "tetrimino.h"
-Tetrimino::Tetrimino(double _x, double _y, int _size, tetrimino_type _type_t, color_type _color_t)
-    : x(_x), y(_y), size(_size), type_t(_type_t), color_t(_color_t)
+Tetrimino::Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_, color_type color_t_)
+    : x(x_), y(y_), size(size_), type_t(type_t_), color_t(color_t_)
 {
-    bool blabla[4][4] = {matrix[type_t]};
+    switch(color_t){
+        case RED:
+        color->r = 255;
+        color->g = 0;
+        color->b = 0;
+        break;
+
+        case GREEN:
+        color->r = 0;
+        color->g = 255;
+        color->b = 0;
+        break;
+
+        case BLUE:
+        color->r = 0;
+        color->g = 0;
+        color->b = 255;
+        break;
+
+    }
 };
+
+
+void Tetrimino::print_tetrimino()
+{
+    for(int i = 0; i< 4; i++){
+        for(int j = 0; j<4; j++){
+            cout << matrix[type_t][i][j] + " ";
+        }
+        cout << endl;
+    }
+}

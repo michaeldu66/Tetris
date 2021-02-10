@@ -6,12 +6,13 @@
 #include "window_surface.h"
 #include "sprite.h"
 #include "ball.h"
+#include "tetrimino.h"
 
 class Game
 {
 	WindowSurface *win;
 	Sprite *planche;
-
+	Tetrimino* piece;
 	// + ?
 
 public:
@@ -32,6 +33,8 @@ void Game::init()
 {
 	win = new WindowSurface;
 	planche = new Sprite("./sprites.bmp");
+	piece = new Tetrimino(0, 0, 3, L_REVERSE, RED);
+	piece->print_tetrimino();
 }
 
 void Game::keyboard(const Uint8 *keys)

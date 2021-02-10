@@ -1,7 +1,7 @@
 #ifndef _TETRIMINO_
 #define _TETRIMINO_
 using namespace std;
-
+#include <iostream>
 #include <SDL.h>
 
 bool matrix[7][4][4] = {
@@ -54,8 +54,8 @@ typedef enum tetrimino_type
 typedef enum color_type
 {
     RED,
-    BLUE,
-    GREEN
+    GREEN,
+    BLUE
 } color_type;
 
 class Tetrimino
@@ -68,7 +68,8 @@ protected:
     int size;
 
 public:
-    Tetrimino(double _x, double _y, int _size, tetrimino_type _type, color_type _color_t);
+    Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_, color_type color_t_);
+    void print_tetrimino();
 };
 
 #endif
