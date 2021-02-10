@@ -8,6 +8,7 @@
 #include "ball.h"
 #include "tetrimino.h"
 
+// rayanlegris@gmail.com
 class Game
 {
 	WindowSurface *win;

@@ -4,42 +4,6 @@ using namespace std;
 #include <iostream>
 #include <SDL.h>
 
-bool matrix[7][4][4] = {
-    {{1, 1, 1, 1},
-     {0, 0, 0, 0},
-     {0, 0, 0, 0},
-     {0, 0, 0, 0}},
-
-    {{1, 1, 0, 0},
-     {1, 1, 0, 0},
-     {0, 0, 0, 0},
-     {0, 0, 0, 0}},
-
-    {{0, 1, 0, 0},
-     {1, 1, 1, 0},
-     {0, 0, 0, 0},
-     {0, 0, 0, 0}},
-
-    {{0, 0, 1, 0},
-     {1, 1, 1, 0},
-     {0, 0, 0, 0},
-     {0, 0, 0, 0}},
-
-    {{1, 0, 0, 0},
-     {1, 1, 1, 0},
-     {0, 0, 0, 0},
-     {0, 0, 0, 0}},
-
-    {{1, 1, 0, 0},
-     {0, 1, 1, 0},
-     {0, 0, 0, 0},
-     {0, 0, 0, 0}},
-
-    {{0, 1, 1, 0},
-     {1, 1, 0, 0},
-     {0, 0, 0, 0},
-     {0, 0, 0, 0}}};
-
 typedef enum tetrimino_type
 {
     BARRE,
@@ -61,6 +25,7 @@ typedef enum color_type
 class Tetrimino
 {
 protected:
+    static bool matrix[7][4][4];
     SDL_Color *color;
     tetrimino_type type_t;
     color_type color_t;
