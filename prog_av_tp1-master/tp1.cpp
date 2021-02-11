@@ -91,11 +91,12 @@ void Game::loop()
 		prev = now;
 		now = SDL_GetPerformanceCounter();
 		delta_t = (double)((now - prev) / (double)SDL_GetPerformanceFrequency());
-		draw(delta_t);
-		// affiche la surface
-		SDL_UpdateWindowSurface(win->get_w());
+		//printf("prev: %li, now: %li, delta: %f\n", prev, now, delta_t);
+		//draw(delta_t);
+		// affiche la surface, ça fait disparaitre les formes du tetris
+		//SDL_UpdateWindowSurface(win->get_w());
 
-		win->render(piece);
+		win->render(piece, planche->get_surf());
 	}
 	SDL_Quit();
 }

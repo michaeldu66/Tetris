@@ -13,10 +13,10 @@ class WindowSurface : public Surface
 protected:
     SDL_Window *pWindow;
     SDL_Renderer *rend;
-
+    SDL_Texture* Bg;
 public:
     SDL_Window *get_w();
-    void render(Tetrimino* shape);
+    void render(Tetrimino* shape, SDL_Surface* spriteBg);
     WindowSurface() : Surface()
     {
         this->pWindow = SDL_CreateWindow("Tetris- Made By Hofmann & Berthault", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 600, 600, SDL_WINDOW_SHOWN);

@@ -89,12 +89,12 @@ void Tetrimino::draw(SDL_Renderer *rend)
         {
             if (matrix[type_t][i][j])
             {
-                shape->x = (x + j) * TILE_SIZE; // coord of squares
-                shape->y = (y + i) * TILE_SIZE; // caution! ==> x for columns and y for lines
-                SDL_SetRenderDrawColor(rend, color->r, color->g, color->b, 255);// inside of squares
+                shape->x = (x + j) * TILE_SIZE;   // coord of squares
+                shape->y = (y + i) * TILE_SIZE;   // caution! ==> x for columns and y for lines
+                SDL_SetRenderDrawColor(rend, color->r, color->g, color->b, 255); // inside of squares
                 SDL_RenderFillRect(rend, shape);
-                SDL_SetRenderDrawColor(rend, 219, 219, 219, 255); 
-                SDL_RenderDrawRect(rend, shape);    //borderline of squares (in white)
+                SDL_SetRenderDrawColor(rend, 219, 219, 219, 255);
+                SDL_RenderDrawRect(rend, shape); //borderline of squares (in white)
             }
         }
     }
