@@ -63,6 +63,14 @@ Tetrimino::Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_, co
         color->b = 255;
         break;
     }
+
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            current_tetr[i][j] = matrix[type_t][i][j];
+        }
+    }
     cout << "Tetrimino constructor" << endl;
 };
 
@@ -74,7 +82,7 @@ void Tetrimino::print_tetrimino()
     {
         for (int j = 0; j < 4; j++)
         {
-            cout << matrix[type_t][i][j];
+            cout << current_tetr[i][j];
             cout << " ";
         }
         cout << endl;
@@ -87,10 +95,10 @@ void Tetrimino::draw(SDL_Renderer *rend)
     {
         for (int j = 0; j < size; j++)
         {
-            if (matrix[type_t][i][j])
+            if (current_tetr[i][j])
             {
-                shape->x = (x + j) * TILE_SIZE;   // coord of squares
-                shape->y = (y + i) * TILE_SIZE;   // caution! ==> x for columns and y for lines
+                shape->x = (x + j) * TILE_SIZE;                                  // coord of squares
+                shape->y = (y + i) * TILE_SIZE;                                  // caution! ==> x for columns and y for lines
                 SDL_SetRenderDrawColor(rend, color->r, color->g, color->b, 255); // inside of squares
                 SDL_RenderFillRect(rend, shape);
                 SDL_SetRenderDrawColor(rend, 219, 219, 219, 255);
@@ -98,4 +106,71 @@ void Tetrimino::draw(SDL_Renderer *rend)
             }
         }
     }
+}
+
+/* coder salement pour tester viteuf, à refaire avec des vector */
+void Tetrimino::transpose(void)
+{
+    int tmp[4][4];
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            tmp[i][j] = current_tetr[i][j];
+        }
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            current_tetr[i][j] = tmp[j][i];
+        }
+    }
+    return;
+}
+
+void Tetrimino::reverseCols(void)
+{
+    int tmp[4][4];
+    int tempval;
+
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size / 2; j++)
+        {
+            tempval = current_tetr[i][j];
+            tmp[i][j] = current_tetr[i][size - j - 1];
+            tmp[i][size - j - 1] = tempval;
+        }
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            current_tetr[i][j] = tmp[i][j];
+        }
+    }
+}
+
+void Tetrimino::rotate(void)
+{
+    transpose();
+    reverseCols();
+}
+
+void Tetrimino::move(bool left, bool right, bool down, bool up)
+{
+    if (left)
+    {
+        printf("on affiche gauche");
+        x--;
+    }
+    if (right)
+        x++;
+    if (down)
+        y++;
+    if (up)
+        rotate();
 }

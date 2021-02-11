@@ -38,11 +38,16 @@ protected:
     double x, y;
     int size;
     SDL_Rect* shape;
+    int current_tetr[4][4];
 
 public:
     Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_, color_type color_t_);
     void draw(SDL_Renderer *rend);
     void print_tetrimino();
+    void transpose(void);
+    void reverseCols(void);
+    void rotate(void);
+    void move(bool left, bool right, bool down, bool up);
 };
 
 #endif
