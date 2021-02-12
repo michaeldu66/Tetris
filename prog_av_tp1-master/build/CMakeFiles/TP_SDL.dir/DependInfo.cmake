@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/base_tp1.cpp" "/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles/TP_SDL.dir/base_tp1.cpp.o"
+  "/mnt/c/dossier_linux/projet_tetris/Tetris/prog_av_tp1-master/base_tp1.cpp" "/mnt/c/dossier_linux/projet_tetris/Tetris/prog_av_tp1-master/build/CMakeFiles/TP_SDL.dir/base_tp1.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

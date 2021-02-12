@@ -1,4 +1,4 @@
-/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles/rebuild_cache.dir
-/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles/TP_SDL.dir
-/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles/edit_cache.dir
-/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles/TP_CPP_SDL.dir
+/mnt/c/dossier_linux/projet_tetris/Tetris/prog_av_tp1-master/build/CMakeFiles/rebuild_cache.dir
+/mnt/c/dossier_linux/projet_tetris/Tetris/prog_av_tp1-master/build/CMakeFiles/edit_cache.dir
+/mnt/c/dossier_linux/projet_tetris/Tetris/prog_av_tp1-master/build/CMakeFiles/TP_CPP_SDL.dir
+/mnt/c/dossier_linux/projet_tetris/Tetris/prog_av_tp1-master/build/CMakeFiles/TP_SDL.dir
