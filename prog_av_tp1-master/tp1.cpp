@@ -39,7 +39,7 @@ void Game::init()
 {
 	win = new WindowSurface;
 	planche = new Sprite("./sprites.bmp");
-	piece = new Tetrimino(0, 0, 4, Z_TYPE, RED);
+	piece = new Tetrimino(0, 0, 4, BARRE, GREEN);
 	piece->print_tetrimino();
 	left = false;
 	right = false;
