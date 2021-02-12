@@ -19,8 +19,7 @@ class Game
 
 public:
 	inline Game()
-	{
-	}
+	{}
 
 	void init();
 
@@ -39,7 +38,7 @@ void Game::init()
 {
 	win = new WindowSurface;
 	planche = new Sprite("./sprites.bmp");
-	piece = new Tetrimino(0, 0, 4, Z_TYPE, RED);
+	piece = new Tetrimino(0, 0, 4, BARRE, GREEN);
 	piece->print_tetrimino();
 	left = false;
 	right = false;
@@ -151,7 +150,7 @@ void Game::loop()
 }
 int main(int argc, char **argv)
 {
-	if (SDL_Init(SDL_INIT_VIDEO) != 0)
+	if(SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK | SDL_INIT_EVENTS)!=0)
 	{
 		return 1;
 	}
