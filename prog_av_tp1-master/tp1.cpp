@@ -46,7 +46,7 @@ void Game::init()
 {
 	win = new WindowSurface;
 	planche = new Sprite("./sprites.bmp");
-	piece = new Tetrimino(0, 0, 3, L_REVERSE, BLUE);
+	piece = new Tetrimino(14, 6, 3, L_REVERSE, BLUE);
 	piece->print_tetrimino();
 	left = false;
 	right = false;
@@ -115,50 +115,22 @@ void Game::update()
 	piece->move(left, right, down, up);
 }
 
-// Uint32 Game::update_timer_callback(Uint32 intervalle, void *parametre)
-// {
-// 	Tetrimino *piece = static_cast<Tetrimino *>(parametre);
-// 	piece->move_down();
-// 	printf("timer appelé\n");
-// 	// win->render(piece, planche->get_surf());
-// 	return intervalle;
-// }
-
-
-// Uint32 Game::refresh_screen_callback(Uint32 intervalle, void *parametre)
-// {
-// 	WindowSurface *win_timer = static_cast<WindowSurface*>(parametre);
-// 	Tetrimino* piece_timer 
-// 	win_timer->render(piece, planche->get_surf());
-// 	return intervalle;
-// }
-
-// void Game::draw(double dt)
-// {
-// 	// remplit le fond
-// 	SDL_Rect dest = {0, 0, 0, 0};
-// 	for (int j = 0; j < win->get_surf()->h; j += 128)
-// 	{
-// 		for (int i = 0; i < win->get_surf()->w; i += 96)
-// 		{
-// 			dest.x = i;
-// 			dest.y = j;
-// 			// copie depuis la planche de sprite vers la fenetre
-// 			SDL_BlitSurface(planche->get_surf(), &planche->srcBg, win->get_surf(), &dest);
-// 		}
-// 	}
-// }
+Uint32 Game::update_timer_callback(Uint32 intervalle, void *parametre)
+{
+	Tetrimino *piece = static_cast<Tetrimino *>(parametre);
+	piece->move_down();
+	printf("timer appelé\n");
+	return intervalle;
+}
 
 void Game::loop()
 {
-
-	Uint64 prev, now = SDL_GetPerformanceCounter(); // timers
-	double delta_t;									// durée frame en ms
+	int prev = 0, now = 0;
 	bool quit = false;
-	// timer = SDL_AddTimer(2000, update_timer_callback, piece); /* Démarrage du timer */
-	// timer_screen = refresh_screen_callback(1000/30, win);
+	timer = SDL_AddTimer(1000, update_timer_callback, piece); /* Démarrage du timer */
 	while (!quit)
 	{
+		now = SDL_GetTicks();
 		SDL_Event event;
 		while (!quit && SDL_PollEvent(&event))
 		{
@@ -166,6 +138,11 @@ void Game::loop()
 			update();
 			win->render(piece, planche->get_surf());
 			reset_key();
+		}
+		if (now - prev > 30)
+		{
+			win->render(piece, planche->get_surf());
+			prev = now;
 		}
 	}
 	SDL_Quit();
