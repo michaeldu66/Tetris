@@ -19,19 +19,22 @@ class Game
 
 public:
 	inline Game()
-	{}
+	{
+	}
 
 	void init();
 
-	void draw(double dt);
+	//void draw(double dt);
 
-	void keyboard(const Uint8 *keys);
+	bool keyboard(const Uint8 key);
 
 	void loop();
 
 	void update();
 
 	void reset_key();
+
+	bool check_event(SDL_Event event);
 };
 
 void Game::init()
@@ -54,12 +57,52 @@ void Game::reset_key()
 	down = false;
 }
 
-void Game::keyboard(const Uint8 *keys)
+bool Game::check_event(SDL_Event event)
 {
-	//	if (keys[SDL_SCANCODE_SPACE])
-	//
-	//	if (keys[SDL_SCANCODE_UP])
-	//
+	bool quit = false;
+	switch (event.type)
+	{
+	case SDL_QUIT:
+		quit = true;
+		break;
+	case SDL_MOUSEBUTTONDOWN:
+		printf("mouse click %d\n", event.button.button);
+		break;
+	case SDL_KEYUP: //DOWN
+		quit = keyboard(event.key.keysym.scancode);
+	}
+	return quit;
+}
+
+bool Game::keyboard(const Uint8 key)
+{
+	bool quit = false;
+	switch (key)
+	{
+	case SDL_SCANCODE_LEFT: 
+		printf("left\n");
+		left = true;
+		break;
+	case SDL_SCANCODE_RIGHT:
+		printf("right\n");
+		right = true;
+		break;
+	case SDL_SCANCODE_UP:
+		printf("up\n");
+		up = true;
+		break;
+	case SDL_SCANCODE_DOWN:
+		printf("down\n");
+		down = true;
+		break;
+	case SDL_SCANCODE_SPACE:
+		printf("espace");
+		quit = true;
+		break;
+	default:
+		break;
+	}
+	return quit;
 }
 
 void Game::update()
@@ -67,21 +110,21 @@ void Game::update()
 	piece->move(left, right, down, up);
 }
 
-void Game::draw(double dt)
-{
-	// remplit le fond
-	SDL_Rect dest = {0, 0, 0, 0};
-	for (int j = 0; j < win->get_surf()->h; j += 128)
-	{
-		for (int i = 0; i < win->get_surf()->w; i += 96)
-		{
-			dest.x = i;
-			dest.y = j;
-			// copie depuis la planche de sprite vers la fenetre
-			SDL_BlitSurface(planche->get_surf(), &planche->srcBg, win->get_surf(), &dest);
-		}
-	}
-}
+// void Game::draw(double dt)
+// {
+// 	// remplit le fond
+// 	SDL_Rect dest = {0, 0, 0, 0};
+// 	for (int j = 0; j < win->get_surf()->h; j += 128)
+// 	{
+// 		for (int i = 0; i < win->get_surf()->w; i += 96)
+// 		{
+// 			dest.x = i;
+// 			dest.y = j;
+// 			// copie depuis la planche de sprite vers la fenetre
+// 			SDL_BlitSurface(planche->get_surf(), &planche->srcBg, win->get_surf(), &dest);
+// 		}
+// 	}
+// }
 
 void Game::loop()
 {
@@ -91,48 +134,15 @@ void Game::loop()
 	bool quit = false;
 	while (!quit)
 	{
-		
+
 		SDL_Event event;
 		while (!quit && SDL_PollEvent(&event))
 		{
-			switch (event.type)
-			{
-			case SDL_QUIT:
-				quit = true;
-				break;
-			case SDL_MOUSEBUTTONDOWN:
-				printf("mouse click %d\n", event.button.button);
-				break;
-			case SDL_KEYUP: //DOWN
-				switch (event.key.keysym.sym)
-				{
-				case SDLK_LEFT: //Left arrow
-					printf("left\n");
-					left = true;
-					break;
-				case SDLK_RIGHT:
-					printf("right\n");
-					right = true;
-					break;
-				case SDLK_UP:
-					printf("up\n");
-					up = true;
-					break;
-				case SDLK_DOWN:
-					printf("down\n");
-					down = true;
-					break;
-				case SDLK_ESCAPE:
-					quit = true;
-					break;
-				default:
-					break;
-				}
-			}
+			quit = check_event(event);
 
-			const Uint8 *state = SDL_GetKeyboardState(NULL);
-			keyboard(state);
-			quit |= (state[SDL_SCANCODE_ESCAPE] != 0);
+			// const Uint8 *state = SDL_GetKeyboardState(NULL);
+			// keyboard(state);
+			//quit |= (state[SDL_SCANCODE_ESCAPE] != 0);
 
 			prev = now;
 			now = SDL_GetPerformanceCounter();
@@ -150,7 +160,7 @@ void Game::loop()
 }
 int main(int argc, char **argv)
 {
-	if(SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK | SDL_INIT_EVENTS)!=0)
+	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK | SDL_INIT_EVENTS) != 0)
 	{
 		return 1;
 	}

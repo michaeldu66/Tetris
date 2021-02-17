@@ -5,7 +5,7 @@ using namespace std;
 #include <SDL.h>
 #include <vector>
 
-#define TILE_SIZE 22
+#define TETR_SIZE 30
 
 typedef enum tetrimino_type
 {
@@ -50,6 +50,11 @@ public:
     void reverseCols(void);
     void rotate(void);
     void move(bool left, bool right, bool down, bool up);
+    void set_coord(double x_, double y_);// si -1 on touche pas à la coord
+    /**
+     * On utilise toujours les coordonnes x et y de la classe et pas ceux de shape, 
+     * les coord de shapes sont actualisées à chaque draw
+    **/
 };
 
 #endif

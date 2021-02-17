@@ -42,8 +42,8 @@ Tetrimino::Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_, co
 {
     color = new SDL_Color();
     shape = new SDL_Rect();
-    shape->h = TILE_SIZE;
-    shape->w = TILE_SIZE;
+    shape->h = TETR_SIZE;
+    shape->w = TETR_SIZE;
     switch (color_t)
     {
     case RED:
@@ -110,8 +110,8 @@ void Tetrimino::draw(SDL_Renderer *rend)
         {
             if (current_tetr[i][j])
             {
-                shape->x = (x + j) * TILE_SIZE;                                  // coord of squares
-                shape->y = (y + i) * TILE_SIZE;                                  // caution! ==> x for columns and y for lines
+                shape->x = (x + j) * TETR_SIZE;                                  // coord of squares
+                shape->y = (y + i) * TETR_SIZE;                                  // caution! ==> x for columns and y for lines
                 SDL_SetRenderDrawColor(rend, color->r, color->g, color->b, 255); // inside of squares
                 SDL_RenderFillRect(rend, shape);
                 SDL_SetRenderDrawColor(rend, 219, 219, 219, 255);
@@ -119,6 +119,7 @@ void Tetrimino::draw(SDL_Renderer *rend)
             }
         }
     }
+    print_tetrimino();
 }
 
 void Tetrimino::transpose(void)
@@ -176,4 +177,12 @@ void Tetrimino::move(bool left, bool right, bool down, bool up)
         y++;
     if (up)
         rotate();
+}
+
+void Tetrimino::set_coord(double x_, double y_)
+{
+    if (x_ != -1)
+        x = x_;
+    if (y_ != -1)
+        y = y_;
 }
