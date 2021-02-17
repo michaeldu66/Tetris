@@ -3,6 +3,7 @@
 using namespace std;
 #include <iostream>
 #include <SDL.h>
+#include <vector>
 
 #define TILE_SIZE 22
 
@@ -31,17 +32,18 @@ typedef enum color_type
 class Tetrimino
 {
 protected:
-    static int matrix[7][4][4]; // contain all the tetriminos
+    static vector<vector<vector<int>>>matrix2;// contain all the tetriminos
     SDL_Color *color;
     tetrimino_type type_t;
     color_type color_t;
     double x, y;
     int size;
     SDL_Rect* shape;
-    int current_tetr[4][4];
+    vector<vector<int>> current_tetr;
 
 public:
     Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_, color_type color_t_);
+    ~Tetrimino();
     void draw(SDL_Renderer *rend);
     void print_tetrimino();
     void transpose(void);

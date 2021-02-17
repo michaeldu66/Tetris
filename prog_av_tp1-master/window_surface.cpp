@@ -33,7 +33,7 @@ void WindowSurface::render(Tetrimino *shape, SDL_Surface *spriteBg)
             SDL_RenderCopy(rend, Bg, &srcBg, &dest);
         }
     }
-    SDL_RenderPresent(rend); /* show the result on the screen of the background */
+    //SDL_RenderPresent(rend); /* show the result on the screen of the background */
 
     //SDL_SetRenderDrawColor(rend, 0, 0, 0, 255); // render, rgb, opaque, on le met noir
     //SDL_RenderClear(rend);                      /* Clear the entire screen to our selected color. */
