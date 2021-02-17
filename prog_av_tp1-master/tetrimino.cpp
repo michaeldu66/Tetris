@@ -186,3 +186,8 @@ void Tetrimino::set_coord(double x_, double y_)
     if (y_ != -1)
         y = y_;
 }
+
+void Tetrimino::move_down()
+{
+    y++;
+}

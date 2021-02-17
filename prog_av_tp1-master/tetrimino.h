@@ -55,6 +55,7 @@ public:
      * On utilise toujours les coordonnes x et y de la classe et pas ceux de shape, 
      * les coord de shapes sont actualisées à chaque draw
     **/
+   void move_down();
 };
 
 #endif
