@@ -16,7 +16,7 @@ SDL_Window *WindowSurface::get_w()
     return this->pWindow;
 }
 
-void WindowSurface::render(Tetrimino *shape, SDL_Surface *spriteBg)
+void WindowSurface::render(Tetrimino *shape, SDL_Surface *spriteBg, Board* board)
 {
     SDL_Rect srcBg = {0, 128, 96, 128};
     Bg = SDL_CreateTextureFromSurface(rend, spriteBg); // récupère la surface du sprite en tant que texture
@@ -35,19 +35,20 @@ void WindowSurface::render(Tetrimino *shape, SDL_Surface *spriteBg)
     }
 
     /** grille noire normalement, mais ne pas decommenter sinon ya tout qui ramne de ouf**/
-    for (int i = 180; i < WIN_H - 180; i=i+30) //centrée en hauteur
-    {
-        for (int j = 330; j < WIN_W - 330; j=j+30)
-        {
+    // for (int i = 180; i < WIN_H - 180; i=i+30) //centrée en hauteur
+    // {
+    //     for (int j = 330; j < WIN_W - 330; j=j+30)
+    //     {
 
-            carre_grill->x = j ;
-            carre_grill->y = i ;
-            SDL_SetRenderDrawColor(rend, 75, 75, 75, 0); // inside of squares black
-            SDL_RenderFillRect(rend, carre_grill);
-            SDL_SetRenderDrawColor(rend, 219, 219, 219, 255);
-            SDL_RenderDrawRect(rend, carre_grill); //borderline of squares (in white)
-        }
-    }
+    //         carre_grill->x = j ;
+    //         carre_grill->y = i ;
+    //         SDL_SetRenderDrawColor(rend, 75, 75, 75, 0); // inside of squares black
+    //         SDL_RenderFillRect(rend, carre_grill);
+    //         SDL_SetRenderDrawColor(rend, 219, 219, 219, 255);
+    //         SDL_RenderDrawRect(rend, carre_grill); //borderline of squares (in white)
+    //     }
+    // }
+    board->draw_board(rend);
 
     //SDL_RenderPresent(rend); /* show the result on the screen of the background */
 

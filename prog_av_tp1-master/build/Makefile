@@ -69,8 +69,8 @@ rebuild_cache/fast: rebuild_cache
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/snap/cmake/775/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -162,6 +162,33 @@ base_tp1.s: base_tp1.cpp.s
 base_tp1.cpp.s:
 	$(MAKE) -f CMakeFiles/TP_SDL.dir/build.make CMakeFiles/TP_SDL.dir/base_tp1.cpp.s
 .PHONY : base_tp1.cpp.s
+
+board.o: board.cpp.o
+
+.PHONY : board.o
+
+# target to build an object file
+board.cpp.o:
+	$(MAKE) -f CMakeFiles/TP_CPP_SDL.dir/build.make CMakeFiles/TP_CPP_SDL.dir/board.cpp.o
+.PHONY : board.cpp.o
+
+board.i: board.cpp.i
+
+.PHONY : board.i
+
+# target to preprocess a source file
+board.cpp.i:
+	$(MAKE) -f CMakeFiles/TP_CPP_SDL.dir/build.make CMakeFiles/TP_CPP_SDL.dir/board.cpp.i
+.PHONY : board.cpp.i
+
+board.s: board.cpp.s
+
+.PHONY : board.s
+
+# target to generate assembly for a file
+board.cpp.s:
+	$(MAKE) -f CMakeFiles/TP_CPP_SDL.dir/build.make CMakeFiles/TP_CPP_SDL.dir/board.cpp.s
+.PHONY : board.cpp.s
 
 sprite.o: sprite.cpp.o
 
@@ -311,6 +338,9 @@ help:
 	@echo "... base_tp1.o"
 	@echo "... base_tp1.i"
 	@echo "... base_tp1.s"
+	@echo "... board.o"
+	@echo "... board.i"
+	@echo "... board.s"
 	@echo "... sprite.o"
 	@echo "... sprite.i"
 	@echo "... sprite.s"

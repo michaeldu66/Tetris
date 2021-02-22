@@ -57,9 +57,33 @@ include CMakeFiles/TP_CPP_SDL.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/TP_CPP_SDL.dir/flags.make
 
+CMakeFiles/TP_CPP_SDL.dir/board.cpp.o: CMakeFiles/TP_CPP_SDL.dir/flags.make
+CMakeFiles/TP_CPP_SDL.dir/board.cpp.o: ../board.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/TP_CPP_SDL.dir/board.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TP_CPP_SDL.dir/board.cpp.o -c /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/board.cpp
+
+CMakeFiles/TP_CPP_SDL.dir/board.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TP_CPP_SDL.dir/board.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/board.cpp > CMakeFiles/TP_CPP_SDL.dir/board.cpp.i
+
+CMakeFiles/TP_CPP_SDL.dir/board.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TP_CPP_SDL.dir/board.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/board.cpp -o CMakeFiles/TP_CPP_SDL.dir/board.cpp.s
+
+CMakeFiles/TP_CPP_SDL.dir/board.cpp.o.requires:
+
+.PHONY : CMakeFiles/TP_CPP_SDL.dir/board.cpp.o.requires
+
+CMakeFiles/TP_CPP_SDL.dir/board.cpp.o.provides: CMakeFiles/TP_CPP_SDL.dir/board.cpp.o.requires
+	$(MAKE) -f CMakeFiles/TP_CPP_SDL.dir/build.make CMakeFiles/TP_CPP_SDL.dir/board.cpp.o.provides.build
+.PHONY : CMakeFiles/TP_CPP_SDL.dir/board.cpp.o.provides
+
+CMakeFiles/TP_CPP_SDL.dir/board.cpp.o.provides.build: CMakeFiles/TP_CPP_SDL.dir/board.cpp.o
+
+
 CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o: CMakeFiles/TP_CPP_SDL.dir/flags.make
 CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o: ../window_surface.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o -c /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/window_surface.cpp
 
 CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.i: cmake_force
@@ -83,7 +107,7 @@ CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o.provides.build: CMakeFiles/TP_CPP
 
 CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.o: CMakeFiles/TP_CPP_SDL.dir/flags.make
 CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.o: ../tetrimino.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.o -c /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/tetrimino.cpp
 
 CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.i: cmake_force
@@ -107,7 +131,7 @@ CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.o.provides.build: CMakeFiles/TP_CPP_SDL.
 
 CMakeFiles/TP_CPP_SDL.dir/surface.cpp.o: CMakeFiles/TP_CPP_SDL.dir/flags.make
 CMakeFiles/TP_CPP_SDL.dir/surface.cpp.o: ../surface.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/TP_CPP_SDL.dir/surface.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/TP_CPP_SDL.dir/surface.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TP_CPP_SDL.dir/surface.cpp.o -c /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/surface.cpp
 
 CMakeFiles/TP_CPP_SDL.dir/surface.cpp.i: cmake_force
@@ -131,7 +155,7 @@ CMakeFiles/TP_CPP_SDL.dir/surface.cpp.o.provides.build: CMakeFiles/TP_CPP_SDL.di
 
 CMakeFiles/TP_CPP_SDL.dir/sprite.cpp.o: CMakeFiles/TP_CPP_SDL.dir/flags.make
 CMakeFiles/TP_CPP_SDL.dir/sprite.cpp.o: ../sprite.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/TP_CPP_SDL.dir/sprite.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/TP_CPP_SDL.dir/sprite.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TP_CPP_SDL.dir/sprite.cpp.o -c /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/sprite.cpp
 
 CMakeFiles/TP_CPP_SDL.dir/sprite.cpp.i: cmake_force
@@ -155,7 +179,7 @@ CMakeFiles/TP_CPP_SDL.dir/sprite.cpp.o.provides.build: CMakeFiles/TP_CPP_SDL.dir
 
 CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o: CMakeFiles/TP_CPP_SDL.dir/flags.make
 CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o: ../tp1.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o -c /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/tp1.cpp
 
 CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.i: cmake_force
@@ -179,6 +203,7 @@ CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o.provides.build: CMakeFiles/TP_CPP_SDL.dir/tp
 
 # Object files for target TP_CPP_SDL
 TP_CPP_SDL_OBJECTS = \
+"CMakeFiles/TP_CPP_SDL.dir/board.cpp.o" \
 "CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o" \
 "CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.o" \
 "CMakeFiles/TP_CPP_SDL.dir/surface.cpp.o" \
@@ -188,6 +213,7 @@ TP_CPP_SDL_OBJECTS = \
 # External object files for target TP_CPP_SDL
 TP_CPP_SDL_EXTERNAL_OBJECTS =
 
+TP_CPP_SDL: CMakeFiles/TP_CPP_SDL.dir/board.cpp.o
 TP_CPP_SDL: CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o
 TP_CPP_SDL: CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.o
 TP_CPP_SDL: CMakeFiles/TP_CPP_SDL.dir/surface.cpp.o
@@ -195,7 +221,7 @@ TP_CPP_SDL: CMakeFiles/TP_CPP_SDL.dir/sprite.cpp.o
 TP_CPP_SDL: CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o
 TP_CPP_SDL: CMakeFiles/TP_CPP_SDL.dir/build.make
 TP_CPP_SDL: CMakeFiles/TP_CPP_SDL.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable TP_CPP_SDL"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable TP_CPP_SDL"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/TP_CPP_SDL.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -203,6 +229,7 @@ CMakeFiles/TP_CPP_SDL.dir/build: TP_CPP_SDL
 
 .PHONY : CMakeFiles/TP_CPP_SDL.dir/build
 
+CMakeFiles/TP_CPP_SDL.dir/requires: CMakeFiles/TP_CPP_SDL.dir/board.cpp.o.requires
 CMakeFiles/TP_CPP_SDL.dir/requires: CMakeFiles/TP_CPP_SDL.dir/window_surface.cpp.o.requires
 CMakeFiles/TP_CPP_SDL.dir/requires: CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.o.requires
 CMakeFiles/TP_CPP_SDL.dir/requires: CMakeFiles/TP_CPP_SDL.dir/surface.cpp.o.requires

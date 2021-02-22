@@ -27,21 +27,19 @@ typedef enum color_type
     BLUE
 } color_type;
 
-
-
 class Tetrimino
 {
 protected:
-    static vector<vector<vector<int>>>matrix2;// contain all the tetriminos
+    static vector<vector<vector<int>>> matrix2; // contain all the tetriminos
     SDL_Color *color;
     tetrimino_type type_t;
     color_type color_t;
-    double x, y;
     int size;
-    SDL_Rect* shape;
-    vector<vector<int>> current_tetr;
+    SDL_Rect *shape;
 
 public:
+    vector<vector<int>> current_tetr;
+    double x, y;
     Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_, color_type color_t_);
     ~Tetrimino();
     void draw(SDL_Renderer *rend);
@@ -50,12 +48,12 @@ public:
     void reverseCols(void);
     void rotate(void);
     void move(bool left, bool right, bool down, bool up);
-    void set_coord(double x_, double y_);// si -1 on touche pas à la coord
-    /**
+    void set_coord(double x_, double y_); // si -1 on touche pas à la coord
+                                          /**
      * On utilise toujours les coordonnes x et y de la classe et pas ceux de shape, 
      * les coord de shapes sont actualisées à chaque draw
     **/
-   void move_down();
+    void move_down();
 };
 
 #endif

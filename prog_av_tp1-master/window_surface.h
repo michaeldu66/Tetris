@@ -4,11 +4,13 @@ using namespace std;
 #include <SDL.h>
 #include "surface.h"
 #include "tetrimino.h"
+#include "board.h"
 #include <iostream>
 
 #define WIN_W 990
 #define WIN_H 990
 
+class Board;
 class Sprite;
 class Surface;
 class WindowSurface : public Surface
@@ -21,10 +23,10 @@ protected:
 
 public:
     SDL_Window *get_w();
-    void render(Tetrimino *shape, SDL_Surface *spriteBg);
+    void render(Tetrimino *shape, SDL_Surface *spriteBg, Board* board);
     WindowSurface() : Surface()
     {
-        this->pWindow = SDL_CreateWindow("Tetris- Made By Hofmann & Berthault", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIN_W, WIN_H, SDL_WINDOW_SHOWN);
+        this->pWindow = SDL_CreateWindow("Tetris", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIN_W, WIN_H, SDL_WINDOW_SHOWN);
         rend = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         cout << "Renderer created" << endl;
         this->set_surf(pWindow);

@@ -119,7 +119,7 @@ void Tetrimino::draw(SDL_Renderer *rend)
             }
         }
     }
-    print_tetrimino();
+    // print_tetrimino();
 }
 
 void Tetrimino::transpose(void)

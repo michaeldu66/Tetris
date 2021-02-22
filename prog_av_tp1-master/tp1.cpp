@@ -7,6 +7,7 @@
 #include "sprite.h"
 #include "ball.h"
 #include "tetrimino.h"
+#include "board.h"
 
 // rayanlegris@gmail.com
 class Game
@@ -14,6 +15,7 @@ class Game
 	WindowSurface *win;
 	Sprite *planche;
 	Tetrimino *piece;
+	Board *board;
 	bool up, down, left, right;
 	SDL_TimerID timer;
 	SDL_TimerID timer_screen;
@@ -25,8 +27,6 @@ public:
 	}
 
 	void init();
-
-	//void draw(double dt);
 
 	bool keyboard(const Uint8 key);
 
@@ -46,7 +46,8 @@ void Game::init()
 {
 	win = new WindowSurface;
 	planche = new Sprite("./sprites.bmp");
-	piece = new Tetrimino(14, 6, 3, L_REVERSE, BLUE);
+	piece = new Tetrimino(14, 6, 3, L_REVERSE, RED);
+	board = new Board(piece);
 	piece->print_tetrimino();
 	left = false;
 	right = false;
@@ -127,7 +128,7 @@ void Game::loop()
 {
 	int prev = 0, now = 0;
 	bool quit = false;
-	timer = SDL_AddTimer(1000, update_timer_callback, piece); /* Démarrage du timer */
+	//timer = SDL_AddTimer(1000, update_timer_callback, piece); /* Démarrage du timer */
 	while (!quit)
 	{
 		now = SDL_GetTicks();
@@ -136,14 +137,16 @@ void Game::loop()
 		{
 			quit = check_event(event);
 			update();
-			win->render(piece, planche->get_surf());
+			win->render(piece, planche->get_surf(), board);
+			board->print_piece_to_board();
+			piece->print_tetrimino();
 			reset_key();
 		}
-		if (now - prev > 30)
-		{
-			win->render(piece, planche->get_surf());
-			prev = now;
-		}
+		// if (now - prev > 30)
+		// {
+		// 	win->render(piece, planche->get_surf());
+		// 	prev = now;
+		// }
 	}
 	SDL_Quit();
 }
