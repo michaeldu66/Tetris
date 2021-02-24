@@ -36,6 +36,7 @@ Tetrimino *Board::getCurrentPiece()
 void Board::update_direction(MOV_DIRECTION direction_)
 {
     direction = direction_;
+    cout << "direction set to "<< direction << endl;
 }
 
 void Board::moveCurrentPiece()
@@ -54,6 +55,8 @@ void Board::moveCurrentPiece()
     case UP:
         currentPiece->rotate();
         break;
+    case NO_MOVE:
+        cout << "on bouge pas la piece"<<endl;
     }
 }
 
@@ -164,7 +167,13 @@ int Board::DetectCollision()
 
 int Board::OutOfGrillDown(int coord, int idx)
 {
-    return (coord - ORIGIN_Y + idx + 1 > 20) ? 1 : 0;
+    if (coord - ORIGIN_Y + idx + 1 > 20)
+    {
+        currentPiece->set_finished();
+        cout << "Current Piece set to finished" << endl;
+        return 1;
+    }
+    return 0;
 }
 
 int Board::OutOfGrillRight(int coord, int idx)
@@ -228,7 +237,7 @@ Tetrimino *Board::GenerateRandomShape()
         randomTetrimino = new Tetrimino(14, 6, 4, randomShape, randomColor);
     else if (randomShape == BLOC)
         randomTetrimino = new Tetrimino(14, 6, 2, randomShape, randomColor);
-    else 
+    else
         randomTetrimino = new Tetrimino(14, 6, 3, randomShape, randomColor);
     return randomTetrimino;
 }

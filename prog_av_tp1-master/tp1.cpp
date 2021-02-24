@@ -47,7 +47,6 @@ void Game::init()
 	planche = new Sprite("./sprites.bmp");
 	board = new Board();
 	piece = board->getCurrentPiece();
-	piece->print_tetrimino();
 	direction = NO_MOVE;
 }
 
@@ -105,6 +104,8 @@ void Game::update()
 	board->update_direction(direction);
 	if (!board->DetectCollision())
 		board->moveCurrentPiece();
+	else if(board->getCurrentPiece()->getStateFinished())
+		piece = board->GenerateRandomShape();
 }
 
 Uint32 Game::update_timer_callback(Uint32 intervalle, void *parametre)

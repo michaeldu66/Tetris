@@ -75,6 +75,8 @@ Tetrimino::Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_, co
         }
     }
     finished = false;
+    print_tetrimino();
+    print_coord();
     cout << "Tetrimino constructor" << endl;
 };
 
@@ -86,6 +88,7 @@ Tetrimino::~Tetrimino()
     delete shape;
     matrix2.clear();
     matrix2.shrink_to_fit();
+    cout << "Tetrimino Destructor" << endl;
 }
 
 // Just to check if te matrix of the tetrimino is ok in the terminal
@@ -174,4 +177,19 @@ void Tetrimino::set_coord(double x_, double y_)
         x = x_;
     if (y_ != -1)
         y = y_;
+}
+
+void Tetrimino::print_coord()
+{
+    cout << "(" << x <<"," << y << ")" << endl;
+}
+
+void Tetrimino::set_finished()
+{
+    finished = true;
+}
+
+bool Tetrimino::getStateFinished()
+{
+    return finished;
 }
