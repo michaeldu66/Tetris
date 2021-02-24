@@ -27,6 +27,15 @@ typedef enum color_type
     BLUE
 } color_type;
 
+typedef enum MOV_DIRECTION
+{
+    LEFT,
+    RIGHT,
+    DOWN,
+    UP,
+    NO_MOVE
+} MOV_DIRECTION;
+
 class Tetrimino
 {
 protected:
@@ -36,6 +45,7 @@ protected:
     color_type color_t;
     int size;
     SDL_Rect *shape;
+
 
 public:
     vector<vector<int>> current_tetr;
@@ -47,13 +57,14 @@ public:
     void transpose(void);
     void reverseCols(void);
     void rotate(void);
-    void move(bool left, bool right, bool down, bool up);
+
+
     void set_coord(double x_, double y_); // si -1 on touche pas à la coord
                                           /**
      * On utilise toujours les coordonnes x et y de la classe et pas ceux de shape, 
      * les coord de shapes sont actualisées à chaque draw
     **/
-    void move_down();
+
 };
 
 #endif

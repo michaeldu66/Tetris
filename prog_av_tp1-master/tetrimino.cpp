@@ -167,17 +167,29 @@ void Tetrimino::rotate(void)
     reverseCols();
 }
 
-void Tetrimino::move(bool left, bool right, bool down, bool up)
-{
-    if (left)
-        x--;
-    if (right)
-        x++;
-    if (down)
-        y++;
-    if (up)
-        rotate();
-}
+// void Tetrimino::update_direction(MOV_DIRECTION direction_)
+// {
+//     direction = direction_;
+// }
+
+// void Tetrimino::move()
+// {
+//     switch (direction)
+//     {
+//     case LEFT:
+//         x--;
+//         break;
+//     case RIGHT:
+//         x++;
+//         break;
+//     case DOWN:
+//         y++;
+//         break;
+//     case UP:
+//         rotate();
+//         break;
+//     }
+// }
 
 void Tetrimino::set_coord(double x_, double y_)
 {
@@ -185,9 +197,4 @@ void Tetrimino::set_coord(double x_, double y_)
         x = x_;
     if (y_ != -1)
         y = y_;
-}
-
-void Tetrimino::move_down()
-{
-    y++;
 }

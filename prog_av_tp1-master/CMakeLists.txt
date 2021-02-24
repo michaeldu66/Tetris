@@ -26,7 +26,7 @@ function(ADD_PRG)
 endfunction()
 
 
-ADD_PRG(TARGET TP_SDL SOURCES base_tp1.cpp)
+# ADD_PRG(TARGET TP_SDL SOURCES base_tp1.cpp)
 
 ADD_PRG(TARGET TP_CPP_SDL SOURCES board.h board.cpp window_surface.h window_surface.cpp tetrimino.cpp tetrimino.h surface.h surface.cpp sprite.h sprite.cpp ball.h tp1.cpp)
 

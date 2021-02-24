@@ -17,6 +17,7 @@ class Game
 	Tetrimino *piece;
 	Board *board;
 	bool up, down, left, right;
+	MOV_DIRECTION direction;
 	SDL_TimerID timer;
 	SDL_TimerID timer_screen;
 	// + ?
@@ -49,18 +50,12 @@ void Game::init()
 	piece = new Tetrimino(14, 6, 3, L_REVERSE, RED);
 	board = new Board(piece);
 	piece->print_tetrimino();
-	left = false;
-	right = false;
-	up = false;
-	down = false;
+	direction = NO_MOVE;
 }
 
 void Game::reset_key()
 {
-	left = false;
-	right = false;
-	up = false;
-	down = false;
+	direction = NO_MOVE;
 }
 
 bool Game::check_event(SDL_Event event)
@@ -86,20 +81,16 @@ bool Game::keyboard(const Uint8 key)
 	switch (key)
 	{
 	case SDL_SCANCODE_LEFT:
-		printf("left\n");
-		left = true;
+		direction = LEFT;
 		break;
 	case SDL_SCANCODE_RIGHT:
-		printf("right\n");
-		right = true;
+		direction = RIGHT;
 		break;
 	case SDL_SCANCODE_UP:
-		printf("up\n");
-		up = true;
+		direction = UP;
 		break;
 	case SDL_SCANCODE_DOWN:
-		printf("down\n");
-		down = true;
+		direction = DOWN;
 		break;
 	case SDL_SCANCODE_SPACE:
 		printf("espace");
@@ -113,13 +104,17 @@ bool Game::keyboard(const Uint8 key)
 
 void Game::update()
 {
-	piece->move(left, right, down, up);
+	board->update_direction(direction);
+	if (!board->DetectCollision())
+		board->moveCurrentPiece();
 }
 
 Uint32 Game::update_timer_callback(Uint32 intervalle, void *parametre)
 {
-	Tetrimino *piece = static_cast<Tetrimino *>(parametre);
-	piece->move_down();
+	Board *myboard = static_cast<Board *>(parametre);
+	myboard->update_direction(DOWN);
+	if (!myboard->DetectCollision())
+		myboard->moveCurrentPiece();
 	printf("timer appelé\n");
 	return intervalle;
 }
@@ -128,7 +123,7 @@ void Game::loop()
 {
 	int prev = 0, now = 0;
 	bool quit = false;
-	//timer = SDL_AddTimer(1000, update_timer_callback, piece); /* Démarrage du timer */
+	timer = SDL_AddTimer(1000, update_timer_callback, board); /* Démarrage du timer */
 	while (!quit)
 	{
 		now = SDL_GetTicks();
@@ -142,11 +137,11 @@ void Game::loop()
 			piece->print_tetrimino();
 			reset_key();
 		}
-		// if (now - prev > 30)
-		// {
-		// 	win->render(piece, planche->get_surf());
-		// 	prev = now;
-		// }
+		if (now - prev > 30)
+		{
+			win->render(piece, planche->get_surf(), board);
+			prev = now;
+		}
 	}
 	SDL_Quit();
 }

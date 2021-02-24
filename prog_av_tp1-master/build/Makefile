@@ -111,19 +111,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named TP_SDL
-
-# Build rule for target.
-TP_SDL: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 TP_SDL
-.PHONY : TP_SDL
-
-# fast build rule for target.
-TP_SDL/fast:
-	$(MAKE) -f CMakeFiles/TP_SDL.dir/build.make CMakeFiles/TP_SDL.dir/build
-.PHONY : TP_SDL/fast
-
-#=============================================================================
 # Target rules for targets named TP_CPP_SDL
 
 # Build rule for target.
@@ -135,33 +122,6 @@ TP_CPP_SDL: cmake_check_build_system
 TP_CPP_SDL/fast:
 	$(MAKE) -f CMakeFiles/TP_CPP_SDL.dir/build.make CMakeFiles/TP_CPP_SDL.dir/build
 .PHONY : TP_CPP_SDL/fast
-
-base_tp1.o: base_tp1.cpp.o
-
-.PHONY : base_tp1.o
-
-# target to build an object file
-base_tp1.cpp.o:
-	$(MAKE) -f CMakeFiles/TP_SDL.dir/build.make CMakeFiles/TP_SDL.dir/base_tp1.cpp.o
-.PHONY : base_tp1.cpp.o
-
-base_tp1.i: base_tp1.cpp.i
-
-.PHONY : base_tp1.i
-
-# target to preprocess a source file
-base_tp1.cpp.i:
-	$(MAKE) -f CMakeFiles/TP_SDL.dir/build.make CMakeFiles/TP_SDL.dir/base_tp1.cpp.i
-.PHONY : base_tp1.cpp.i
-
-base_tp1.s: base_tp1.cpp.s
-
-.PHONY : base_tp1.s
-
-# target to generate assembly for a file
-base_tp1.cpp.s:
-	$(MAKE) -f CMakeFiles/TP_SDL.dir/build.make CMakeFiles/TP_SDL.dir/base_tp1.cpp.s
-.PHONY : base_tp1.cpp.s
 
 board.o: board.cpp.o
 
@@ -332,12 +292,8 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... TP_SDL"
-	@echo "... edit_cache"
 	@echo "... TP_CPP_SDL"
-	@echo "... base_tp1.o"
-	@echo "... base_tp1.i"
-	@echo "... base_tp1.s"
+	@echo "... edit_cache"
 	@echo "... board.o"
 	@echo "... board.i"
 	@echo "... board.s"

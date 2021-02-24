@@ -40,6 +40,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/TP_SDL.dir/DependInfo.cmake"
   "CMakeFiles/TP_CPP_SDL.dir/DependInfo.cmake"
   )

@@ -60,43 +60,6 @@ CMAKE_SOURCE_DIR = /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master
 CMAKE_BINARY_DIR = /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/TP_SDL.dir
-
-# All Build rule for target.
-CMakeFiles/TP_SDL.dir/all:
-	$(MAKE) -f CMakeFiles/TP_SDL.dir/build.make CMakeFiles/TP_SDL.dir/depend
-	$(MAKE) -f CMakeFiles/TP_SDL.dir/build.make CMakeFiles/TP_SDL.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles --progress-num=8,9 "Built target TP_SDL"
-.PHONY : CMakeFiles/TP_SDL.dir/all
-
-# Include target in all.
-all: CMakeFiles/TP_SDL.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/TP_SDL.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/TP_SDL.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/misoko/Documents/Projects/Tetris/prog_av_tp1-master/build/CMakeFiles 0
-.PHONY : CMakeFiles/TP_SDL.dir/rule
-
-# Convenience name for target.
-TP_SDL: CMakeFiles/TP_SDL.dir/rule
-
-.PHONY : TP_SDL
-
-# clean rule for target.
-CMakeFiles/TP_SDL.dir/clean:
-	$(MAKE) -f CMakeFiles/TP_SDL.dir/build.make CMakeFiles/TP_SDL.dir/clean
-.PHONY : CMakeFiles/TP_SDL.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/TP_SDL.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/TP_CPP_SDL.dir
 
 # All Build rule for target.
