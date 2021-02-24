@@ -74,6 +74,7 @@ Tetrimino::Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_, co
             current_tetr[i][j] = matrix2[type_t][i][j];
         }
     }
+    finished = false;
     cout << "Tetrimino constructor" << endl;
 };
 
@@ -166,30 +167,6 @@ void Tetrimino::rotate(void)
     transpose();
     reverseCols();
 }
-
-// void Tetrimino::update_direction(MOV_DIRECTION direction_)
-// {
-//     direction = direction_;
-// }
-
-// void Tetrimino::move()
-// {
-//     switch (direction)
-//     {
-//     case LEFT:
-//         x--;
-//         break;
-//     case RIGHT:
-//         x++;
-//         break;
-//     case DOWN:
-//         y++;
-//         break;
-//     case UP:
-//         rotate();
-//         break;
-//     }
-// }
 
 void Tetrimino::set_coord(double x_, double y_)
 {

@@ -45,6 +45,7 @@ protected:
     color_type color_t;
     int size;
     SDL_Rect *shape;
+    bool finished; // when the piece is immobile ==> finished = True
 
 
 public:

@@ -1,6 +1,5 @@
 #include "board.h"
-/* board.cpp */
-Board::Board(Tetrimino *tetr_origin)
+Board::Board()
 {
     carre_grill = new SDL_Rect();
     carre_grill->h = TETR_SIZE;
@@ -18,7 +17,8 @@ Board::Board(Tetrimino *tetr_origin)
             screenWithBlock[i][j] = FREE;
         }
     }
-    currentPiece = tetr_origin;
+
+    currentPiece = GenerateRandomShape();
     direction = NO_MOVE;
     cout << "BOARD constructor" << endl;
 }
@@ -95,7 +95,7 @@ void Board::print_board()
 
 void Board::draw_board(SDL_Renderer *rend)
 {
-    print_board();
+    //print_board();
     for (int i = 0; i < BOARD_HEIGHT; i++) //centrée en hauteur
     {
         for (int j = 0; j < BOARD_WIDTH; j++)
@@ -164,15 +164,71 @@ int Board::DetectCollision()
 
 int Board::OutOfGrillDown(int coord, int idx)
 {
-    return (coord - ORIGIN_Y + idx+1 > 20) ? 1 : 0;
+    return (coord - ORIGIN_Y + idx + 1 > 20) ? 1 : 0;
 }
 
 int Board::OutOfGrillRight(int coord, int idx)
 {
-    return (coord - ORIGIN_X + idx+1 > 10) ? 1 : 0;
+    return (coord - ORIGIN_X + idx + 1 > 10) ? 1 : 0;
 }
 
 int Board::OutOfGrillLeft(int coord, int idx)
 {
     return (coord - ORIGIN_X + idx < 0) ? 1 : 0;
+}
+
+color_type Board::GetRandomColor()
+{
+    srand(time(NULL));
+    int Color = rand() % 3;
+    cout << "the random color is : " << Color << endl;
+    switch (Color)
+    {
+    case 0:
+        return BLUE;
+    case 1:
+        return RED;
+    case 2:
+        return GREEN;
+    }
+    return BLUE;
+}
+
+tetrimino_type Board::GetRandomShape()
+{
+    srand(time(NULL));
+    int Shape = rand() % 7;
+    cout << "the random Shape is : " << Shape << endl;
+    switch (Shape)
+    {
+    case 0:
+        return BARRE;
+    case 1:
+        return BLOC;
+    case 2:
+        return T_TYPE;
+    case 3:
+        return L_TYPE;
+    case 4:
+        return L_REVERSE;
+    case 5:
+        return Z_TYPE;
+    case 6:
+        return S_TYPE;
+    }
+    return BARRE;
+}
+
+Tetrimino *Board::GenerateRandomShape()
+{
+    Tetrimino *randomTetrimino;
+    tetrimino_type randomShape = GetRandomShape();
+    color_type randomColor = GetRandomColor();
+    if (randomShape == BARRE)
+        randomTetrimino = new Tetrimino(14, 6, 4, randomShape, randomColor);
+    else if (randomShape == BLOC)
+        randomTetrimino = new Tetrimino(14, 6, 2, randomShape, randomColor);
+    else 
+        randomTetrimino = new Tetrimino(14, 6, 3, randomShape, randomColor);
+    return randomTetrimino;
 }

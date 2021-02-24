@@ -23,8 +23,7 @@ class Game
 
 public:
 	inline Game()
-	{
-	}
+	{}
 
 	void init();
 
@@ -46,8 +45,8 @@ void Game::init()
 {
 	win = new WindowSurface;
 	planche = new Sprite("./sprites.bmp");
-	piece = new Tetrimino(14, 6, 3, L_REVERSE, RED);
-	board = new Board(piece);
+	board = new Board();
+	piece = board->getCurrentPiece();
 	piece->print_tetrimino();
 	direction = NO_MOVE;
 }
@@ -114,7 +113,7 @@ Uint32 Game::update_timer_callback(Uint32 intervalle, void *parametre)
 	myboard->update_direction(DOWN);
 	if (!myboard->DetectCollision())
 		myboard->moveCurrentPiece();
-	printf("timer appelé\n");
+	//printf("timer appelé\n");
 	return intervalle;
 }
 
@@ -132,8 +131,8 @@ void Game::loop()
 			quit = check_event(event);
 			update();
 			win->render(piece, planche->get_surf(), board);
-			board->print_piece_to_board();
-			piece->print_tetrimino();
+			//board->print_piece_to_board();
+			//piece->print_tetrimino();
 			reset_key();
 		}
 		if (now - prev > 30)

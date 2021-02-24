@@ -31,8 +31,7 @@ private:
 public:
     vector<vector<int>> screenWithBlock;  // the screen with the falling block
     vector<vector<int>> screenBackground; // the screen without the falling block
-    //double area[20][10];
-    Board(Tetrimino *piece);
+    Board();
 
     void setCurrentPiece(Tetrimino *tetr);
     Tetrimino *getCurrentPiece();
@@ -47,6 +46,9 @@ public:
     void update_direction(MOV_DIRECTION direction_);
     void moveCurrentPiece();
     void moveBackCurrentPiece();
+    color_type GetRandomColor();
+    tetrimino_type GetRandomShape();
+    Tetrimino* GenerateRandomShape();
 };
 
 #endif
