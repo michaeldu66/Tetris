@@ -193,7 +193,6 @@ CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.o: /usr/include/SDL2/SDL_video.h
 CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.o: /usr/include/SDL2/begin_code.h
 CMakeFiles/TP_CPP_SDL.dir/tetrimino.cpp.o: /usr/include/SDL2/close_code.h
 
-CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o: ../ball.h
 CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o: ../board.h
 CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o: ../sprite.h
 CMakeFiles/TP_CPP_SDL.dir/tp1.cpp.o: ../surface.h

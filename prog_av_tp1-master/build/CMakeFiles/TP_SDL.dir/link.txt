@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/TP_SDL.dir/base_tp1.cpp.o  -o TP_SDL -lSDL2 -lSDL2main 

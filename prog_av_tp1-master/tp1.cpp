@@ -5,7 +5,6 @@
 
 #include "window_surface.h"
 #include "sprite.h"
-#include "ball.h"
 #include "tetrimino.h"
 #include "board.h"
 
