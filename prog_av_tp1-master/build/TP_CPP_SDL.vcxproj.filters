@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\dossier_linux\projet_tetris\Tetris\prog_av_tp1-master\window_surface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\dossier_linux\projet_tetris\Tetris\prog_av_tp1-master\tetrimino.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\dossier_linux\projet_tetris\Tetris\prog_av_tp1-master\surface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\dossier_linux\projet_tetris\Tetris\prog_av_tp1-master\sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\dossier_linux\projet_tetris\Tetris\prog_av_tp1-master\tp1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\dossier_linux\projet_tetris\Tetris\prog_av_tp1-master\window_surface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\dossier_linux\projet_tetris\Tetris\prog_av_tp1-master\tetrimino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\dossier_linux\projet_tetris\Tetris\prog_av_tp1-master\surface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\dossier_linux\projet_tetris\Tetris\prog_av_tp1-master\sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\dossier_linux\projet_tetris\Tetris\prog_av_tp1-master\ball.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\dossier_linux\projet_tetris\Tetris\prog_av_tp1-master\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{46693AEA-A9C9-330C-B67A-DEAAA8326FF1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{E694F32E-ACC7-3DEB-B285-32D3A21CF2A9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

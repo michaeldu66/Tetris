@@ -1,4 +1,5 @@
 #include "sprite.h"
+#include "surface.h"
 
 
 Sprite::Sprite(const char* link_sprite):Surface(){

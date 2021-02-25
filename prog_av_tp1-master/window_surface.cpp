@@ -1,4 +1,5 @@
 #include "window_surface.h"
+#include "surface.h"
 #include "tetrimino.h"
 // WindowSurface::WindowSurface() : Surface()
 // {
@@ -29,7 +30,7 @@ void WindowSurface::render(Tetrimino *shape, SDL_Surface *spriteBg)
         {
             dest.x = j;
             dest.y = i;
-            // copie depuis la planche de sprite vers le render 
+            // copie depuis la planche de sprite vers le render
             SDL_RenderCopy(rend, Bg, &srcBg, &dest);
         }
     }

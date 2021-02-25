@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\dossier_linux\projet_tetris\Tetris\prog_av_tp1-master\base_tp1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\dossier_linux\projet_tetris\Tetris\prog_av_tp1-master\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{E694F32E-ACC7-3DEB-B285-32D3A21CF2A9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

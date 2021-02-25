@@ -1,8 +1,8 @@
-
 #include <SDL.h>
 #include <string>
 #include <iostream>
 
+#include "surface.h"
 #include "window_surface.h"
 #include "sprite.h"
 #include "ball.h"
@@ -92,7 +92,7 @@ void Game::loop()
 	bool quit = false;
 	while (!quit)
 	{
-		
+
 		SDL_Event event;
 		while (!quit && SDL_PollEvent(&event))
 		{

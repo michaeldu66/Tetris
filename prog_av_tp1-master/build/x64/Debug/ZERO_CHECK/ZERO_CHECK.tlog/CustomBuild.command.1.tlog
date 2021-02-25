@@ -1,0 +1,10 @@
+^C:\DOSSIER_LINUX\PROJET_TETRIS\TETRIS\PROG_AV_TP1-MASTER\BUILD\CMAKEFILES\44E355F987C8D335A1D2122DAE42E0DB\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/dossier_linux/projet_tetris/Tetris/prog_av_tp1-master -BC:/dossier_linux/projet_tetris/Tetris/prog_av_tp1-master/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/dossier_linux/projet_tetris/Tetris/prog_av_tp1-master/build/TP1_ProgAv.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

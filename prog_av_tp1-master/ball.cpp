@@ -2,7 +2,7 @@
 
 Ball::Ball(double _x, double _y, double _vx, double _vy) : x(_x), y(_y), vx(_vx), vy(_vy)
 {
-    this->(*srcBall) = {0, 96, 24, 24};
+    //this->(*srcBall) = {0, 96, 24, 24};
     cout << "ball créé" << endl;
 };
 
