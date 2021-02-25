@@ -36,7 +36,7 @@ Tetrimino *Board::getCurrentPiece()
 void Board::update_direction(MOV_DIRECTION direction_)
 {
     direction = direction_;
-    cout << "direction set to "<< direction << endl;
+    cout << "direction set to " << direction << endl;
 }
 
 void Board::moveCurrentPiece()
@@ -56,7 +56,7 @@ void Board::moveCurrentPiece()
         currentPiece->rotate();
         break;
     case NO_MOVE:
-        cout << "on bouge pas la piece"<<endl;
+        cout << "on bouge pas la piece" << endl;
     }
 }
 
@@ -150,12 +150,17 @@ int Board::DetectCollision()
         {
             if (currentPiece->current_tetr[i][j])
             {
-                if (OutOfGrillDown(currentPiece->y, i) ||
-                    OutOfGrillLeft(currentPiece->x, j) ||
+                if (OutOfGrillLeft(currentPiece->x, j) ||
                     OutOfGrillRight(currentPiece->x, j))
                 {
-                    cout << "Detection Detected" << endl;
+                    cout << "Detection Side Detected" << endl;
                     moveBackCurrentPiece();
+                    return 1;
+                }
+                else if (OutOfGrillDown(currentPiece->y, i))
+                {
+                    cout << "Detection Down Detected" << endl;
+                    cout << " le state est "<< currentPiece->getStateFinished() << endl;
                     return 1;
                 }
             }
@@ -167,6 +172,9 @@ int Board::DetectCollision()
 
 int Board::OutOfGrillDown(int coord, int idx)
 {
+    cout << "coord : " << coord << ", ORIGIN_Y : " << ORIGIN_Y << endl;
+    int val = coord - ORIGIN_Y + idx + 1;
+    cout << "le tout : " << val << endl;
     if (coord - ORIGIN_Y + idx + 1 > 20)
     {
         currentPiece->set_finished();
@@ -239,5 +247,8 @@ Tetrimino *Board::GenerateRandomShape()
         randomTetrimino = new Tetrimino(14, 6, 2, randomShape, randomColor);
     else
         randomTetrimino = new Tetrimino(14, 6, 3, randomShape, randomColor);
+    currentPiece = randomTetrimino;
+    cout << "New Random shape generated with coord : ";
+    randomTetrimino->print_coord();
     return randomTetrimino;
 }
