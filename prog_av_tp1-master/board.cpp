@@ -155,7 +155,7 @@ void Board::print_board()
 
 void Board::draw_board(SDL_Renderer *rend)
 {
-    print_board();
+    //print_board();
     int nb_color = -1;
     for (int i = 0; i < BOARD_HEIGHT; i++) //centrée en hauteur
     {
@@ -181,6 +181,20 @@ void Board::print_piece_to_board()
         {
             if (currentPiece->current_tetr[i][j])
                 screenWithBlock[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] = currentPiece->current_tetr[i][j];
+        }
+    }
+}
+
+//Affiche les pièces sur le background pour qu'elles restent visibles
+void Board::print_piece_to_background()
+{
+    //refresh_screen();
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            if (currentPiece->current_tetr[i][j])
+                screenBackground[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] = currentPiece->current_tetr[i][j];
         }
     }
 }
@@ -254,7 +268,7 @@ int Board::OutOfGrillLeft(int coord, int idx)
     return (coord - ORIGIN_X + idx < 0) ? 1 : 0;
 }
 
-color_type Board::GetRandomColor()
+/*color_type Board::GetRandomColor()
 {
     srand(time(NULL));
     int Color = rand() % 3;
@@ -269,7 +283,7 @@ color_type Board::GetRandomColor()
         return GREEN;
     }
     return BLUE;
-}
+}*/
 
 tetrimino_type Board::GetRandomShape()
 {

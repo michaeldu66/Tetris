@@ -158,6 +158,7 @@ Tetrimino::~Tetrimino()
     cout << "Tetrimino Destructor" << endl;
 }
 
+
 // Just to check if te matrix of the tetrimino is ok in the terminal
 void Tetrimino::print_tetrimino()
 {

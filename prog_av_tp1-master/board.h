@@ -38,6 +38,7 @@ public:
     void print_board();
     void draw_board(SDL_Renderer *rend);
     void print_piece_to_board();
+    void print_piece_to_background();
     void refresh_screen();
     int DetectCollision();
     int OutOfGrillDown(int coord, int idx);
@@ -46,7 +47,7 @@ public:
     void update_direction(MOV_DIRECTION direction_);
     void moveCurrentPiece();
     void moveBackCurrentPiece();
-    color_type GetRandomColor();
+    //color_type GetRandomColor();
     tetrimino_type GetRandomShape();
     Tetrimino* GenerateRandomShape();
 };

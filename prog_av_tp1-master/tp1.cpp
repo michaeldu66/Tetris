@@ -105,6 +105,7 @@ void Game::update()
 	if (!board->DetectCollision())
 		board->moveCurrentPiece();
 	else if(board->getCurrentPiece()->getStateFinished()){
+		board->print_piece_to_background();
 		piece = board->GenerateRandomShape();
 	}
 		
@@ -127,19 +128,21 @@ void Game::loop()
 	timer = SDL_AddTimer(1000, update_timer_callback, board); /* faire descendre la piece toutes les secondes*/
 	while (!quit)
 	{
+		//update();
 		now = SDL_GetTicks();
 		SDL_Event event;
 		if(SDL_PollEvent(&event))
 		{
 			quit = check_event(event);
 			update();
-			// win->render(piece, planche->get_surf(), board);
-			// board->print_piece_to_board();
+			win->render(piece, planche->get_surf(), board);
+			board->print_piece_to_board();
 			//piece->print_tetrimino();
 			reset_key();
 		}
 		if (now - prev > 30 )	// timer pour le FPS
 		{
+			//update();
 			win->render(piece, planche->get_surf(), board);
 			board->print_piece_to_board();
 			prev = now;

@@ -46,7 +46,7 @@ protected:
     static vector<vector<vector<int>>> matrix2; // contain all the tetriminos
     SDL_Color *color;
     tetrimino_type type_t;
-    color_type color_t;
+    //color_type color_t;
     int size;
     SDL_Rect *shape;
     bool finished; // when the piece is immobile ==> finished = True
