@@ -124,7 +124,7 @@ void Game::loop()
 {
 	int prev = 0, now = 0;
 	bool quit = false;
-	timer = SDL_AddTimer(1000, update_timer_callback, board); /* Démarrage du timer */
+	timer = SDL_AddTimer(1000, update_timer_callback, board); /* faire descendre la piece toutes les secondes*/
 	while (!quit)
 	{
 		now = SDL_GetTicks();
@@ -134,11 +134,11 @@ void Game::loop()
 			quit = check_event(event);
 			update();
 			win->render(piece, planche->get_surf(), board);
-			//board->print_piece_to_board();
-			//piece->print_tetrimino();
+			board->print_piece_to_board();
+			piece->print_tetrimino();
 			reset_key();
 		}
-		if (now - prev > 30)
+		if (now - prev > 30)	// timer pour le FPS
 		{
 			win->render(piece, planche->get_surf(), board);
 			prev = now;

@@ -22,7 +22,6 @@ void WindowSurface::render(Tetrimino *shape, SDL_Surface *spriteBg, Board* board
             SDL_RenderCopy(rend, Bg, &srcBg, &dest);
         }
     }
-
     board->draw_board(rend);
     shape->draw(rend);
     SDL_RenderPresent(rend); /* show the result on the screen */

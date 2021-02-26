@@ -36,7 +36,7 @@ Tetrimino *Board::getCurrentPiece()
 void Board::update_direction(MOV_DIRECTION direction_)
 {
     direction = direction_;
-    cout << "direction set to " << direction << endl;
+    //cout << "direction set to " << direction << endl;
 }
 
 void Board::moveCurrentPiece()
@@ -56,7 +56,8 @@ void Board::moveCurrentPiece()
         currentPiece->rotate();
         break;
     case NO_MOVE:
-        cout << "on bouge pas la piece" << endl;
+        //cout << "on bouge pas la piece" << endl;
+        break;
     }
 }
 
@@ -98,7 +99,7 @@ void Board::print_board()
 
 void Board::draw_board(SDL_Renderer *rend)
 {
-    //print_board();
+    print_board();
     for (int i = 0; i < BOARD_HEIGHT; i++) //centrée en hauteur
     {
         for (int j = 0; j < BOARD_WIDTH; j++)
@@ -161,6 +162,7 @@ int Board::DetectCollision()
                 {
                     cout << "Detection Down Detected" << endl;
                     cout << " le state est "<< currentPiece->getStateFinished() << endl;
+                    moveBackCurrentPiece();
                     return 1;
                 }
             }
@@ -172,13 +174,13 @@ int Board::DetectCollision()
 
 int Board::OutOfGrillDown(int coord, int idx)
 {
-    cout << "coord : " << coord << ", ORIGIN_Y : " << ORIGIN_Y << endl;
+    // cout << "coord : " << coord << ", ORIGIN_Y : " << ORIGIN_Y << endl;
     int val = coord - ORIGIN_Y + idx + 1;
-    cout << "le tout : " << val << endl;
+    // cout << "le tout : " << val << endl;
     if (coord - ORIGIN_Y + idx + 1 > 20)
     {
         currentPiece->set_finished();
-        cout << "Current Piece set to finished" << endl;
+        // cout << "Current Piece set to finished" << endl;
         return 1;
     }
     return 0;
@@ -227,7 +229,7 @@ tetrimino_type Board::GetRandomShape()
     case 3:
         return L_TYPE;
     case 4:
-        return L_REVERSE;
+        return J_TYPE;
     case 5:
         return Z_TYPE;
     case 6:

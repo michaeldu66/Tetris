@@ -9,11 +9,11 @@ using namespace std;
 
 typedef enum tetrimino_type
 {
-    BARRE,
-    BLOC,
-    T_TYPE,
-    L_TYPE,
-    L_REVERSE,
+    BARRE,  // cyan
+    BLOC,   //jaune
+    T_TYPE, //violet
+    L_TYPE, //
+    J_TYPE,
     Z_TYPE,
     S_TYPE
 } tetrimino_type;
