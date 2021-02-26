@@ -22,9 +22,13 @@ typedef enum tetrimino_type
 // but transform in SDL_Color afterward
 typedef enum color_type
 {
+    CYAN,
+    YELLOW,
+    PURPLE,
+    ORANGE,
+    BLUE,
     RED,
-    GREEN,
-    BLUE
+    GREEN
 } color_type;
 
 typedef enum MOV_DIRECTION
@@ -51,7 +55,7 @@ protected:
 public:
     vector<vector<int>> current_tetr;
     double x, y;
-    Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_, color_type color_t_);
+    Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_);
     ~Tetrimino();
     void draw(SDL_Renderer *rend);
     void print_tetrimino();

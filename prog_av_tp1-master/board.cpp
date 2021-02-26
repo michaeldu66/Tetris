@@ -20,6 +20,62 @@ Board::Board()
 
     currentPiece = GenerateRandomShape();
     direction = NO_MOVE;
+
+    for (int i = 0; i < 8; i++)
+    {
+        color[i] = new SDL_Color();
+        switch (i)
+        {
+        case 0:
+            color[i]->r = 0;
+            color[i]->g = 0;
+            color[i]->b = 0;
+            break;
+
+        case 1:
+            color[i]->r = 0;
+            color[i]->g = 255;
+            color[i]->b = 255;
+            break;
+
+        case 2:
+            color[i]->r = 255;
+            color[i]->g = 255;
+            color[i]->b = 0;
+            break;
+
+        case 3:
+            color[i]->r = 255;
+            color[i]->g = 0;
+            color[i]->b = 255;
+            break;
+
+        case 4:
+            color[i]->r = 255;
+            color[i]->g = 165;
+            color[i]->b = 0;
+            break;
+
+        case 5:
+            color[i]->r = 0;
+            color[i]->g = 0;
+            color[i]->b = 255;
+            break;
+
+        case 6:
+            color[i]->r = 255;
+            color[i]->g = 0;
+            color[i]->b = 0;
+            break;
+
+        case 7:
+            color[i]->r = 0;
+            color[i]->g = 255;
+            color[i]->b = 0;
+            break;
+        }
+    }
+
     cout << "BOARD constructor" << endl;
 }
 
@@ -100,13 +156,15 @@ void Board::print_board()
 void Board::draw_board(SDL_Renderer *rend)
 {
     print_board();
+    int nb_color = -1;
     for (int i = 0; i < BOARD_HEIGHT; i++) //centrée en hauteur
     {
         for (int j = 0; j < BOARD_WIDTH; j++)
         {
             carre_grill->x = (ORIGIN_X + j) * TETR_SIZE;
             carre_grill->y = (ORIGIN_Y + i) * TETR_SIZE;
-            SDL_SetRenderDrawColor(rend, 150, 150, 150, 255); // inside of squares black
+            nb_color = screenWithBlock[i][j];
+            SDL_SetRenderDrawColor(rend, color[nb_color]->r, color[nb_color]->g, color[nb_color]->b, 255); // inside of squares black
             SDL_RenderFillRect(rend, carre_grill);
             SDL_SetRenderDrawColor(rend, 75, 75, 75, 0);
             SDL_RenderDrawRect(rend, carre_grill); //borderline of squares (in white)
@@ -161,7 +219,7 @@ int Board::DetectCollision()
                 else if (OutOfGrillDown(currentPiece->y, i))
                 {
                     cout << "Detection Down Detected" << endl;
-                    cout << " le state est "<< currentPiece->getStateFinished() << endl;
+                    cout << " le state est " << currentPiece->getStateFinished() << endl;
                     moveBackCurrentPiece();
                     return 1;
                 }
@@ -242,13 +300,13 @@ Tetrimino *Board::GenerateRandomShape()
 {
     Tetrimino *randomTetrimino;
     tetrimino_type randomShape = GetRandomShape();
-    color_type randomColor = GetRandomColor();
+    //color_type randomColor = GetRandomColor();
     if (randomShape == BARRE)
-        randomTetrimino = new Tetrimino(14, 6, 4, randomShape, randomColor);
+        randomTetrimino = new Tetrimino(14, 6, 4, randomShape); //, randomColor);
     else if (randomShape == BLOC)
-        randomTetrimino = new Tetrimino(14, 6, 2, randomShape, randomColor);
+        randomTetrimino = new Tetrimino(14, 6, 2, randomShape); // , randomColor);
     else
-        randomTetrimino = new Tetrimino(14, 6, 3, randomShape, randomColor);
+        randomTetrimino = new Tetrimino(14, 6, 3, randomShape); // , randomColor);
     currentPiece = randomTetrimino;
     cout << "New Random shape generated with coord : ";
     randomTetrimino->print_coord();

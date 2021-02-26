@@ -27,7 +27,7 @@ private:
     Tetrimino *currentPiece; // La pièce courante se trouvant sur l'aire de jeu
     SDL_Rect *carre_grill;
     MOV_DIRECTION direction;
-
+    SDL_Color *color[8];
 public:
     vector<vector<int>> screenWithBlock;  // the screen with the falling block
     vector<vector<int>> screenBackground; // the screen without the falling block

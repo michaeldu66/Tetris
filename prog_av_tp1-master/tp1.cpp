@@ -129,7 +129,7 @@ void Game::loop()
 	{
 		now = SDL_GetTicks();
 		SDL_Event event;
-		while (!quit && SDL_PollEvent(&event))
+		if(SDL_PollEvent(&event))
 		{
 			quit = check_event(event);
 			update();
@@ -138,8 +138,9 @@ void Game::loop()
 			piece->print_tetrimino();
 			reset_key();
 		}
-		if (now - prev > 30)	// timer pour le FPS
+		if (now - prev > 30 )	// timer pour le FPS
 		{
+
 			win->render(piece, planche->get_surf(), board);
 			prev = now;
 		}

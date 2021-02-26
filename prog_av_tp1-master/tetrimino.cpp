@@ -6,38 +6,38 @@ vector<vector<vector<int>>> Tetrimino::matrix2{
      {0, 0, 0, 0},
      {0, 0, 0, 0}},
 
-    {{1, 1, 0, 0},
-     {1, 1, 0, 0},
+    {{2, 2, 0, 0},
+     {2, 2, 0, 0},
      {0, 0, 0, 0},
      {0, 0, 0, 0}},
 
-    {{0, 1, 0, 0},
-     {1, 1, 1, 0},
+    {{0, 3, 0, 0},
+     {3, 3, 3, 0},
      {0, 0, 0, 0},
      {0, 0, 0, 0}},
 
-    {{0, 0, 1, 0},
-     {1, 1, 1, 0},
+    {{0, 0, 4, 0},
+     {4, 4, 4, 0},
      {0, 0, 0, 0},
      {0, 0, 0, 0}},
 
-    {{1, 0, 0, 0},
-     {1, 1, 1, 0},
+    {{5, 0, 0, 0},
+     {5, 5, 5, 0},
      {0, 0, 0, 0},
      {0, 0, 0, 0}},
 
-    {{1, 1, 0, 0},
-     {0, 1, 1, 0},
+    {{6, 6, 0, 0},
+     {0, 6, 6, 0},
      {0, 0, 0, 0},
      {0, 0, 0, 0}},
 
-    {{0, 1, 1, 0},
-     {1, 1, 0, 0},
+    {{0, 7, 7, 0},
+     {7, 7, 0, 0},
      {0, 0, 0, 0},
      {0, 0, 0, 0}}};
 ;
 
-Tetrimino::Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_, color_type color_t_)
+/*Tetrimino::Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_, color_type color_t_)
     : x(x_), y(y_), size(size_), type_t(type_t_), color_t(color_t_)
 {
     color = new SDL_Color();
@@ -59,6 +59,73 @@ Tetrimino::Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_, co
         break;
 
     case BLUE:
+        color->r = 0;
+        color->g = 0;
+        color->b = 255;
+        break;
+    }
+
+    current_tetr.resize(4); // Allocation des vectors
+    for (int i = 0; i < 4; i++)
+    {
+        current_tetr[i].resize(4);
+        for (int j = 0; j < 4; j++)
+        {
+            current_tetr[i][j] = matrix2[type_t][i][j];
+        }
+    }
+    finished = false;
+    print_tetrimino();
+    print_coord();
+    cout << "Tetrimino constructor" << endl;
+};*/
+
+Tetrimino::Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_)
+    : x(x_), y(y_), size(size_), type_t(type_t_)
+{
+    color = new SDL_Color();
+    shape = new SDL_Rect();
+    shape->h = TETR_SIZE;
+    shape->w = TETR_SIZE;
+    switch (type_t_)
+    {
+    case BARRE:
+        color->r = 0;
+        color->g = 255;
+        color->b = 255;
+        break;
+
+    case BLOC:
+        color->r = 255;
+        color->g = 255;
+        color->b = 0;
+        break;
+
+    case T_TYPE:
+        color->r = 255;
+        color->g = 0;
+        color->b = 255;
+        break;
+
+    case L_TYPE:
+        color->r = 255;
+        color->g = 165;
+        color->b = 0;
+        break;
+
+    case Z_TYPE:
+        color->r = 255;
+        color->g = 0;
+        color->b = 0;
+        break;
+
+    case S_TYPE:
+        color->r = 0;
+        color->g = 255;
+        color->b = 0;
+        break;
+
+    case J_TYPE:
         color->r = 0;
         color->g = 0;
         color->b = 255;
@@ -108,6 +175,7 @@ void Tetrimino::print_tetrimino()
 
 void Tetrimino::draw(SDL_Renderer *rend)
 {
+    cout << "ma bite "<< endl;
     for (int i = 0; i < size; i++)
     {
         for (int j = 0; j < size; j++)
