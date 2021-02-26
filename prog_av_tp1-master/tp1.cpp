@@ -133,15 +133,15 @@ void Game::loop()
 		{
 			quit = check_event(event);
 			update();
-			win->render(piece, planche->get_surf(), board);
-			board->print_piece_to_board();
-			piece->print_tetrimino();
+			// win->render(piece, planche->get_surf(), board);
+			// board->print_piece_to_board();
+			//piece->print_tetrimino();
 			reset_key();
 		}
 		if (now - prev > 30 )	// timer pour le FPS
 		{
-
 			win->render(piece, planche->get_surf(), board);
+			board->print_piece_to_board();
 			prev = now;
 		}
 	}

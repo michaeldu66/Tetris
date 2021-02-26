@@ -142,8 +142,8 @@ Tetrimino::Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_)
         }
     }
     finished = false;
-    print_tetrimino();
-    print_coord();
+    //print_tetrimino();
+    //print_coord();
     cout << "Tetrimino constructor" << endl;
 };
 
@@ -173,26 +173,26 @@ void Tetrimino::print_tetrimino()
     }
 }
 
-void Tetrimino::draw(SDL_Renderer *rend)
-{
-    cout << "ma bite "<< endl;
-    for (int i = 0; i < size; i++)
-    {
-        for (int j = 0; j < size; j++)
-        {
-            if (current_tetr[i][j])
-            {
-                shape->x = (x + j) * TETR_SIZE;                                  // coord of squares
-                shape->y = (y + i) * TETR_SIZE;                                  // caution! ==> x for columns and y for lines
-                SDL_SetRenderDrawColor(rend, color->r, color->g, color->b, 255); // inside of squares
-                SDL_RenderFillRect(rend, shape);
-                SDL_SetRenderDrawColor(rend, 219, 219, 219, 255);
-                SDL_RenderDrawRect(rend, shape); //borderline of squares (in white)
-            }
-        }
-    }
-    // print_tetrimino();
-}
+// void Tetrimino::draw(SDL_Renderer *rend)
+// {
+//     cout << "ma bite "<< endl;
+//     for (int i = 0; i < size; i++)
+//     {
+//         for (int j = 0; j < size; j++)
+//         {
+//             if (current_tetr[i][j])
+//             {
+//                 shape->x = (x + j) * TETR_SIZE;                                  // coord of squares
+//                 shape->y = (y + i) * TETR_SIZE;                                  // caution! ==> x for columns and y for lines
+//                 SDL_SetRenderDrawColor(rend, color->r, color->g, color->b, 255); // inside of squares
+//                 SDL_RenderFillRect(rend, shape);
+//                 SDL_SetRenderDrawColor(rend, 219, 219, 219, 255);
+//                 SDL_RenderDrawRect(rend, shape); //borderline of squares (in white)
+//             }
+//         }
+//     }
+//     // print_tetrimino();
+// }
 
 void Tetrimino::transpose(void)
 {
