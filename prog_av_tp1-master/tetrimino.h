@@ -37,7 +37,8 @@ typedef enum MOV_DIRECTION
     RIGHT,
     DOWN,
     UP,
-    NO_MOVE
+    NO_MOVE,
+    FAR_DOWN
 } MOV_DIRECTION;
 
 class Tetrimino

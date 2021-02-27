@@ -90,7 +90,10 @@ bool Game::keyboard(const Uint8 key)
 		direction = DOWN;
 		break;
 	case SDL_SCANCODE_SPACE:
-		printf("espace");
+		direction = FAR_DOWN;
+		break;
+	case SDL_SCANCODE_ESCAPE:
+		printf("escape");
 		quit = true;
 		break;
 	default:
@@ -105,10 +108,10 @@ void Game::update()
 	if (!board->DetectCollision())
 		board->moveCurrentPiece();
 	else if(board->getCurrentPiece()->getStateFinished()){
-		board->print_piece_to_background();
+		board->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
+		board->LineFull(); //Efface les lignes pleines
 		piece = board->GenerateRandomShape();
 	}
-		
 }
 
 Uint32 Game::update_timer_callback(Uint32 intervalle, void *parametre)
@@ -142,7 +145,7 @@ void Game::loop()
 		}
 		if (now - prev > 30 )	// timer pour le FPS
 		{
-			//update();
+			update();
 			win->render(piece, planche->get_surf(), board);
 			board->print_piece_to_board();
 			prev = now;

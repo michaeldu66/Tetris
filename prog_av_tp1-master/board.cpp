@@ -1,328 +1,562 @@
 #include "board.h"
 Board::Board()
 {
-    carre_grill = new SDL_Rect();
-    carre_grill->h = TETR_SIZE;
-    carre_grill->w = TETR_SIZE;
+	carre_grill = new SDL_Rect();
+	carre_grill->h = TETR_SIZE;
+	carre_grill->w = TETR_SIZE;
 
-    screenWithBlock.resize(BOARD_HEIGHT);  // Allocation des vectors
-    screenBackground.resize(BOARD_HEIGHT); // Allocation des vectors
-    for (int i = 0; i < BOARD_HEIGHT; i++)
-    {
-        screenBackground[i].resize(BOARD_WIDTH);
-        screenWithBlock[i].resize(BOARD_WIDTH);
-        for (int j = 0; j < BOARD_WIDTH; j++)
-        {
-            screenBackground[i][j] = FREE;
-            screenWithBlock[i][j] = FREE;
-        }
-    }
+	screenWithBlock.resize(BOARD_HEIGHT);  // Allocation des vectors
+	screenBackground.resize(BOARD_HEIGHT); // Allocation des vectors
+	for (int i = 0; i < BOARD_HEIGHT; i++)
+	{
+		screenBackground[i].resize(BOARD_WIDTH);
+		screenWithBlock[i].resize(BOARD_WIDTH);
+		for (int j = 0; j < BOARD_WIDTH; j++)
+		{
+			screenBackground[i][j] = FREE;
+			screenWithBlock[i][j] = FREE;
+		}
+	}
 
-    currentPiece = GenerateRandomShape();
-    direction = NO_MOVE;
+	currentPiece = GenerateRandomShape();
+	direction = NO_MOVE;
 
-    for (int i = 0; i < 8; i++)
-    {
-        color[i] = new SDL_Color();
-        switch (i)
-        {
-        case 0:
-            color[i]->r = 0;
-            color[i]->g = 0;
-            color[i]->b = 0;
-            break;
+	for (int i = 0; i < 8; i++)
+	{
+		color[i] = new SDL_Color();
+		switch (i)
+		{
+		case 0:
+			color[i]->r = 0;
+			color[i]->g = 0;
+			color[i]->b = 0;
+			break;
 
-        case 1:
-            color[i]->r = 0;
-            color[i]->g = 255;
-            color[i]->b = 255;
-            break;
+		case 1:
+			color[i]->r = 0;
+			color[i]->g = 255;
+			color[i]->b = 255;
+			break;
 
-        case 2:
-            color[i]->r = 255;
-            color[i]->g = 255;
-            color[i]->b = 0;
-            break;
+		case 2:
+			color[i]->r = 255;
+			color[i]->g = 255;
+			color[i]->b = 0;
+			break;
 
-        case 3:
-            color[i]->r = 255;
-            color[i]->g = 0;
-            color[i]->b = 255;
-            break;
+		case 3:
+			color[i]->r = 255;
+			color[i]->g = 0;
+			color[i]->b = 255;
+			break;
 
-        case 4:
-            color[i]->r = 255;
-            color[i]->g = 165;
-            color[i]->b = 0;
-            break;
+		case 4:
+			color[i]->r = 255;
+			color[i]->g = 165;
+			color[i]->b = 0;
+			break;
 
-        case 5:
-            color[i]->r = 0;
-            color[i]->g = 0;
-            color[i]->b = 255;
-            break;
+		case 5:
+			color[i]->r = 0;
+			color[i]->g = 0;
+			color[i]->b = 255;
+			break;
 
-        case 6:
-            color[i]->r = 255;
-            color[i]->g = 0;
-            color[i]->b = 0;
-            break;
+		case 6:
+			color[i]->r = 255;
+			color[i]->g = 0;
+			color[i]->b = 0;
+			break;
 
-        case 7:
-            color[i]->r = 0;
-            color[i]->g = 255;
-            color[i]->b = 0;
-            break;
-        }
-    }
+		case 7:
+			color[i]->r = 0;
+			color[i]->g = 255;
+			color[i]->b = 0;
+			break;
+		}
+	}
 
-    cout << "BOARD constructor" << endl;
+	cout << "BOARD constructor" << endl;
 }
 
-void Board::setCurrentPiece(Tetrimino *tetr)
+void Board::setCurrentPiece(Tetrimino* tetr)
 {
-    currentPiece = tetr;
+	currentPiece = tetr;
 }
 
-Tetrimino *Board::getCurrentPiece()
+Tetrimino* Board::getCurrentPiece()
 {
-    return currentPiece;
+	return currentPiece;
 }
 
 void Board::update_direction(MOV_DIRECTION direction_)
 {
-    direction = direction_;
-    //cout << "direction set to " << direction << endl;
+	direction = direction_;
+	//cout << "direction set to " << direction << endl;
 }
 
 void Board::moveCurrentPiece()
 {
-    switch (direction)
-    {
-    case LEFT:
-        currentPiece->x--;
-        break;
-    case RIGHT:
-        currentPiece->x++;
-        break;
-    case DOWN:
-        currentPiece->y++;
-        break;
-    case UP:
-        currentPiece->rotate();
-        break;
-    case NO_MOVE:
-        //cout << "on bouge pas la piece" << endl;
-        break;
-    }
+	switch (direction)
+	{
+	case LEFT:
+		currentPiece->x--;
+		break;
+	case RIGHT:
+		currentPiece->x++;
+		break;
+	case DOWN:
+		currentPiece->y++;
+		break;
+	case UP:
+		currentPiece->rotate();
+		break;
+	case FAR_DOWN:
+		GoFarDown();
+		break;
+	case NO_MOVE:
+		//cout << "on bouge pas la piece" << endl;
+		break;
+	}
 }
 
 void Board::moveBackCurrentPiece()
 {
-    switch (direction)
-    {
-    case LEFT:
-        currentPiece->x++;
-        break;
-    case RIGHT:
-        currentPiece->x--;
-        break;
-    case DOWN:
-        currentPiece->y--;
-        break;
-    case UP:
-        currentPiece->rotate();
-        currentPiece->rotate();
-        currentPiece->rotate();
-        break;
-    }
+	switch (direction)
+	{
+	case LEFT:
+		currentPiece->x++;
+		break;
+	case RIGHT:
+		currentPiece->x--;
+		break;
+	case DOWN:
+		currentPiece->y--;
+		break;
+	case UP:
+		currentPiece->rotate();
+		currentPiece->rotate();
+		currentPiece->rotate();
+		break;
+	}
 }
 
 void Board::print_board()
 {
-    cout << "affichage du board" << endl;
-    for (int i = 0; i < BOARD_HEIGHT; i++)
-    {
-        for (int j = 0; j < BOARD_WIDTH; j++)
-        {
-            cout << screenWithBlock[i][j];
-            cout << " ";
-        }
-        cout << endl;
-    }
-    cout << endl;
+	cout << "affichage du board" << endl;
+	for (int i = 0; i < BOARD_HEIGHT; i++)
+	{
+		for (int j = 0; j < BOARD_WIDTH; j++)
+		{
+			cout << screenWithBlock[i][j];
+			cout << " ";
+		}
+		cout << endl;
+	}
+	cout << endl;
 }
 
-void Board::draw_board(SDL_Renderer *rend)
+void Board::draw_board(SDL_Renderer* rend)
 {
-    //print_board();
-    int nb_color = -1;
-    for (int i = 0; i < BOARD_HEIGHT; i++) //centrée en hauteur
-    {
-        for (int j = 0; j < BOARD_WIDTH; j++)
-        {
-            carre_grill->x = (ORIGIN_X + j) * TETR_SIZE;
-            carre_grill->y = (ORIGIN_Y + i) * TETR_SIZE;
-            nb_color = screenWithBlock[i][j];
-            SDL_SetRenderDrawColor(rend, color[nb_color]->r, color[nb_color]->g, color[nb_color]->b, 255); // inside of squares black
-            SDL_RenderFillRect(rend, carre_grill);
-            SDL_SetRenderDrawColor(rend, 75, 75, 75, 0);
-            SDL_RenderDrawRect(rend, carre_grill); //borderline of squares (in white)
-        }
-    }
+	//print_board();
+	int nb_color = -1;
+	for (int i = 0; i < BOARD_HEIGHT; i++) //centrée en hauteur
+	{
+		for (int j = 0; j < BOARD_WIDTH; j++)
+		{
+			carre_grill->x = (ORIGIN_X + j) * TETR_SIZE;
+			carre_grill->y = (ORIGIN_Y + i) * TETR_SIZE;
+			nb_color = screenWithBlock[i][j];
+			SDL_SetRenderDrawColor(rend, color[nb_color]->r, color[nb_color]->g, color[nb_color]->b, 255); // inside of squares black
+			SDL_RenderFillRect(rend, carre_grill);
+			SDL_SetRenderDrawColor(rend, 75, 75, 75, 0);
+			SDL_RenderDrawRect(rend, carre_grill); //borderline of squares (in white)
+		}
+	}
 }
 
 void Board::print_piece_to_board()
 {
-    refresh_screen();
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            if (currentPiece->current_tetr[i][j])
-                screenWithBlock[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] = currentPiece->current_tetr[i][j];
-        }
-    }
+	refresh_screen();
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			if (currentPiece->current_tetr[i][j])
+				screenWithBlock[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] = currentPiece->current_tetr[i][j];
+		}
+	}
 }
 
 //Affiche les pièces sur le background pour qu'elles restent visibles
 void Board::print_piece_to_background()
 {
-    //refresh_screen();
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            if (currentPiece->current_tetr[i][j])
-                screenBackground[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] = currentPiece->current_tetr[i][j];
-        }
-    }
+	//refresh_screen();
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			if (currentPiece->current_tetr[i][j])
+				screenBackground[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] = currentPiece->current_tetr[i][j];
+		}
+	}
 }
 
 void Board::refresh_screen()
 {
-    for (int i = 0; i < BOARD_HEIGHT; i++)
-    {
-        for (int j = 0; j < BOARD_WIDTH; j++)
-        {
-            if (screenBackground[i][j] != screenWithBlock[i][j])
-                screenWithBlock[i][j] = screenBackground[i][j];
-        }
-    }
+	for (int i = 0; i < BOARD_HEIGHT; i++)
+	{
+		for (int j = 0; j < BOARD_WIDTH; j++)
+		{
+			if (screenBackground[i][j] != screenWithBlock[i][j])
+				screenWithBlock[i][j] = screenBackground[i][j];
+		}
+	}
 }
 
 // // si les matrices de tetris sont full 0 on delete, fct à faire
 // //quand piece bouge plus, on update le background
 
+/*int Board::DetectCollision()
+{
+	moveCurrentPiece();
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			if (currentPiece->current_tetr[i][j])
+			{
+				if (OutOfGrillLeft(currentPiece->x, j) ||
+					OutOfGrillRight(currentPiece->x, j))
+				{
+					cout << "Detection Side Detected" << endl;
+					moveBackCurrentPiece();
+					return 1;
+				}
+				else if (OutOfGrillDown(currentPiece->y, i))
+				{
+					cout << "Detection Down Detected" << endl;
+					cout << " le state est " << currentPiece->getStateFinished() << endl;
+					moveBackCurrentPiece();
+					return 1;
+				}
+			}
+		}
+	}
+	moveBackCurrentPiece();
+	return 0;
+}*/
+
 int Board::DetectCollision()
 {
-    moveCurrentPiece();
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            if (currentPiece->current_tetr[i][j])
-            {
-                if (OutOfGrillLeft(currentPiece->x, j) ||
-                    OutOfGrillRight(currentPiece->x, j))
-                {
-                    cout << "Detection Side Detected" << endl;
-                    moveBackCurrentPiece();
-                    return 1;
-                }
-                else if (OutOfGrillDown(currentPiece->y, i))
-                {
-                    cout << "Detection Down Detected" << endl;
-                    cout << " le state est " << currentPiece->getStateFinished() << endl;
-                    moveBackCurrentPiece();
-                    return 1;
-                }
-            }
-        }
-    }
-    moveBackCurrentPiece();
-    return 0;
+	int i = 0;
+	int j = 0;
+	int detected = 0;
+	switch (direction)
+	{
+	case LEFT:
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				if (currentPiece->current_tetr[i][j])
+				{
+					if (LookLeft(i, j))
+					{
+						detected = 1;
+					}
+				}
+			}
+		}
+		break;
+
+	case RIGHT:
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				if (currentPiece->current_tetr[i][j])
+				{
+					if (currentPiece->current_tetr[i][j])
+					{
+						if (LookRight(i, j))
+						{
+							detected = 1;
+						}
+					}
+				}
+			}
+		}
+		break;
+
+	case DOWN:
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				if (currentPiece->current_tetr[i][j])
+				{
+					if (LookDown(i, j))
+					{
+						detected = 1;
+					}
+				}
+			}
+		}
+		break;
+
+	case UP:
+		TryRotate();
+		break;
+
+	case NO_MOVE:
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				if (currentPiece->current_tetr[i][j])
+				{
+					if (LookDown(i, j))
+					{
+						detected = 1;
+					}
+				}
+			}
+		}
+		break;
+
+	default:
+		break;
+
+	}
+	return detected;
 }
 
-int Board::OutOfGrillDown(int coord, int idx)
+// Regarde juste en-dessous de la pièce s'il y en a une autre ou le bord
+int Board::LookDown(int idy, int idx)
 {
-    // cout << "coord : " << coord << ", ORIGIN_Y : " << ORIGIN_Y << endl;
-    int val = coord - ORIGIN_Y + idx + 1;
-    // cout << "le tout : " << val << endl;
-    if (coord - ORIGIN_Y + idx + 1 > 20)
-    {
-        currentPiece->set_finished();
-        // cout << "Current Piece set to finished" << endl;
-        return 1;
-    }
-    return 0;
+	//cout << screenBackground[currentPiece->y - ORIGIN_Y + idy][currentPiece->x - ORIGIN_X + idx] << endl;
+	int val_y = currentPiece->y - ORIGIN_Y + idy + 1;
+	if (val_y < 20)
+	{
+		//cout << screenBackground[currentPiece->y - ORIGIN_Y + idy + 1][currentPiece->x - ORIGIN_X + idx] << endl;
+		if (screenBackground[val_y][currentPiece->x - ORIGIN_X + idx] != 0)
+		{
+			currentPiece->set_finished();
+			return 1;
+		}
+		return 0;
+	}
+	currentPiece->set_finished();
+	return 1;
+}
+
+// Regarde juste à droite de la pièce s'il y en a une autre ou le bord
+int Board::LookRight(int idy, int idx)
+{
+	int val_x = currentPiece->x - ORIGIN_X + idx + 1;
+	if (val_x < 10)
+	{
+		if (screenBackground[currentPiece->y - ORIGIN_Y + idy][val_x] != 0)
+		{
+			return 1;
+		}
+		return 0;
+	}	
+	return 1;
+}
+
+// Regarde juste à gauche de la pièce s'il y en a une autre ou le bord
+int Board::LookLeft(int idy, int idx)
+{
+	int val_x = currentPiece->x - ORIGIN_X + idx - 1;
+	if (val_x > -1)
+	{
+		if (screenBackground[currentPiece->y - ORIGIN_Y + idy][val_x] != 0)
+		{
+			return 1;
+		}
+		return 0;
+	}
+	return 1;
+}
+
+// Essaye de tourner la pièce et regarde si ça ne dépasse pas du board ou sur une autre pièce 
+// NE FONCTIONNE PAS
+int Board::TryRotate()
+{
+	moveCurrentPiece();
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			if (currentPiece->current_tetr[i][j])
+			{
+				if (currentPiece->x - ORIGIN_X + j < 0 || currentPiece->x - ORIGIN_X + j > 9 || currentPiece->y - ORIGIN_Y + i > 19)
+				{
+					moveBackCurrentPiece();
+					return 1;
+				}
+				else if (screenBackground[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] != 0)
+				{
+					moveBackCurrentPiece();
+					return 1;
+				}
+			}
+		}
+	}
+	moveBackCurrentPiece();
+	return 0;
+}
+
+/*int Board::IsGameOver()
+{
+	int finished = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		if (screenBackground[0][i] != 0)
+		{
+			finished = 1;
+		}
+	}
+	return finished;
+}*/
+
+// Permet de descendre une pièce le plus bas possible en ligne droite grçace à la touche espace
+void Board::GoFarDown()
+{
+	int detected = 0;
+	while (detected == 0)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				if (currentPiece->current_tetr[i][j])
+				{
+					if (LookDown(i, j))
+					{
+						detected = 1;
+					}
+				}
+			}
+		}
+		if (detected == 0)
+		{
+			currentPiece->y++;
+		}
+	}
+}
+
+void Board::LineFull()
+{
+	for (int i = BOARD_HEIGHT - 1; i >= 0; i--)
+	{
+		int full = 1;
+		for (int j = BOARD_WIDTH - 1; j >= 0; j--)
+		{
+			if (screenBackground[i][j] == 0)
+			{
+				full = 0;
+			}
+		}
+		if (full == 1)
+		{
+			for (int d = BOARD_HEIGHT - 1; d >= i; d--)
+			{
+				for (int j = BOARD_WIDTH - 1; j >= 0; j--)
+				{
+					screenBackground[d][j] = screenBackground[d - 1][j];
+				}
+			}
+			for (int j = BOARD_WIDTH - 1; j >= 0; j--)
+			{
+				screenBackground[0][j] = 0;
+			}
+			//i++;
+		}
+	}
+}
+
+/*int Board::OutOfGrillDown(int coord, int idx)
+{
+	// cout << "coord : " << coord << ", ORIGIN_Y : " << ORIGIN_Y << endl;
+	int val = coord - ORIGIN_Y + idx + 1;
+	// cout << "le tout : " << val << endl;
+	if (coord - ORIGIN_Y + idx + 1 > 20)
+	{
+		currentPiece->set_finished();
+		// cout << "Current Piece set to finished" << endl;
+		return 1;
+	}
+	return 0;
 }
 
 int Board::OutOfGrillRight(int coord, int idx)
 {
-    return (coord - ORIGIN_X + idx + 1 > 10) ? 1 : 0;
+	return (coord - ORIGIN_X + idx + 1 > 10) ? 1 : 0;
 }
 
 int Board::OutOfGrillLeft(int coord, int idx)
 {
-    return (coord - ORIGIN_X + idx < 0) ? 1 : 0;
-}
+	return (coord - ORIGIN_X + idx < 0) ? 1 : 0;
+}*/
 
 /*color_type Board::GetRandomColor()
 {
-    srand(time(NULL));
-    int Color = rand() % 3;
-    cout << "the random color is : " << Color << endl;
-    switch (Color)
-    {
-    case 0:
-        return BLUE;
-    case 1:
-        return RED;
-    case 2:
-        return GREEN;
-    }
-    return BLUE;
+	srand(time(NULL));
+	int Color = rand() % 3;
+	cout << "the random color is : " << Color << endl;
+	switch (Color)
+	{
+	case 0:
+		return BLUE;
+	case 1:
+		return RED;
+	case 2:
+		return GREEN;
+	}
+	return BLUE;
 }*/
 
 tetrimino_type Board::GetRandomShape()
 {
-    srand(time(NULL));
-    int Shape = rand() % 7;
-    cout << "the random Shape is : " << Shape << endl;
-    switch (Shape)
-    {
-    case 0:
-        return BARRE;
-    case 1:
-        return BLOC;
-    case 2:
-        return T_TYPE;
-    case 3:
-        return L_TYPE;
-    case 4:
-        return J_TYPE;
-    case 5:
-        return Z_TYPE;
-    case 6:
-        return S_TYPE;
-    }
-    return BARRE;
+	srand(time(NULL));
+	int Shape = rand() % 7;
+	cout << "the random Shape is : " << Shape << endl;
+	switch (Shape)
+	{
+	case 0:
+		return BARRE;
+	case 1:
+		return BLOC;
+	case 2:
+		return T_TYPE;
+	case 3:
+		return L_TYPE;
+	case 4:
+		return J_TYPE;
+	case 5:
+		return Z_TYPE;
+	case 6:
+		return S_TYPE;
+	}
+	return BARRE;
 }
 
-Tetrimino *Board::GenerateRandomShape()
+Tetrimino* Board::GenerateRandomShape()
 {
-    Tetrimino *randomTetrimino;
-    tetrimino_type randomShape = GetRandomShape();
-    //color_type randomColor = GetRandomColor();
-    if (randomShape == BARRE)
-        randomTetrimino = new Tetrimino(14, 6, 4, randomShape); //, randomColor);
-    else if (randomShape == BLOC)
-        randomTetrimino = new Tetrimino(14, 6, 2, randomShape); // , randomColor);
-    else
-        randomTetrimino = new Tetrimino(14, 6, 3, randomShape); // , randomColor);
-    currentPiece = randomTetrimino;
-    cout << "New Random shape generated with coord : ";
-    randomTetrimino->print_coord();
-    return randomTetrimino;
+	Tetrimino* randomTetrimino;
+	tetrimino_type randomShape = GetRandomShape();
+	//color_type randomColor = GetRandomColor();
+	if (randomShape == BARRE)
+		randomTetrimino = new Tetrimino(14, 6, 4, randomShape); //, randomColor);
+	else if (randomShape == BLOC)
+		randomTetrimino = new Tetrimino(14, 6, 2, randomShape); // , randomColor);
+	else
+		randomTetrimino = new Tetrimino(14, 6, 3, randomShape); // , randomColor);
+	currentPiece = randomTetrimino;
+	cout << "New Random shape generated with coord : ";
+	randomTetrimino->print_coord();
+	return randomTetrimino;
 }
