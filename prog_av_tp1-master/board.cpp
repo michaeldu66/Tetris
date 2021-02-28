@@ -79,12 +79,12 @@ Board::Board()
 	cout << "BOARD constructor" << endl;
 }
 
-void Board::setCurrentPiece(Tetrimino* tetr)
+void Board::setCurrentPiece(Tetrimino *tetr)
 {
 	currentPiece = tetr;
 }
 
-Tetrimino* Board::getCurrentPiece()
+Tetrimino *Board::getCurrentPiece()
 {
 	return currentPiece;
 }
@@ -156,7 +156,7 @@ void Board::print_board()
 	cout << endl;
 }
 
-void Board::draw_board(SDL_Renderer* rend)
+void Board::draw_board(SDL_Renderer *rend)
 {
 	//print_board();
 	int nb_color = -1;
@@ -306,7 +306,7 @@ int Board::DetectCollision()
 		break;
 
 	case UP:
-		TryRotate();
+		return TryRotate();
 		break;
 
 	case NO_MOVE:
@@ -327,7 +327,6 @@ int Board::DetectCollision()
 
 	default:
 		break;
-
 	}
 	return detected;
 }
@@ -362,7 +361,7 @@ int Board::LookRight(int idy, int idx)
 			return 1;
 		}
 		return 0;
-	}	
+	}
 	return 1;
 }
 
@@ -380,9 +379,13 @@ int Board::LookLeft(int idy, int idx)
 	}
 	return 1;
 }
+/***
+ * Essaye de tourner la pièce et regarde si ça ne dépasse pas du board ou sur une autre pièce 
+ * fonctionne mais pour quand c'est proche d'une pièce voisine faut prendre en compte
+ * le timer genre laisser un délai avec une confition if (blabla && timer >1sec)
+ * A rajouter plus tard pck pour l'instant flemme * 
+ * ***/
 
-// Essaye de tourner la pièce et regarde si ça ne dépasse pas du board ou sur une autre pièce 
-// NE FONCTIONNE PAS
 int Board::TryRotate()
 {
 	moveCurrentPiece();
@@ -448,8 +451,16 @@ void Board::GoFarDown()
 	}
 }
 
+
+/***
+ * Fonctionnel MAIS il y a un cas qui bug, genre si il y a eu plusieurs fois des 
+ * lignes full qui ont disparus bah des fois ya des vides entre deux carrés
+ * donc faudrait faire une fonction "delete holes"  qui 
+ * enlève les trous que la gravité ne permettent, cf le screen que je t'ai envoyé. 
+ * ***/
 void Board::LineFull()
 {
+	int idx_up;
 	for (int i = BOARD_HEIGHT - 1; i >= 0; i--)
 	{
 		int full = 1;
@@ -462,62 +473,27 @@ void Board::LineFull()
 		}
 		if (full == 1)
 		{
-			for (int d = BOARD_HEIGHT - 1; d >= i; d--)
-			{
-				for (int j = BOARD_WIDTH - 1; j >= 0; j--)
-				{
-					screenBackground[d][j] = screenBackground[d - 1][j];
-				}
-			}
 			for (int j = BOARD_WIDTH - 1; j >= 0; j--)
 			{
-				screenBackground[0][j] = 0;
+				if (i > 0)
+				{
+					idx_up = i - 1;
+					while (screenBackground[idx_up][j]==0 && idx_up > 0)
+						idx_up--;
+					int k = i;
+					while (idx_up >= 0)
+					{
+						screenBackground[k][j] = screenBackground[idx_up][j];
+						idx_up--;
+						k--;
+					}
+				}
+				else if (i == 0)
+					screenBackground[i][j] = 0;
 			}
-			//i++;
 		}
 	}
 }
-
-/*int Board::OutOfGrillDown(int coord, int idx)
-{
-	// cout << "coord : " << coord << ", ORIGIN_Y : " << ORIGIN_Y << endl;
-	int val = coord - ORIGIN_Y + idx + 1;
-	// cout << "le tout : " << val << endl;
-	if (coord - ORIGIN_Y + idx + 1 > 20)
-	{
-		currentPiece->set_finished();
-		// cout << "Current Piece set to finished" << endl;
-		return 1;
-	}
-	return 0;
-}
-
-int Board::OutOfGrillRight(int coord, int idx)
-{
-	return (coord - ORIGIN_X + idx + 1 > 10) ? 1 : 0;
-}
-
-int Board::OutOfGrillLeft(int coord, int idx)
-{
-	return (coord - ORIGIN_X + idx < 0) ? 1 : 0;
-}*/
-
-/*color_type Board::GetRandomColor()
-{
-	srand(time(NULL));
-	int Color = rand() % 3;
-	cout << "the random color is : " << Color << endl;
-	switch (Color)
-	{
-	case 0:
-		return BLUE;
-	case 1:
-		return RED;
-	case 2:
-		return GREEN;
-	}
-	return BLUE;
-}*/
 
 tetrimino_type Board::GetRandomShape()
 {
@@ -544,9 +520,9 @@ tetrimino_type Board::GetRandomShape()
 	return BARRE;
 }
 
-Tetrimino* Board::GenerateRandomShape()
+Tetrimino *Board::GenerateRandomShape()
 {
-	Tetrimino* randomTetrimino;
+	Tetrimino *randomTetrimino;
 	tetrimino_type randomShape = GetRandomShape();
 	//color_type randomColor = GetRandomColor();
 	if (randomShape == BARRE)
