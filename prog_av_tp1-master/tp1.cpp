@@ -58,6 +58,10 @@ void Game::reset_key()
 bool Game::check_event(SDL_Event event)
 {
 	bool quit = false;
+
+    // if(event.window.event == SDL_WINDOWEVENT_CLOSE)
+	// 	return true;
+
 	switch (event.type)
 	{
 	case SDL_QUIT:
@@ -142,8 +146,10 @@ void Game::loop()
 		SDL_Event event;
 		if (SDL_PollEvent(&event))
 		{
-			quit = check_event(event);
-			quit = update();
+			if(check_event(event))
+				break;
+			if (update())
+				break;
 			// win->render(piece, planche->get_surf(), board);
 			// board->print_piece_to_board();
 			//piece->print_tetrimino();
