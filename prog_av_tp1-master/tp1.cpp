@@ -15,7 +15,6 @@ class Game
 	Sprite *planche;
 	Tetrimino *piece;
 	Board *board;
-	bool up, down, left, right;
 	MOV_DIRECTION direction;
 	SDL_TimerID timer;
 	SDL_TimerID timer_screen;
@@ -23,7 +22,8 @@ class Game
 
 public:
 	inline Game()
-	{}
+	{
+	}
 
 	void init();
 
@@ -31,7 +31,7 @@ public:
 
 	void loop();
 
-	void update();
+	bool update();
 
 	void reset_key();
 
@@ -102,16 +102,21 @@ bool Game::keyboard(const Uint8 key)
 	return quit;
 }
 
-void Game::update()
+bool Game::update()
 {
 	board->update_direction(direction);
+	if (board->IsGameOver())
+		return true;
+
 	if (!board->DetectCollision())
 		board->moveCurrentPiece();
-	else if(board->getCurrentPiece()->getStateFinished()){
+	else if (board->getCurrentPiece()->getStateFinished())
+	{
 		board->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
-		board->LineFull(); //Efface les lignes pleines
+		board->LineFull();					//Efface les lignes pleines
 		piece = board->GenerateRandomShape();
 	}
+	return false;
 }
 
 Uint32 Game::update_timer_callback(Uint32 intervalle, void *parametre)
@@ -126,6 +131,7 @@ Uint32 Game::update_timer_callback(Uint32 intervalle, void *parametre)
 
 void Game::loop()
 {
+	int cpt = 0;
 	int prev = 0, now = 0;
 	bool quit = false;
 	timer = SDL_AddTimer(1000, update_timer_callback, board); /* faire descendre la piece toutes les secondes*/
@@ -134,21 +140,24 @@ void Game::loop()
 		//update();
 		now = SDL_GetTicks();
 		SDL_Event event;
-		if(SDL_PollEvent(&event))
+		if (SDL_PollEvent(&event))
 		{
 			quit = check_event(event);
-			update();
+			quit = update();
 			// win->render(piece, planche->get_surf(), board);
 			// board->print_piece_to_board();
 			//piece->print_tetrimino();
 			reset_key();
 		}
-		if (now - prev > 30 )	// timer pour le FPS
+		if (now - prev > 30) // timer pour le FPS
 		{
-			update();
+			cpt++;
+			quit = update();
 			win->render(piece, planche->get_surf(), board);
 			board->print_piece_to_board();
 			prev = now;
+			if (cpt % 100 == 0)
+				board->print_board();
 		}
 	}
 	SDL_Quit();

@@ -4,9 +4,18 @@
 using namespace std;
 #include "tetrimino.h"
 #include "window_surface.h"
+//#include <SDL/SDL_ttf.h>
 
 /**
  * FREE : grill case empty, FILLED : grill case filled 
+ * **/
+
+/***
+ *score:
+  -ligne : 40 points 
+  -deux lignes  :100 points
+  -trois lignes : 300 points
+  -quatre lignes : 1200 points .
  * **/
 
 enum
@@ -28,6 +37,10 @@ private:
     SDL_Rect *carre_grill;
     MOV_DIRECTION direction;
     SDL_Color *color[8];
+    int totalLines;
+    unsigned long totalScore;
+    //TTF_Font *font;
+
 public:
     vector<vector<int>> screenWithBlock;  // the screen with the falling block
     vector<vector<int>> screenBackground; // the screen without the falling block
@@ -45,16 +58,13 @@ public:
     int LookRight(int idy, int idx);
     int LookLeft(int idy, int idx);
     int TryRotate();
-    int IsGameOver();
+    bool IsGameOver();
     void GoFarDown();
     void LineFull();
-    //int OutOfGrillDown(int coord, int idx);
-    //int OutOfGrillRight(int coord, int idx);
-    //int OutOfGrillLeft(int coord, int idx);
+    void BringDownColumns(int i_row);
     void update_direction(MOV_DIRECTION direction_);
     void moveCurrentPiece();
     void moveBackCurrentPiece();
-    //color_type GetRandomColor();
     tetrimino_type GetRandomShape();
     Tetrimino* GenerateRandomShape();
 };

@@ -143,12 +143,12 @@ void Board::moveBackCurrentPiece()
 
 void Board::print_board()
 {
-	cout << "affichage du board" << endl;
+	cout << "affichage du background board" << endl;
 	for (int i = 0; i < BOARD_HEIGHT; i++)
 	{
 		for (int j = 0; j < BOARD_WIDTH; j++)
 		{
-			cout << screenWithBlock[i][j];
+			cout << screenBackground[i][j];
 			cout << " ";
 		}
 		cout << endl;
@@ -249,85 +249,117 @@ void Board::refresh_screen()
 
 int Board::DetectCollision()
 {
-	int i = 0;
-	int j = 0;
 	int detected = 0;
-	switch (direction)
-	{
-	case LEFT:
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				if (currentPiece->current_tetr[i][j])
-				{
-					if (LookLeft(i, j))
-					{
-						detected = 1;
-					}
-				}
-			}
-		}
-		break;
 
-	case RIGHT:
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				if (currentPiece->current_tetr[i][j])
-				{
-					if (currentPiece->current_tetr[i][j])
-					{
-						if (LookRight(i, j))
-						{
-							detected = 1;
-						}
-					}
-				}
-			}
-		}
-		break;
-
-	case DOWN:
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				if (currentPiece->current_tetr[i][j])
-				{
-					if (LookDown(i, j))
-					{
-						detected = 1;
-					}
-				}
-			}
-		}
-		break;
-
-	case UP:
+	if (direction == UP)
 		return TryRotate();
-		break;
-
-	case NO_MOVE:
-		for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
 		{
-			for (int j = 0; j < 4; j++)
+			if (currentPiece->current_tetr[i][j])
 			{
-				if (currentPiece->current_tetr[i][j])
+				switch (direction)
 				{
-					if (LookDown(i, j))
-					{
+				case LEFT:
+					if (LookLeft(i, j))
 						detected = 1;
-					}
+					break;
+				case RIGHT:
+					if (LookRight(i, j))
+						detected = 1;
+					break;
+				case DOWN:
+					if (LookDown(i, j))
+						detected = 1;
+					break;
+				case NO_MOVE:
+					if (LookDown(i, j))
+						detected = 1;
+					break;
+				default:
+					break;
 				}
 			}
 		}
-		break;
-
-	default:
-		break;
 	}
+
+	// switch (direction)
+	// {
+	// case LEFT:
+	// 	for (int i = 0; i < 4; i++)
+	// 	{
+	// 		for (int j = 0; j < 4; j++)
+	// 		{
+	// 			if (currentPiece->current_tetr[i][j])
+	// 			{
+	// 				if (LookLeft(i, j))
+	// 				{
+	// 					detected = 1;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// 	break;
+
+	// case RIGHT:
+	// 	for (int i = 0; i < 4; i++)
+	// 	{
+	// 		for (int j = 0; j < 4; j++)
+	// 		{
+	// 			if (currentPiece->current_tetr[i][j])
+	// 			{
+	// 				if (currentPiece->current_tetr[i][j])
+	// 				{
+	// 					if (LookRight(i, j))
+	// 					{
+	// 						detected = 1;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// 	break;
+
+	// case DOWN:
+	// 	for (int i = 0; i < 4; i++)
+	// 	{
+	// 		for (int j = 0; j < 4; j++)
+	// 		{
+	// 			if (currentPiece->current_tetr[i][j])
+	// 			{
+	// 				if (LookDown(i, j))
+	// 				{
+	// 					detected = 1;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// 	break;
+
+	// case UP:
+	// 	return TryRotate();
+	// 	break;
+
+	// case NO_MOVE:
+	// 	for (int i = 0; i < 4; i++)
+	// 	{
+	// 		for (int j = 0; j < 4; j++)
+	// 		{
+	// 			if (currentPiece->current_tetr[i][j])
+	// 			{
+	// 				if (LookDown(i, j))
+	// 				{
+	// 					detected = 1;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// 	break;
+
+	// default:
+	// 	break;
+	// }
 	return detected;
 }
 
@@ -412,18 +444,15 @@ int Board::TryRotate()
 	return 0;
 }
 
-/*int Board::IsGameOver()
+bool Board::IsGameOver()
 {
-	int finished = 0;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < BOARD_WIDTH; i++)
 	{
 		if (screenBackground[0][i] != 0)
-		{
-			finished = 1;
-		}
+			return true;
 	}
-	return finished;
-}*/
+	return false;
+}
 
 // Permet de descendre une pièce le plus bas possible en ligne droite grçace à la touche espace
 void Board::GoFarDown()
@@ -451,7 +480,6 @@ void Board::GoFarDown()
 	}
 }
 
-
 /***
  * Fonctionnel MAIS il y a un cas qui bug, genre si il y a eu plusieurs fois des 
  * lignes full qui ont disparus bah des fois ya des vides entre deux carrés
@@ -460,10 +488,12 @@ void Board::GoFarDown()
  * ***/
 void Board::LineFull()
 {
-	int idx_up;
-	for (int i = BOARD_HEIGHT - 1; i >= 0; i--)
+	int full;
+	int nb_lines = 0;
+	vector<int> linesFull;
+	for (int i = 0; i < BOARD_HEIGHT; i++)
 	{
-		int full = 1;
+		full = 1;
 		for (int j = BOARD_WIDTH - 1; j >= 0; j--)
 		{
 			if (screenBackground[i][j] == 0)
@@ -473,25 +503,54 @@ void Board::LineFull()
 		}
 		if (full == 1)
 		{
-			for (int j = BOARD_WIDTH - 1; j >= 0; j--)
+			cout << "on a une line full la numero : " << i << endl;
+			nb_lines++;
+			BringDownColumns(i);
+		}
+	}
+	switch (nb_lines)
+	{
+	case 1:
+		totalScore += 40;
+		break;
+	case 2:
+		totalScore += 100;
+		break;
+	case 3:
+		totalScore += 300;
+		break;
+	case 4:
+		totalScore += 1200 ;
+		 break;
+	default:
+		break;
+	}
+	totalLines += nb_lines;
+}
+/***
+ * Bring Down Colums for the Row with index i_row 
+ * (used when Line Full is used)
+ * **/
+void Board::BringDownColumns(int i_row)
+{
+	int idx_up, k;
+	for (int j = BOARD_WIDTH - 1; j >= 0; j--)
+	{
+		if (i_row > 0)
+		{
+			idx_up = i_row - 1;
+			while (screenBackground[idx_up][j] == 0 && idx_up > 0)
+				idx_up--;
+			k = i_row;
+			while (idx_up >= 0)
 			{
-				if (i > 0)
-				{
-					idx_up = i - 1;
-					while (screenBackground[idx_up][j]==0 && idx_up > 0)
-						idx_up--;
-					int k = i;
-					while (idx_up >= 0)
-					{
-						screenBackground[k][j] = screenBackground[idx_up][j];
-						idx_up--;
-						k--;
-					}
-				}
-				else if (i == 0)
-					screenBackground[i][j] = 0;
+				screenBackground[k][j] = screenBackground[idx_up][j];
+				idx_up--;
+				k--;
 			}
 		}
+		else if (i_row == 0)
+			screenBackground[i_row][j] = 0;
 	}
 }
 
@@ -532,7 +591,5 @@ Tetrimino *Board::GenerateRandomShape()
 	else
 		randomTetrimino = new Tetrimino(14, 6, 3, randomShape); // , randomColor);
 	currentPiece = randomTetrimino;
-	cout << "New Random shape generated with coord : ";
-	randomTetrimino->print_coord();
 	return randomTetrimino;
 }
