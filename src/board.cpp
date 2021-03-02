@@ -76,6 +76,12 @@ Board::Board()
 		}
 	}
 
+	totalScore = 0;
+	police = TTF_OpenFont("src/GUNSHIP2.TTF", 20);
+	colorPolice = {74, 69, 68};
+	snprintf(ScoreMsg, 100, "Score : %i", totalScore);
+	ScoreMsg[strlen(ScoreMsg)] = '\0';
+	positionScore = new SDL_Rect();
 	cout << "BOARD constructor" << endl;
 }
 
@@ -520,8 +526,8 @@ void Board::LineFull()
 		totalScore += 300;
 		break;
 	case 4:
-		totalScore += 1200 ;
-		 break;
+		totalScore += 1200;
+		break;
 	default:
 		break;
 	}
@@ -592,4 +598,34 @@ Tetrimino *Board::GenerateRandomShape()
 		randomTetrimino = new Tetrimino(14, 6, 3, randomShape); // , randomColor);
 	currentPiece = randomTetrimino;
 	return randomTetrimino;
+}
+
+int Board::get_score()
+{
+	return totalScore;
+}
+
+void Board::printScoreToScreen(SDL_Renderer *rend)
+{
+	snprintf(ScoreMsg, 100, "Score : %i", totalScore);
+	//strncpy(ScoreMsg, "Score : %i", totalScore, 100);
+	ScoreMsg[strlen(ScoreMsg)] = '\0';
+	textSurface = TTF_RenderText_Solid(police, ScoreMsg, colorPolice);
+	positionScore->w = (BOARD_WIDTH * TETR_SIZE)/2;
+	positionScore->h = 3 * TETR_SIZE;;
+	positionScore->x = (ORIGIN_X * 30)/4;
+	positionScore->y = (BOARD_HEIGHT + 3) * TETR_SIZE;
+
+	RealText = SDL_CreateTextureFromSurface(rend, textSurface);
+
+	SDL_SetRenderDrawColor(rend, 213, 213, 213, 255); // background of text
+	SDL_RenderFillRect(rend, positionScore);
+	SDL_RenderDrawRect(rend, positionScore);
+
+	SDL_RenderCopy(rend, RealText, NULL, positionScore);
+}
+
+void Board::freeScoreText(){
+	SDL_FreeSurface(textSurface);
+    SDL_DestroyTexture(RealText);
 }

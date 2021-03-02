@@ -44,7 +44,7 @@ public:
 void Game::init()
 {
 	win = new WindowSurface;
-	planche = new Sprite("./sprites.bmp");
+	planche = new Sprite("src/sprites.bmp");
 	board = new Board();
 	piece = board->getCurrentPiece();
 	direction = NO_MOVE;
@@ -59,7 +59,7 @@ bool Game::check_event(SDL_Event event)
 {
 	bool quit = false;
 
-    // if(event.window.event == SDL_WINDOWEVENT_CLOSE)
+	// if(event.window.event == SDL_WINDOWEVENT_CLOSE)
 	// 	return true;
 
 	switch (event.type)
@@ -146,7 +146,7 @@ void Game::loop()
 		SDL_Event event;
 		if (SDL_PollEvent(&event))
 		{
-			if(check_event(event))
+			if (check_event(event))
 				break;
 			if (update())
 				break;
@@ -166,6 +166,8 @@ void Game::loop()
 				board->print_board();
 		}
 	}
+	//TTF_CloseFont(police); /* Doit être avant TTF_Quit() */
+	TTF_Quit();
 	SDL_Quit();
 }
 
@@ -174,6 +176,12 @@ int main(int argc, char **argv)
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK | SDL_INIT_EVENTS) != 0)
 	{
 		return 1;
+	}
+
+	if (TTF_Init() == -1)
+	{
+		fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
+		exit(EXIT_FAILURE);
 	}
 
 	Game g;

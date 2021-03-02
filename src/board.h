@@ -4,7 +4,8 @@
 using namespace std;
 #include "tetrimino.h"
 #include "window_surface.h"
-//#include <SDL/SDL_ttf.h>
+#include <SDL2/SDL_ttf.h>
+#include "SDL2/SDL_mixer.h"
 
 /**
  * FREE : grill case empty, FILLED : grill case filled 
@@ -38,7 +39,14 @@ private:
     MOV_DIRECTION direction;
     SDL_Color *color[8];
     int totalLines;
-    unsigned long totalScore;
+    int totalScore;
+    TTF_Font *police;
+    SDL_Color colorPolice;
+    SDL_Surface *textSurface;
+    SDL_Rect *positionScore;
+
+    SDL_Texture *RealText;
+    char ScoreMsg[100];
     //TTF_Font *font;
 
 public:
@@ -66,7 +74,12 @@ public:
     void moveCurrentPiece();
     void moveBackCurrentPiece();
     tetrimino_type GetRandomShape();
-    Tetrimino* GenerateRandomShape();
+    Tetrimino *GenerateRandomShape();
+
+    int get_score();
+
+    void printScoreToScreen(SDL_Renderer *rend);
+    void freeScoreText();
 };
 
 #endif
