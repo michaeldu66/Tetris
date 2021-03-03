@@ -80,9 +80,7 @@ Board::Board()
 	totalLines = 0;
 	police = TTF_OpenFont("src/GUNSHIP2.TTF", 20);
 	colorPolice = {74, 69, 68};
-	snprintf(ScoreMsg, 100, "Score : %i", totalScore);
-	ScoreMsg[strlen(ScoreMsg)] = '\0';
-	position = new SDL_Rect();
+	positionInfos = new SDL_Rect();
 	cout << "BOARD constructor" << endl;
 }
 
@@ -221,38 +219,6 @@ void Board::refresh_screen()
 	}
 }
 
-// // si les matrices de tetris sont full 0 on delete, fct à faire
-// //quand piece bouge plus, on update le background
-
-/*int Board::DetectCollision()
-{
-	moveCurrentPiece();
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			if (currentPiece->current_tetr[i][j])
-			{
-				if (OutOfGrillLeft(currentPiece->x, j) ||
-					OutOfGrillRight(currentPiece->x, j))
-				{
-					cout << "Detection Side Detected" << endl;
-					moveBackCurrentPiece();
-					return 1;
-				}
-				else if (OutOfGrillDown(currentPiece->y, i))
-				{
-					cout << "Detection Down Detected" << endl;
-					cout << " le state est " << currentPiece->getStateFinished() << endl;
-					moveBackCurrentPiece();
-					return 1;
-				}
-			}
-		}
-	}
-	moveBackCurrentPiece();
-	return 0;
-}*/
 
 int Board::DetectCollision()
 {
@@ -291,93 +257,15 @@ int Board::DetectCollision()
 		}
 	}
 
-	// switch (direction)
-	// {
-	// case LEFT:
-	// 	for (int i = 0; i < 4; i++)
-	// 	{
-	// 		for (int j = 0; j < 4; j++)
-	// 		{
-	// 			if (currentPiece->current_tetr[i][j])
-	// 			{
-	// 				if (LookLeft(i, j))
-	// 				{
-	// 					detected = 1;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	break;
-
-	// case RIGHT:
-	// 	for (int i = 0; i < 4; i++)
-	// 	{
-	// 		for (int j = 0; j < 4; j++)
-	// 		{
-	// 			if (currentPiece->current_tetr[i][j])
-	// 			{
-	// 				if (currentPiece->current_tetr[i][j])
-	// 				{
-	// 					if (LookRight(i, j))
-	// 					{
-	// 						detected = 1;
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	break;
-
-	// case DOWN:
-	// 	for (int i = 0; i < 4; i++)
-	// 	{
-	// 		for (int j = 0; j < 4; j++)
-	// 		{
-	// 			if (currentPiece->current_tetr[i][j])
-	// 			{
-	// 				if (LookDown(i, j))
-	// 				{
-	// 					detected = 1;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	break;
-
-	// case UP:
-	// 	return TryRotate();
-	// 	break;
-
-	// case NO_MOVE:
-	// 	for (int i = 0; i < 4; i++)
-	// 	{
-	// 		for (int j = 0; j < 4; j++)
-	// 		{
-	// 			if (currentPiece->current_tetr[i][j])
-	// 			{
-	// 				if (LookDown(i, j))
-	// 				{
-	// 					detected = 1;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	break;
-
-	// default:
-	// 	break;
-	// }
 	return detected;
 }
 
 // Regarde juste en-dessous de la pièce s'il y en a une autre ou le bord
 int Board::LookDown(int idy, int idx)
 {
-	//cout << screenBackground[currentPiece->y - ORIGIN_Y + idy][currentPiece->x - ORIGIN_X + idx] << endl;
 	int val_y = currentPiece->y - ORIGIN_Y + idy + 1;
 	if (val_y < 20)
 	{
-		//cout << screenBackground[currentPiece->y - ORIGIN_Y + idy + 1][currentPiece->x - ORIGIN_X + idx] << endl;
 		if (screenBackground[val_y][currentPiece->x - ORIGIN_X + idx] != 0)
 		{
 			currentPiece->set_finished();
@@ -498,8 +386,8 @@ void Board::LineFull()
 	int full;
 	int nb_lines = 0;
 	vector<int> linesFull;
-	int i=BOARD_HEIGHT -1;
-	while ( i >= 0 )
+	int i = BOARD_HEIGHT - 1;
+	while (i >= 0)
 	{
 		full = 1;
 		for (int j = BOARD_WIDTH - 1; j >= 0; j--)
@@ -518,10 +406,11 @@ void Board::LineFull()
 		i--;
 	}
 
-	for(int j=linesFull.size() -1; j>=0; j--){
+	for (int j = linesFull.size() - 1; j >= 0; j--)
+	{
 		BringDownColumns(linesFull[j]);
 	}
-	
+
 	switch (nb_lines)
 	{
 	case 1:
@@ -597,7 +486,6 @@ Tetrimino *Board::GenerateRandomShape()
 {
 	Tetrimino *randomTetrimino;
 	tetrimino_type randomShape = GetRandomShape();
-	//color_type randomColor = GetRandomColor();
 	if (randomShape == BARRE)
 		randomTetrimino = new Tetrimino(14, 6, 4, randomShape); //, randomColor);
 	else if (randomShape == BLOC)
@@ -615,51 +503,53 @@ int Board::get_score()
 
 void Board::setPositionInfos(optionInfo infos)
 {
-	position->w = (BOARD_WIDTH * TETR_SIZE) / 2;
-	position->h = 3 * TETR_SIZE;
-	position->x = (ORIGIN_X * 30) / 4;
+	positionInfos->w = (BOARD_WIDTH * TETR_SIZE) / 2;
+	positionInfos->h = 3 * TETR_SIZE;
+	positionInfos->x = (ORIGIN_X * 30) / 4;
 	switch (infos)
 	{
 	case SCORE:
-		position->y = (BOARD_HEIGHT + 3) * TETR_SIZE;
+		positionInfos->y = (BOARD_HEIGHT + 3) * TETR_SIZE;
 		break;
 	case LINES:
-		position->y = (BOARD_HEIGHT)*TETR_SIZE;
+		positionInfos->y = (BOARD_HEIGHT)*TETR_SIZE;
 		break;
 	}
 }
 
-void Board::printScoreToScreen(SDL_Renderer *rend)
+void Board::textInfos(optionInfo infos)
 {
-	optionInfo infos = SCORE;
-	snprintf(ScoreMsg, 100, "Score : %i", totalScore);
-	ScoreMsg[strlen(ScoreMsg)] = '\0';
-	textSurface = TTF_RenderText_Solid(police, ScoreMsg, colorPolice);
-	setPositionInfos(infos);
-	RealText = SDL_CreateTextureFromSurface(rend, textSurface);
+	switch (infos)
+	{
+	case SCORE:
+		snprintf(infosMsg, 100, "Score : %i", totalScore);
+		break;
+	case LINES:
+		snprintf(infosMsg, 100, "Lines : %i", totalLines);
+		break;
+	}
+	infosMsg[strlen(infosMsg)] = '\0';
+}
 
-	SDL_SetRenderDrawColor(rend, 213, 213, 213, 255); // background of text
-	SDL_RenderFillRect(rend, position);
-	SDL_RenderDrawRect(rend, position);
+void Board::printInfosToScreen(SDL_Renderer *rend)
+{
+	for (optionInfo infos = SCORE; infos < 2; infos = optionInfo(int(infos)+1))
+	{
+		textInfos(infos);
+		textSurface = TTF_RenderText_Solid(police, infosMsg, colorPolice);
+		setPositionInfos(infos);
+		textTexture = SDL_CreateTextureFromSurface(rend, textSurface);
 
-	SDL_RenderCopy(rend, RealText, NULL, position);
+		SDL_SetRenderDrawColor(rend, 213, 213, 213, 255); // background of text
+		SDL_RenderFillRect(rend, positionInfos);
+		SDL_RenderDrawRect(rend, positionInfos);
 
-
-	infos = LINES;
-	snprintf(LinesMsg, 100, "Lines : %i", totalLines);
-	LinesMsg[strlen(LinesMsg)] = '\0';
-	textSurface = TTF_RenderText_Solid(police, LinesMsg, colorPolice);
-	setPositionInfos(infos);
-	RealText = SDL_CreateTextureFromSurface(rend, textSurface);
-
-	SDL_SetRenderDrawColor(rend, 213, 213, 213, 255); // background of text
-	SDL_RenderFillRect(rend, position);
-	SDL_RenderDrawRect(rend, position);
-	SDL_RenderCopy(rend, RealText, NULL, position);
+		SDL_RenderCopy(rend, textTexture, NULL, positionInfos);
+	}
 }
 
 void Board::freeScoreText()
 {
 	SDL_FreeSurface(textSurface);
-	SDL_DestroyTexture(RealText);
+	SDL_DestroyTexture(textTexture);
 }

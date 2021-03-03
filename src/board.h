@@ -29,8 +29,6 @@ typedef enum optionInfo
 {
     SCORE,
     LINES,
-    LEVEL,
-    FPS
 } optionInfo;
 
 
@@ -54,11 +52,10 @@ private:
     TTF_Font *police;
     SDL_Color colorPolice;
     SDL_Surface *textSurface;
-    SDL_Rect *position;
+    SDL_Rect *positionInfos;
 
-    SDL_Texture *RealText;
-    char ScoreMsg[100];
-    char LinesMsg[100];
+    SDL_Texture *textTexture;
+    char infosMsg[100];
     //TTF_Font *font;
 
 public:
@@ -90,7 +87,8 @@ public:
 
     int get_score();
     void setPositionInfos(optionInfo infos);
-    void printScoreToScreen(SDL_Renderer *rend);
+    void textInfos(optionInfo infos);
+    void printInfosToScreen(SDL_Renderer *rend);
     void freeScoreText();
 };
 

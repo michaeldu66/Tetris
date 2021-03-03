@@ -52,7 +52,6 @@ protected:
     SDL_Rect *shape;
     bool finished; // when the piece is immobile ==> finished = True
 
-
 public:
     vector<vector<int>> current_tetr;
     double x, y;
@@ -64,16 +63,14 @@ public:
     void reverseCols(void);
     void rotate(void);
 
-
     void set_coord(double x_, double y_); // si -1 on touche pas à la coord
                                           /**
      * On utilise toujours les coordonnes x et y de la classe et pas ceux de shape, 
      * les coord de shapes sont actualisées à chaque draw
     **/
-   void set_finished();
-   bool getStateFinished();
-   void print_coord();
-
+    void set_finished();
+    bool getStateFinished();
+    void print_coord();
 };
 
 #endif

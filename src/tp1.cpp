@@ -150,9 +150,6 @@ void Game::loop()
 				break;
 			if (update())
 				break;
-			// win->render(piece, planche->get_surf(), board);
-			// board->print_piece_to_board();
-			//piece->print_tetrimino();
 			reset_key();
 		}
 		if (now - prev > 30) // timer pour le FPS

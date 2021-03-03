@@ -36,24 +36,7 @@ void WindowSurface::render(Tetrimino *shape, SDL_Surface *spriteBg, Board *board
         }
     }
     board->draw_board(rend);
-    //shape->draw(rend);
-
-    /***
-     * SDL Surface* mytext;
-     * SDL_Rect position;
-     * SDL_Texture* RealText;
-     * 
-     * 
-     * et ya ça dans le constructeur
-     * 
-     * police = TTF_OpenFont("src/Valentime.otf", 80);
-     * colorPolice = {255, 255, 255};
-     * strncpy(msg, "Score ", 100);
-     * msg[strlen(msg) - 1] = '\0';
-
-     * ***/
-
-    board->printScoreToScreen(rend);
+    board->printInfosToScreen(rend);
     SDL_RenderPresent(rend); /* show the result on the screen */
     board->freeScoreText();
 }
