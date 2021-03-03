@@ -9,6 +9,7 @@
 #include "tetrimino.h"
 #include "board.h"
 
+
 class Game
 {
 private:
@@ -20,6 +21,8 @@ private:
 	SDL_TimerID timer;
 	SDL_TimerID timer_screen;
 	static bool isPaused;
+
+	Mix_Music *music; //Création du pointeur de type Mix_Music
 
 	// + ?
 

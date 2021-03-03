@@ -11,6 +11,12 @@ void Game::init()
 	piece = board->getCurrentPiece();
 	direction = NO_MOVE;
 	isPaused = false;
+	//SDL_WM_SetCaption("SDL_Mixer", NULL);
+	//music = sizeof(Mix_Music);
+	music= Mix_LoadMUS("tetrisSong.mp3");
+	if (!music)
+		printf("Mix_LoadMUS(\"music.mp3\"): %s\n", Mix_GetError());
+	Mix_PlayMusic(music, -1);
 }
 
 void Game::reset_key()
@@ -153,17 +159,10 @@ void Game::loop()
 			if (cpt % 100 == 0)
 				board->print_board();
 		}
-
-		// else
-		// {
-		// 	if (now - prev > 30) // timer pour le FPS
-		// 	{
-		// 		win->render(planche->get_surf(), board, true);
-		// 		prev = now;
-		// 	}
-		// }
 	}
 	//TTF_CloseFont(police); /* Doit être avant TTF_Quit() */
+	Mix_FreeMusic(music); //Libération de la musique
+	Mix_CloseAudio();		//Fermeture de l'API
 	TTF_Quit();
 	SDL_Quit();
 }
@@ -179,6 +178,11 @@ int main(int argc, char **argv)
 	{
 		fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
 		exit(EXIT_FAILURE);
+	}
+
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) //Initialisation de l'API Mixer
+	{
+		printf("%s", Mix_GetError());
 	}
 
 	Game g;
