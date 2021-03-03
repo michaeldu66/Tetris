@@ -494,7 +494,7 @@ void Board::LineFull()
 	for (int i = 0; i < BOARD_HEIGHT; i++)
 	{
 		full = 1;
-		for (int j = BOARD_WIDTH - 1; j >= 0; j--)
+		for (int j = 0; j < BOARD_WIDTH; j++)
 		{
 			if (screenBackground[i][j] == 0)
 			{
@@ -531,7 +531,7 @@ void Board::LineFull()
  * Bring Down Colums for the Row with index i_row 
  * (used when Line Full is used)
  * **/
-void Board::BringDownColumns(int i_row)
+/*void Board::BringDownColumns(int i_row)
 {
 	int idx_up, k;
 	for (int j = BOARD_WIDTH - 1; j >= 0; j--)
@@ -551,6 +551,21 @@ void Board::BringDownColumns(int i_row)
 		}
 		else if (i_row == 0)
 			screenBackground[i_row][j] = 0;
+	}
+}*/
+
+void Board::BringDownColumns(int i_row)
+{
+	int i = i_row;
+	for (int j = 0; j < BOARD_WIDTH; j++)
+	{
+		while (i > 0)
+		{
+			screenBackground[i][j] = screenBackground[i - 1][j];
+			i--;
+		}
+		screenBackground[0][j] = 0;
+		i = i_row;
 	}
 }
 

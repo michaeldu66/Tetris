@@ -162,8 +162,8 @@ void Game::loop()
 			win->render(piece, planche->get_surf(), board);
 			board->print_piece_to_board();
 			prev = now;
-			if (cpt % 100 == 0)
-				board->print_board();
+			//if (cpt % 100 == 0)
+				//board->print_board();
 		}
 	}
 	SDL_Quit();
