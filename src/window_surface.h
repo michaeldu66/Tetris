@@ -47,6 +47,11 @@ public:
     void drawBackgroundPauseScreen();
     void drawButtonsPauseScreen();
     void drawPauseScreen();
+
+    bool xInsideResumeButton(int x);
+
+    bool yInsideResumeButton(int y, menuInfo infosM);
+    bool isInsideResumeButtom(int x, int y, menuInfo infosM);
 };
 
 #endif

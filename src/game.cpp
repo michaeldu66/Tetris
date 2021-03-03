@@ -13,7 +13,7 @@ void Game::init()
 	isPaused = false;
 	//SDL_WM_SetCaption("SDL_Mixer", NULL);
 	//music = sizeof(Mix_Music);
-	music= Mix_LoadMUS("tetrisSong.mp3");
+	music = Mix_LoadMUS("tetrisSong.mp3");
 	if (!music)
 		printf("Mix_LoadMUS(\"music.mp3\"): %s\n", Mix_GetError());
 	Mix_PlayMusic(music, -1);
@@ -27,7 +27,7 @@ void Game::reset_key()
 bool Game::check_event(SDL_Event event)
 {
 	bool quit = false;
-
+	int xMouse, yMouse;
 	// if(event.window.event == SDL_WINDOWEVENT_CLOSE)
 	// 	return true;
 
@@ -37,6 +37,17 @@ bool Game::check_event(SDL_Event event)
 		quit = true;
 		break;
 	case SDL_MOUSEBUTTONDOWN:
+		SDL_GetMouseState(&xMouse, &yMouse);
+		menuInfo infos;
+		if (isPaused)
+		{
+			infos = RESUME;
+			if (win->isInsideResumeButtom(xMouse, yMouse, infos))
+				isPaused = false;
+			infos = QUIT;
+			if (win->isInsideResumeButtom(xMouse, yMouse, infos))
+				quit = true;
+		}
 		printf("mouse click %d\n", event.button.button);
 		break;
 	case SDL_KEYUP: //DOWN
@@ -48,17 +59,9 @@ bool Game::check_event(SDL_Event event)
 bool Game::keyboard(const Uint8 key)
 {
 	bool quit = false;
-	// if ((key == SDL_SCANCODE_P) && isPaused)
-	// {
-	// 	isPaused = false;
-	// 	return false;
-	// }
-	// else if (isPaused)
-	// {
-	// 	return false;
-	// }
 	if (isPaused && (key != SDL_SCANCODE_P))
 		return false;
+
 	switch (key)
 	{
 	case SDL_SCANCODE_P:
@@ -162,7 +165,7 @@ void Game::loop()
 	}
 	//TTF_CloseFont(police); /* Doit être avant TTF_Quit() */
 	Mix_FreeMusic(music); //Libération de la musique
-	Mix_CloseAudio();		//Fermeture de l'API
+	Mix_CloseAudio();	  //Fermeture de l'API
 	TTF_Quit();
 	SDL_Quit();
 }

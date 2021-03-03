@@ -113,3 +113,19 @@ void WindowSurface::drawPauseScreen()
     drawBackgroundPauseScreen();
     drawButtonsPauseScreen();
 }
+
+bool WindowSurface::xInsideResumeButton(int x)
+{
+    return x > positionMenuInfos->x &&x < positionMenuInfos->x + positionMenuInfos->w ? true : false;
+}
+
+bool WindowSurface::yInsideResumeButton(int y, menuInfo infosM)
+{
+    return (y > (pauseRect->h + (int(infosM) + 1) * (positionMenuInfos->h + pauseRect->h / 7)) 
+    && (y < (pauseRect->h + (int(infosM) + 1) * (positionMenuInfos->h + pauseRect->h / 7) + positionMenuInfos->h))) ? true: false;
+}
+
+bool WindowSurface::isInsideResumeButtom(int x, int y, menuInfo infosM)
+{
+    return (xInsideResumeButton(x) && yInsideResumeButton(y, infosM));
+}
