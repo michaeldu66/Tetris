@@ -13,6 +13,12 @@ WindowSurface::WindowSurface() : Surface()
     pauseRect->w = WIN_H / 2;
     pauseRect->y = WIN_W / 2 - pauseRect->h / 2;
     pauseRect->x = WIN_W / 2 - pauseRect->w / 2;
+
+    //Affichage du mode menu
+    police = TTF_OpenFont("src/GUNSHIP2.TTF", 20);
+    colorPolice = {74, 69, 68};
+    positionMenuInfos = new SDL_Rect();
+    textButtonSurface = new SDL_Surface();
 }
 
 SDL_Window *WindowSurface::get_w()
@@ -40,10 +46,6 @@ void WindowSurface::backgroundRender(SDL_Surface *spriteBg)
     }
 }
 
-// void WindowSurface::pauseRender(SDL_Surface *spriteBg){
-//     WindowSurface::backgroundRender(spriteBg);
-// }
-
 void WindowSurface::render(SDL_Surface *spriteBg, Board *board, bool isPaused)
 {
     WindowSurface::backgroundRender(spriteBg);
@@ -55,10 +57,59 @@ void WindowSurface::render(SDL_Surface *spriteBg, Board *board, bool isPaused)
     board->freeScoreText();
 }
 
-void WindowSurface::drawPauseScreen()
+/***
+ *Ecris le texte d'affichage de l'option dans un buffer 
+ ***/
+void WindowSurface::textMenuInfos(menuInfo infos)
+{
+    switch (infos)
+    {
+    case RESUME:
+        snprintf(menuMsg, 100, "RESUME");
+        break;
+    case QUIT:
+        snprintf(menuMsg, 100, "QUIT");
+        break;
+    }
+    menuMsg[strlen(menuMsg)] = '\0';
+}
+
+void WindowSurface::setPositionInfos(menuInfo infos)
+{
+    positionMenuInfos->w = pauseRect->w / 2;
+    positionMenuInfos->h = pauseRect->h / 7;
+    positionMenuInfos->x = pauseRect->x + (pauseRect->w / 2 - positionMenuInfos->w / 2);
+    positionMenuInfos->y = pauseRect->h + (int(infos) + 1) * (positionMenuInfos->h + pauseRect->h / 7);
+}
+// affiche le grand rectangle du mode pause
+void WindowSurface::drawBackgroundPauseScreen()
 {
     SDL_SetRenderDrawColor(rend, 88, 85, 84, 255);
     SDL_RenderFillRect(rend, pauseRect);
     SDL_SetRenderDrawColor(rend, 190, 190, 190, 0); //contour du menu
     SDL_RenderDrawRect(rend, pauseRect);
+}
+
+void WindowSurface::drawButtonsPauseScreen()
+{
+    for (menuInfo infos = RESUME; infos < 2; infos = menuInfo(int(infos) + 1))
+    {
+        textMenuInfos(infos);
+        textButtonSurface = TTF_RenderText_Solid(police, menuMsg, colorPolice);
+        setPositionInfos(infos);
+        textButtonTexture = SDL_CreateTextureFromSurface(rend, textButtonSurface);
+
+        SDL_SetRenderDrawColor(rend, 213, 213, 213, 255); // background of text
+        SDL_RenderFillRect(rend, positionMenuInfos);
+        SDL_RenderDrawRect(rend, positionMenuInfos);
+
+        SDL_RenderCopy(rend, textButtonTexture, NULL, positionMenuInfos);
+    }
+}
+
+// Affiche les différents boutons
+void WindowSurface::drawPauseScreen()
+{
+    drawBackgroundPauseScreen();
+    drawButtonsPauseScreen();
 }

@@ -516,7 +516,9 @@ void Board::setPositionInfos(optionInfo infos)
 		break;
 	}
 }
-
+/***
+ *Ecris le texte d'affichage de l'option dans un buffer 
+ ***/
 void Board::textInfos(optionInfo infos)
 {
 	switch (infos)
@@ -530,7 +532,10 @@ void Board::textInfos(optionInfo infos)
 	}
 	infosMsg[strlen(infosMsg)] = '\0';
 }
-
+/***
+ * Affiche les options (Score et lines faites pour l'instant)
+ * sur l'écran avec une police d'écriture toussa
+ * ***/
 void Board::printInfosToScreen(SDL_Renderer *rend)
 {
 	for (optionInfo infos = SCORE; infos < 2; infos = optionInfo(int(infos)+1))
