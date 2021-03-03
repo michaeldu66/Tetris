@@ -10,7 +10,7 @@ all: $(EXEC)
 tetris: game.o board.o tetrimino.o surface.o sprite.o window_surface.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-game.o: $(SRC)/tp1.cpp 
+game.o: $(SRC)/game.cpp $(HEADERS)/game.h
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 board.o: $(SRC)/board.cpp $(HEADERS)/board.h

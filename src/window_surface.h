@@ -8,7 +8,6 @@ using namespace std;
 #include <iostream>
 #include <SDL2/SDL.h>
 
-
 #define WIN_W 990
 #define WIN_H 990
 
@@ -21,12 +20,14 @@ protected:
     SDL_Window *pWindow;
     SDL_Renderer *rend;
     SDL_Texture *Bg;
-    SDL_Rect *carre_grill;
+    SDL_Rect *pauseRect;
 
 public:
-    SDL_Window *get_w();
-    void render(Tetrimino *shape, SDL_Surface *spriteBg, Board *board);
     WindowSurface();
+    SDL_Window *get_w();
+    void render(SDL_Surface *spriteBg, Board *board, bool isPaused);
+    void backgroundRender(SDL_Surface *spriteBg);
+    void drawPauseScreen();
 };
 
 #endif
