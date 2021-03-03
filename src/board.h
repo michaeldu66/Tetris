@@ -25,6 +25,15 @@ enum
     FILLED
 };
 
+typedef enum optionInfo
+{
+    SCORE,
+    LINES,
+    LEVEL,
+    FPS
+} optionInfo;
+
+
 const int BOARD_HEIGHT = 20;
 const int BOARD_WIDTH = 10;
 
@@ -40,13 +49,16 @@ private:
     SDL_Color *color[8];
     int totalLines;
     int totalScore;
+
+    /* display on the screen infos */
     TTF_Font *police;
     SDL_Color colorPolice;
     SDL_Surface *textSurface;
-    SDL_Rect *positionScore;
+    SDL_Rect *position;
 
     SDL_Texture *RealText;
     char ScoreMsg[100];
+    char LinesMsg[100];
     //TTF_Font *font;
 
 public:
@@ -77,7 +89,7 @@ public:
     Tetrimino *GenerateRandomShape();
 
     int get_score();
-
+    void setPositionInfos(optionInfo infos);
     void printScoreToScreen(SDL_Renderer *rend);
     void freeScoreText();
 };

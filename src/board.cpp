@@ -77,11 +77,12 @@ Board::Board()
 	}
 
 	totalScore = 0;
+	totalLines = 0;
 	police = TTF_OpenFont("src/GUNSHIP2.TTF", 20);
 	colorPolice = {74, 69, 68};
 	snprintf(ScoreMsg, 100, "Score : %i", totalScore);
 	ScoreMsg[strlen(ScoreMsg)] = '\0';
-	positionScore = new SDL_Rect();
+	position = new SDL_Rect();
 	cout << "BOARD constructor" << endl;
 }
 
@@ -497,7 +498,8 @@ void Board::LineFull()
 	int full;
 	int nb_lines = 0;
 	vector<int> linesFull;
-	for (int i = 0; i < BOARD_HEIGHT; i++)
+	int i=BOARD_HEIGHT -1;
+	while ( i >= 0 )
 	{
 		full = 1;
 		for (int j = BOARD_WIDTH - 1; j >= 0; j--)
@@ -509,11 +511,17 @@ void Board::LineFull()
 		}
 		if (full == 1)
 		{
+			linesFull.push_back(i);
 			cout << "on a une line full la numero : " << i << endl;
 			nb_lines++;
-			BringDownColumns(i);
 		}
+		i--;
 	}
+
+	for(int j=linesFull.size() -1; j>=0; j--){
+		BringDownColumns(linesFull[j]);
+	}
+	
 	switch (nb_lines)
 	{
 	case 1:
@@ -605,27 +613,53 @@ int Board::get_score()
 	return totalScore;
 }
 
+void Board::setPositionInfos(optionInfo infos)
+{
+	position->w = (BOARD_WIDTH * TETR_SIZE) / 2;
+	position->h = 3 * TETR_SIZE;
+	position->x = (ORIGIN_X * 30) / 4;
+	switch (infos)
+	{
+	case SCORE:
+		position->y = (BOARD_HEIGHT + 3) * TETR_SIZE;
+		break;
+	case LINES:
+		position->y = (BOARD_HEIGHT)*TETR_SIZE;
+		break;
+	}
+}
+
 void Board::printScoreToScreen(SDL_Renderer *rend)
 {
+	optionInfo infos = SCORE;
 	snprintf(ScoreMsg, 100, "Score : %i", totalScore);
-	//strncpy(ScoreMsg, "Score : %i", totalScore, 100);
 	ScoreMsg[strlen(ScoreMsg)] = '\0';
 	textSurface = TTF_RenderText_Solid(police, ScoreMsg, colorPolice);
-	positionScore->w = (BOARD_WIDTH * TETR_SIZE)/2;
-	positionScore->h = 3 * TETR_SIZE;;
-	positionScore->x = (ORIGIN_X * 30)/4;
-	positionScore->y = (BOARD_HEIGHT + 3) * TETR_SIZE;
-
+	setPositionInfos(infos);
 	RealText = SDL_CreateTextureFromSurface(rend, textSurface);
 
 	SDL_SetRenderDrawColor(rend, 213, 213, 213, 255); // background of text
-	SDL_RenderFillRect(rend, positionScore);
-	SDL_RenderDrawRect(rend, positionScore);
+	SDL_RenderFillRect(rend, position);
+	SDL_RenderDrawRect(rend, position);
 
-	SDL_RenderCopy(rend, RealText, NULL, positionScore);
+	SDL_RenderCopy(rend, RealText, NULL, position);
+
+
+	infos = LINES;
+	snprintf(LinesMsg, 100, "Lines : %i", totalLines);
+	LinesMsg[strlen(LinesMsg)] = '\0';
+	textSurface = TTF_RenderText_Solid(police, LinesMsg, colorPolice);
+	setPositionInfos(infos);
+	RealText = SDL_CreateTextureFromSurface(rend, textSurface);
+
+	SDL_SetRenderDrawColor(rend, 213, 213, 213, 255); // background of text
+	SDL_RenderFillRect(rend, position);
+	SDL_RenderDrawRect(rend, position);
+	SDL_RenderCopy(rend, RealText, NULL, position);
 }
 
-void Board::freeScoreText(){
+void Board::freeScoreText()
+{
 	SDL_FreeSurface(textSurface);
-    SDL_DestroyTexture(RealText);
+	SDL_DestroyTexture(RealText);
 }
