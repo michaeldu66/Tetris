@@ -2,6 +2,7 @@
 #include "game.h"
 
 bool Game::isPaused; // car variable static pour l'utiliser dans le callback
+bool Game::menuMode; // car variable static pour l'utiliser dans le callback
 
 void Game::init()
 {
@@ -11,12 +12,12 @@ void Game::init()
 	piece = board->getCurrentPiece();
 	direction = NO_MOVE;
 	isPaused = false;
-	//SDL_WM_SetCaption("SDL_Mixer", NULL);
-	//music = sizeof(Mix_Music);
-	music = Mix_LoadMUS("tetrisSong.mp3");
+	
+	//music = Mix_LoadMUS("tetrisSong.mp3");
 	if (!music)
 		printf("Mix_LoadMUS(\"music.mp3\"): %s\n", Mix_GetError());
-	Mix_PlayMusic(music, -1);
+	//Mix_PlayMusic(music, -1);
+	menuMode = true;
 }
 
 void Game::reset_key()
@@ -39,7 +40,16 @@ bool Game::check_event(SDL_Event event)
 	case SDL_MOUSEBUTTONDOWN:
 		SDL_GetMouseState(&xMouse, &yMouse);
 		menuInfo infos;
-		if (isPaused)
+		if (menuMode)
+		{
+			infos = PLAY;
+			if (win->isInsideResumeButtom(xMouse, yMouse, infos))
+				menuMode = false;
+			infos = QUIT;
+			if (win->isInsideResumeButtom(xMouse, yMouse, infos))
+				quit = true;
+		}
+		else if (isPaused)
 		{
 			infos = RESUME;
 			if (win->isInsideResumeButtom(xMouse, yMouse, infos))
@@ -113,7 +123,7 @@ bool Game::update()
 Uint32 Game::update_timer_callback(Uint32 intervalle, void *parametre)
 {
 	Board *myboard = static_cast<Board *>(parametre);
-	if (!isPaused)
+	if (!isPaused && !menuMode)
 	{
 		myboard->update_direction(DOWN);
 		if (!myboard->DetectCollision())
@@ -145,19 +155,22 @@ void Game::loop()
 				break;
 			reset_key();
 		}
-		if (now - prev > 30) // timer pour le FPS
+		if (now - prev > 50) // timer pour le FPS
 		{
 			cpt++;
-			if (!isPaused)
+
+			if (!isPaused && !menuMode)
 			{
 				quit = update();
-				win->render(planche->get_surf(), board, false);
+				win->render(planche->get_surf(), board, false, false);
 				board->print_piece_to_board();
 			}
-			else
+			else if (isPaused && !menuMode)
 			{
-				win->render(planche->get_surf(), board, true);
+				win->render(planche->get_surf(), board, true, false);
 			}
+			else if (menuMode)
+				win->render(planche->get_surf(), board, false, true);
 			prev = now;
 			if (cpt % 100 == 0)
 				board->print_board();

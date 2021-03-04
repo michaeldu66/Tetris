@@ -1,5 +1,6 @@
 #include "window_surface.h"
 #include "tetrimino.h"
+
 WindowSurface::WindowSurface() : Surface()
 {
     this->pWindow = SDL_CreateWindow("Tetris", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIN_W, WIN_H, SDL_WINDOW_SHOWN);
@@ -19,6 +20,12 @@ WindowSurface::WindowSurface() : Surface()
     colorPolice = {74, 69, 68};
     positionMenuInfos = new SDL_Rect();
     textButtonSurface = new SDL_Surface();
+
+    menuBackgroundSprite = IMG_Load("src/tetrisLogo.png");
+    if (menuBackgroundSprite == nullptr)
+    {
+        cout << "IMG_Load: " << IMG_GetError() << "\n";
+    }
 }
 
 SDL_Window *WindowSurface::get_w()
@@ -46,9 +53,16 @@ void WindowSurface::backgroundRender(SDL_Surface *spriteBg)
     }
 }
 
-void WindowSurface::render(SDL_Surface *spriteBg, Board *board, bool isPaused)
+void WindowSurface::render(SDL_Surface *spriteBg, Board *board, bool isPaused, bool menuMode)
 {
-    WindowSurface::backgroundRender(spriteBg);
+    if (menuMode)
+    {
+        drawMenuScreen();
+        SDL_RenderPresent(rend);
+        cout << "menuMode" << endl;
+        return;
+    }
+    backgroundRender(spriteBg);
     board->draw_board(rend);
     board->printInfosToScreen(rend);
     if (isPaused)
@@ -69,6 +83,12 @@ void WindowSurface::textMenuInfos(menuInfo infos)
         break;
     case QUIT:
         snprintf(menuMsg, 100, "QUIT");
+        break;
+    case PLAY:
+        snprintf(menuMsg, 100, "PLAY");
+        break;
+    case EXIT:
+        snprintf(menuMsg, 100, "EXIT");
         break;
     }
     menuMsg[strlen(menuMsg)] = '\0';
@@ -116,16 +136,59 @@ void WindowSurface::drawPauseScreen()
 
 bool WindowSurface::xInsideResumeButton(int x)
 {
-    return x > positionMenuInfos->x &&x < positionMenuInfos->x + positionMenuInfos->w ? true : false;
+    return x > positionMenuInfos->x && x < positionMenuInfos->x + positionMenuInfos->w ? true : false;
 }
 
 bool WindowSurface::yInsideResumeButton(int y, menuInfo infosM)
 {
-    return (y > (pauseRect->h + (int(infosM) + 1) * (positionMenuInfos->h + pauseRect->h / 7)) 
-    && (y < (pauseRect->h + (int(infosM) + 1) * (positionMenuInfos->h + pauseRect->h / 7) + positionMenuInfos->h))) ? true: false;
+    return (y > (pauseRect->h + (int(infosM) + 1) * (positionMenuInfos->h + pauseRect->h / 7)) && (y < (pauseRect->h + (int(infosM) + 1) * (positionMenuInfos->h + pauseRect->h / 7) + positionMenuInfos->h))) ? true : false;
 }
 
 bool WindowSurface::isInsideResumeButtom(int x, int y, menuInfo infosM)
 {
     return (xInsideResumeButton(x) && yInsideResumeButton(y, infosM));
+}
+
+void WindowSurface::drawBackgroundMenuScreen()
+{
+    //background light white
+    SDL_Rect menuBg;
+    menuBg.x = 0;
+    menuBg.y = 0;
+    menuBg.w = WIN_W;
+    menuBg.h = WIN_H;
+
+    SDL_SetRenderDrawColor(rend, 213, 213, 213, 255);
+    SDL_RenderFillRect(rend, &menuBg);
+    SDL_RenderDrawRect(rend, &menuBg);
+
+    //IMAGE
+    SDL_Rect srcMenuBg = {128, 57, 568, 198};
+    Bg = SDL_CreateTextureFromSurface(rend, menuBackgroundSprite); // récupère la surface du sprite en tant que texture
+    if (Bg == nullptr)
+        printf("error creation texture\n");
+    
+    SDL_Rect dest = {WIN_W/2 - srcMenuBg.w/2, WIN_H/3, 600, 200};
+    SDL_RenderCopy(rend, Bg, &srcMenuBg, &dest);
+}
+
+void WindowSurface::drawButtonsMenuScreen()
+{
+    for (menuInfo infos = PLAY; infos < 4; infos = menuInfo(int(infos) + 1))
+    {
+        textMenuInfos(infos);
+        textButtonSurface = TTF_RenderText_Solid(police, menuMsg, colorPolice);
+        setPositionInfos(infos);
+        textButtonTexture = SDL_CreateTextureFromSurface(rend, textButtonSurface);
+
+        SDL_SetRenderDrawColor(rend, 50, 50, 50, 255); // background of text
+        SDL_RenderDrawRect(rend, positionMenuInfos);
+        SDL_RenderCopy(rend, textButtonTexture, NULL, positionMenuInfos);
+    }
+}
+
+void WindowSurface::drawMenuScreen()
+{
+    drawBackgroundMenuScreen();
+    drawButtonsMenuScreen();
 }
