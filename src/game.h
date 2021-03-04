@@ -29,8 +29,7 @@ private:
 
 public:
 	inline Game()
-	{
-	}
+	{}
 
 	void init();
 

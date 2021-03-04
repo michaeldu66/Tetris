@@ -177,6 +177,11 @@ void Game::loop()
 				board->print_board();
 		}
 	}
+	SDL_DestroyWindow(win->get_w());
+	// 	Tester toutes les positions tourner dans tous les sens et prendre la meilleur.
+	// La meilleur étant d'abord :
+	// 1) Celle qui fait le plus de ligne compléte
+	// 2) Si y en a pas, celle qui monte le moins haut et fait le moins de trou
 	//TTF_CloseFont(police); /* Doit être avant TTF_Quit() */
 	Mix_FreeMusic(music); //Libération de la musique
 	Mix_CloseAudio();	  //Fermeture de l'API

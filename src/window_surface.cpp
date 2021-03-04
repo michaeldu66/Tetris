@@ -59,7 +59,6 @@ void WindowSurface::render(SDL_Surface *spriteBg, Board *board, bool isPaused, b
     {
         drawMenuScreen();
         SDL_RenderPresent(rend);
-        cout << "menuMode" << endl;
         return;
     }
     backgroundRender(spriteBg);
