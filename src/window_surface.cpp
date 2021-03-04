@@ -104,10 +104,8 @@ void WindowSurface::setPositionInfos(menuInfo infos)
 // affiche le grand rectangle du mode pause
 void WindowSurface::drawBackgroundPauseScreen()
 {
-    SDL_SetRenderDrawColor(rend, 88, 85, 84, 255);
+    SDL_SetRenderDrawColor(rend, 213, 213, 213, 255);
     SDL_RenderFillRect(rend, pauseRect);
-    SDL_SetRenderDrawColor(rend, 190, 190, 190, 0); //contour du menu
-    SDL_RenderDrawRect(rend, pauseRect);
 }
 
 void WindowSurface::drawButtonsPauseScreen()
@@ -121,6 +119,7 @@ void WindowSurface::drawButtonsPauseScreen()
 
         SDL_SetRenderDrawColor(rend, 213, 213, 213, 255); // background of text
         SDL_RenderFillRect(rend, positionMenuInfos);
+        SDL_SetRenderDrawColor(rend, 150, 150, 150, 255); //contour du menu
         SDL_RenderDrawRect(rend, positionMenuInfos);
 
         SDL_RenderCopy(rend, textButtonTexture, NULL, positionMenuInfos);
@@ -167,8 +166,8 @@ void WindowSurface::drawBackgroundMenuScreen()
     Bg = SDL_CreateTextureFromSurface(rend, menuBackgroundSprite); // récupère la surface du sprite en tant que texture
     if (Bg == nullptr)
         printf("error creation texture\n");
-    
-    SDL_Rect dest = {WIN_W/2 - srcMenuBg.w/2, WIN_H/3, 600, 200};
+
+    SDL_Rect dest = {WIN_W / 2 - srcMenuBg.w / 2, WIN_H / 3, 600, 200};
     SDL_RenderCopy(rend, Bg, &srcMenuBg, &dest);
 }
 
@@ -181,7 +180,7 @@ void WindowSurface::drawButtonsMenuScreen()
         setPositionInfos(infos);
         textButtonTexture = SDL_CreateTextureFromSurface(rend, textButtonSurface);
 
-        SDL_SetRenderDrawColor(rend, 50, 50, 50, 255); // background of text
+        SDL_SetRenderDrawColor(rend, 150, 150, 150, 255); // background of text
         SDL_RenderDrawRect(rend, positionMenuInfos);
         SDL_RenderCopy(rend, textButtonTexture, NULL, positionMenuInfos);
     }

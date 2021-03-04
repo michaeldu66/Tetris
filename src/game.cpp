@@ -12,7 +12,7 @@ void Game::init()
 	piece = board->getCurrentPiece();
 	direction = NO_MOVE;
 	isPaused = false;
-	
+
 	//music = Mix_LoadMUS("tetrisSong.mp3");
 	if (!music)
 		printf("Mix_LoadMUS(\"music.mp3\"): %s\n", Mix_GetError());
@@ -45,7 +45,7 @@ bool Game::check_event(SDL_Event event)
 			infos = PLAY;
 			if (win->isInsideResumeButtom(xMouse, yMouse, infos))
 				menuMode = false;
-			infos = QUIT;
+			infos = EXIT;
 			if (win->isInsideResumeButtom(xMouse, yMouse, infos))
 				quit = true;
 		}
@@ -56,7 +56,9 @@ bool Game::check_event(SDL_Event event)
 				isPaused = false;
 			infos = QUIT;
 			if (win->isInsideResumeButtom(xMouse, yMouse, infos))
+			{
 				quit = true;
+			}
 		}
 		printf("mouse click %d\n", event.button.button);
 		break;
@@ -75,7 +77,6 @@ bool Game::keyboard(const Uint8 key)
 	switch (key)
 	{
 	case SDL_SCANCODE_P:
-		printf("on fait pause");
 		isPaused = !isPaused;
 		break;
 	case SDL_SCANCODE_LEFT:
