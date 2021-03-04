@@ -13,10 +13,10 @@ void Game::init()
 	direction = NO_MOVE;
 	isPaused = false;
 
-	//music = Mix_LoadMUS("tetrisSong.mp3");
+	music = Mix_LoadMUS("tetrisSong.mp3");
 	if (!music)
 		printf("Mix_LoadMUS(\"music.mp3\"): %s\n", Mix_GetError());
-	//Mix_PlayMusic(music, -1);
+	Mix_PlayMusic(music, -1);
 	menuMode = true;
 }
 

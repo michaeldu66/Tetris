@@ -18,7 +18,8 @@ typedef enum menuInfo
     RESUME,
     QUIT,
     PLAY,
-    EXIT
+    EXIT,
+    COPYRIGHT
 } menuInfo;
 
 class Board;

@@ -90,12 +90,23 @@ void WindowSurface::textMenuInfos(menuInfo infos)
     case EXIT:
         snprintf(menuMsg, 100, "EXIT");
         break;
+    case COPYRIGHT:
+        snprintf(menuMsg, 100, "MaADE By Hofmann Michael AND Berthault Dylan");
+        break;
     }
     menuMsg[strlen(menuMsg)] = '\0';
 }
 
 void WindowSurface::setPositionInfos(menuInfo infos)
 {
+    if (infos == COPYRIGHT)
+    {
+        positionMenuInfos->w = WIN_W/ 2;
+        positionMenuInfos->h = pauseRect->h / 7;
+        positionMenuInfos->x = WIN_W/2 ;
+        positionMenuInfos->y = WIN_H - positionMenuInfos->h;
+        return;
+    }
     positionMenuInfos->w = pauseRect->w / 2;
     positionMenuInfos->h = pauseRect->h / 7;
     positionMenuInfos->x = pauseRect->x + (pauseRect->w / 2 - positionMenuInfos->w / 2);
@@ -173,7 +184,7 @@ void WindowSurface::drawBackgroundMenuScreen()
 
 void WindowSurface::drawButtonsMenuScreen()
 {
-    for (menuInfo infos = PLAY; infos < 4; infos = menuInfo(int(infos) + 1))
+    for (menuInfo infos = PLAY; infos < 5; infos = menuInfo(int(infos) + 1))
     {
         textMenuInfos(infos);
         textButtonSurface = TTF_RenderText_Solid(police, menuMsg, colorPolice);
