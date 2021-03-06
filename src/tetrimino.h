@@ -12,7 +12,7 @@ typedef enum tetrimino_type
     BARRE,  // cyan
     BLOC,   //jaune
     T_TYPE, //violet
-    L_TYPE, //
+    L_TYPE, 
     J_TYPE,
     Z_TYPE,
     S_TYPE
