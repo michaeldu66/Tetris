@@ -77,7 +77,7 @@ public:
     int TryRotate();
     bool IsGameOver();
     void GoFarDown();
-    void LineFull();
+    int LineFull();
     void BringDownColumns(int i_row);
     void update_direction(MOV_DIRECTION direction_);
     void moveCurrentPiece();

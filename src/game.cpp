@@ -3,6 +3,7 @@
 
 bool Game::isPaused; // car variable static pour l'utiliser dans le callback
 bool Game::menuMode; // car variable static pour l'utiliser dans le callback
+bool Game::IAMode;
 
 void Game::init()
 {
@@ -18,6 +19,9 @@ void Game::init()
 		printf("Mix_LoadMUS(\"music.mp3\"): %s\n", Mix_GetError());
 	//Mix_PlayMusic(music, -1);
 	menuMode = true;
+
+	IAPlayer = new virtualPlayer(board);
+	IAMode = false;
 }
 
 void Game::reset_key()
@@ -45,6 +49,13 @@ bool Game::check_event(SDL_Event event)
 			infos = PLAY;
 			if (win->isInsideResumeButtom(xMouse, yMouse, infos))
 				menuMode = false;
+			infos = IA;
+			if (win->isInsideResumeButtom(xMouse, yMouse, infos))
+			{
+				menuMode = false;
+				IAMode = true;
+				printf("mode IA enclenché\n");
+			}
 			infos = EXIT;
 			if (win->isInsideResumeButtom(xMouse, yMouse, infos))
 				quit = true;
@@ -60,7 +71,7 @@ bool Game::check_event(SDL_Event event)
 				quit = true;
 			}
 		}
-		printf("mouse click %d\n", event.button.button);
+		//printf("mouse click %d\n", event.button.button);
 		break;
 	case SDL_KEYUP: //DOWN
 		quit = keyboard(event.key.keysym.scancode);
@@ -73,12 +84,18 @@ bool Game::keyboard(const Uint8 key)
 	bool quit = false;
 	if (isPaused && (key != SDL_SCANCODE_P))
 		return false;
+	if (key == SDL_SCANCODE_P)
+		isPaused = !isPaused;
+	if (key == SDL_SCANCODE_ESCAPE)
+	{
+		printf("escape");
+		return true;
+	}
 
+	if (IAMode)
+		return false; // pour empecher les touches de changer qqchose
 	switch (key)
 	{
-	case SDL_SCANCODE_P:
-		isPaused = !isPaused;
-		break;
 	case SDL_SCANCODE_LEFT:
 		direction = LEFT;
 		break;
@@ -93,10 +110,6 @@ bool Game::keyboard(const Uint8 key)
 		break;
 	case SDL_SCANCODE_SPACE:
 		direction = FAR_DOWN;
-		break;
-	case SDL_SCANCODE_ESCAPE:
-		printf("escape");
-		quit = true;
 		break;
 	default:
 		break;
@@ -130,18 +143,19 @@ Uint32 Game::update_timer_callback(Uint32 intervalle, void *parametre)
 		if (!myboard->DetectCollision())
 			myboard->moveCurrentPiece();
 	}
-
-	//printf("timer appelé\n");
 	return intervalle;
 }
 
+
+
 void Game::loop()
 {
-	int cpt = 0;
 	int prev = 0, now = 0;
 	bool quit = false;
 
 	timer = SDL_AddTimer(1000, update_timer_callback, board); /* faire descendre la piece toutes les secondes*/
+
+
 	while (!quit)
 	{
 		now = SDL_GetTicks();
@@ -152,15 +166,13 @@ void Game::loop()
 		{
 			if (check_event(event))
 				break;
-			if (!isPaused && update())
+			if (!isPaused && !IAMode && update())
 				break;
-			reset_key();
+			reset_key();//direction NOMOVE
 		}
 		if (now - prev > 50) // timer pour le FPS
 		{
-			cpt++;
-
-			if (!isPaused && !menuMode)
+			if (!isPaused && !menuMode && !IAMode)
 			{
 				quit = update();
 				win->render(planche->get_surf(), board, false, false);
@@ -172,16 +184,20 @@ void Game::loop()
 			}
 			else if (menuMode)
 				win->render(planche->get_surf(), board, false, true);
+			else if (IAMode){
+				quit = IAPlayer->sliceToLeft();
+				win->render(planche->get_surf(), board, false, false);
+				//board->print_piece_to_board();
+				SDL_Delay(5000);
+			}
 			prev = now;
-			// if (cpt % 100 == 0)
-			// 	board->print_board();
 		}
 	}
+
+
+
+
 	SDL_DestroyWindow(win->get_w());
-	// 	Tester toutes les positions tourner dans tous les sens et prendre la meilleur.
-	// La meilleur étant d'abord :
-	// 1) Celle qui fait le plus de ligne compléte
-	// 2) Si y en a pas, celle qui monte le moins haut et fait le moins de trou
 	//TTF_CloseFont(police); /* Doit être avant TTF_Quit() */
 	Mix_FreeMusic(music); //Libération de la musique
 	Mix_CloseAudio();	  //Fermeture de l'API

@@ -8,7 +8,7 @@
 #include "sprite.h"
 #include "tetrimino.h"
 #include "board.h"
-
+#include "virtualPlayer.h"
 
 class Game
 {
@@ -22,14 +22,19 @@ private:
 	SDL_TimerID timer_screen;
 	static bool isPaused;
 	static bool menuMode;
+	static bool IAMode;
 
 	Mix_Music *music; //Création du pointeur de type Mix_Music
 
-	// + ?
+	/***
+	 * partie IA
+	 * ***/
+
+	virtualPlayer* IAPlayer;
+
 
 public:
-	inline Game()
-	{}
+	inline Game(){}
 
 	void init();
 

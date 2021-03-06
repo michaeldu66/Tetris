@@ -264,9 +264,9 @@ int Board::DetectCollision()
 int Board::LookDown(int idy, int idx)
 {
 	int val_y = currentPiece->y - ORIGIN_Y + idy + 1;
-	if (val_y < 20)
+	if (val_y < 20) // pour le bord
 	{
-		if (screenBackground[val_y][currentPiece->x - ORIGIN_X + idx] != 0)
+		if (screenBackground[val_y][currentPiece->x - ORIGIN_X + idx] != 0)// ligne juste en dessous
 		{
 			currentPiece->set_finished();
 			return 1;
@@ -381,7 +381,7 @@ void Board::GoFarDown()
  * donc faudrait faire une fonction "delete holes"  qui 
  * enlève les trous que la gravité ne permettent, cf le screen que je t'ai envoyé. 
  * ***/
-void Board::LineFull()
+int Board::LineFull()
 {
 	int full;
 	int nb_lines = 0;
@@ -429,6 +429,7 @@ void Board::LineFull()
 		break;
 	}
 	totalLines += nb_lines;
+	return nb_lines;
 }
 /***
  * Bring Down Colums for the Row with index i_row 
