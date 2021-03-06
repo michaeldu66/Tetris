@@ -16,7 +16,7 @@ void Game::init()
 	music = Mix_LoadMUS("tetrisSong.mp3");
 	if (!music)
 		printf("Mix_LoadMUS(\"music.mp3\"): %s\n", Mix_GetError());
-	Mix_PlayMusic(music, -1);
+	//Mix_PlayMusic(music, -1);
 	menuMode = true;
 }
 
@@ -173,8 +173,8 @@ void Game::loop()
 			else if (menuMode)
 				win->render(planche->get_surf(), board, false, true);
 			prev = now;
-			if (cpt % 100 == 0)
-				board->print_board();
+			// if (cpt % 100 == 0)
+			// 	board->print_board();
 		}
 	}
 	SDL_DestroyWindow(win->get_w());

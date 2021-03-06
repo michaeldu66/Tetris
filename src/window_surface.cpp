@@ -83,14 +83,17 @@ void WindowSurface::textMenuInfos(menuInfo infos)
     case QUIT:
         snprintf(menuMsg, 100, "QUIT");
         break;
+    case COPYRIGHT:
+        snprintf(menuMsg, 100, "MaADE By Hofmann Michael AND Berthault Dylan");
+        break;
     case PLAY:
         snprintf(menuMsg, 100, "PLAY");
         break;
+    case IA:
+        snprintf(menuMsg, 100, "  IA  ");
+        break;
     case EXIT:
         snprintf(menuMsg, 100, "EXIT");
-        break;
-    case COPYRIGHT:
-        snprintf(menuMsg, 100, "MaADE By Hofmann Michael AND Berthault Dylan");
         break;
     }
     menuMsg[strlen(menuMsg)] = '\0';
@@ -98,18 +101,23 @@ void WindowSurface::textMenuInfos(menuInfo infos)
 
 void WindowSurface::setPositionInfos(menuInfo infos)
 {
-    if (infos == COPYRIGHT)
+    /*laisser copyright en premier dans la liste des affichages
+    de boutons et pas à la fin sinon les clikc bug je ne sais pk*/
+    if (infos != COPYRIGHT)
     {
-        positionMenuInfos->w = WIN_W/ 2;
+        positionMenuInfos->w = pauseRect->w / 2;
         positionMenuInfos->h = pauseRect->h / 7;
-        positionMenuInfos->x = WIN_W/2 ;
-        positionMenuInfos->y = WIN_H - positionMenuInfos->h;
+        positionMenuInfos->x = pauseRect->x + (pauseRect->w / 2 - positionMenuInfos->w / 2);
+        if (infos > COPYRIGHT)
+            positionMenuInfos->y = pauseRect->h + int(infos) * (positionMenuInfos->h + pauseRect->h / 7);
+        else
+            positionMenuInfos->y = pauseRect->h + (int(infos) + 1) * (positionMenuInfos->h + pauseRect->h / 7);
         return;
     }
-    positionMenuInfos->w = pauseRect->w / 2;
+    positionMenuInfos->w = WIN_W / 2;
     positionMenuInfos->h = pauseRect->h / 7;
-    positionMenuInfos->x = pauseRect->x + (pauseRect->w / 2 - positionMenuInfos->w / 2);
-    positionMenuInfos->y = pauseRect->h + (int(infos) + 1) * (positionMenuInfos->h + pauseRect->h / 7);
+    positionMenuInfos->x = WIN_W / 2;
+    positionMenuInfos->y = WIN_H - positionMenuInfos->h;
 }
 // affiche le grand rectangle du mode pause
 void WindowSurface::drawBackgroundPauseScreen()
@@ -145,11 +153,16 @@ void WindowSurface::drawPauseScreen()
 
 bool WindowSurface::xInsideResumeButton(int x)
 {
+    //printf("valeur x: %i, valeur du x à dépasser %i, valeur width position menu infos : %i\n", x, positionMenuInfos->x, positionMenuInfos->w);
     return x > positionMenuInfos->x && x < positionMenuInfos->x + positionMenuInfos->w ? true : false;
 }
 
 bool WindowSurface::yInsideResumeButton(int y, menuInfo infosM)
 {
+    // printf("\nvaleur infoM dans me insideY que l'on test%i\n", int(infosM));
+    // printf("valeur y: %i, valeur du y à dépasser %i, valeur height position menu infos : %i\n", y, positionMenuInfos->y, positionMenuInfos->h);
+    if (int(infosM) > COPYRIGHT)
+        return (y > (pauseRect->h + (int(infosM)) * (positionMenuInfos->h + pauseRect->h / 7)) && (y < (pauseRect->h + (int(infosM)) * (positionMenuInfos->h + pauseRect->h / 7) + positionMenuInfos->h))) ? true : false;
     return (y > (pauseRect->h + (int(infosM) + 1) * (positionMenuInfos->h + pauseRect->h / 7)) && (y < (pauseRect->h + (int(infosM) + 1) * (positionMenuInfos->h + pauseRect->h / 7) + positionMenuInfos->h))) ? true : false;
 }
 
@@ -183,7 +196,7 @@ void WindowSurface::drawBackgroundMenuScreen()
 
 void WindowSurface::drawButtonsMenuScreen()
 {
-    for (menuInfo infos = PLAY; infos < 5; infos = menuInfo(int(infos) + 1))
+    for (menuInfo infos = COPYRIGHT; infos < 6; infos = menuInfo(int(infos) + 1)) // si je met 6 ici yaura un bug pour l'affichaeg de IA
     {
         textMenuInfos(infos);
         textButtonSurface = TTF_RenderText_Solid(police, menuMsg, colorPolice);

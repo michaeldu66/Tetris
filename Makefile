@@ -7,10 +7,13 @@ HEADERS=src
 
 all: $(EXEC)
 
-tetris: game.o board.o tetrimino.o surface.o sprite.o window_surface.o
+tetris: game.o board.o tetrimino.o surface.o sprite.o window_surface.o virtualplayer.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 game.o: $(SRC)/game.cpp $(HEADERS)/game.h
+	$(CC) -o $@ -c $< $(CFLAGS)
+
+virtualplayer.o: $(SRC)/virtualPlayer.cpp $(HEADERS)/virtualPlayer.h
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 board.o: $(SRC)/board.cpp $(HEADERS)/board.h
