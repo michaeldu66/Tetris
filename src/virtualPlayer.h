@@ -25,7 +25,7 @@ protected:
 
 public:
     virtualPlayer(Board *board);
-    bool sliceToLeft();
+    void sliceToLeft();
 };
 
 #endif

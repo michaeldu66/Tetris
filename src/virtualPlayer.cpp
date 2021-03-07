@@ -9,26 +9,17 @@ virtualPlayer::virtualPlayer(Board *board) : b(board)
     pos->value = 0;
 };
 
-bool virtualPlayer::sliceToLeft()
+void virtualPlayer::sliceToLeft()
 {
     //direction = LEFT;
-    while (!b->IsGameOver())
+    b->update_direction(LEFT);
+    while (!b->DetectCollision())
     {
-        b->update_direction(LEFT);
-        while (!b->DetectCollision())
-        {
-            b->moveCurrentPiece();
-        }
-
-        b->GoFarDown();
-        b->print_piece_to_board();
-
-        if (b->getCurrentPiece()->getStateFinished())
-        {
-            b->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
-            b->LineFull();                  //Efface les lignes pleines
-            b->setCurrentPiece(b->GenerateRandomShape());
-        }
+        b->moveCurrentPiece();
     }
-    return true;
+
+    b->GoFarDown();
+    b->print_piece_to_board();
+
+    return;
 }

@@ -26,6 +26,10 @@ typedef enum menuInfo
 class Board;
 class Sprite;
 class Surface;
+
+
+
+
 class WindowSurface : public Surface
 {
 protected:

@@ -17,7 +17,7 @@ void Game::init()
 	music = Mix_LoadMUS("tetrisSong.mp3");
 	if (!music)
 		printf("Mix_LoadMUS(\"music.mp3\"): %s\n", Mix_GetError());
-	//Mix_PlayMusic(music, -1);
+	Mix_PlayMusic(music, -1);
 	menuMode = true;
 
 	IAPlayer = new virtualPlayer(board);
@@ -119,11 +119,12 @@ bool Game::keyboard(const Uint8 key)
 
 bool Game::update()
 {
-	board->update_direction(direction);
+	if(!IAMode)
+		board->update_direction(direction);
 	if (board->IsGameOver())
 		return true;
 
-	if (!board->DetectCollision())
+	if (!IAMode && !board->DetectCollision())
 		board->moveCurrentPiece();
 	else if (board->getCurrentPiece()->getStateFinished())
 	{
@@ -146,15 +147,12 @@ Uint32 Game::update_timer_callback(Uint32 intervalle, void *parametre)
 	return intervalle;
 }
 
-
-
 void Game::loop()
 {
 	int prev = 0, now = 0;
 	bool quit = false;
 
 	timer = SDL_AddTimer(1000, update_timer_callback, board); /* faire descendre la piece toutes les secondes*/
-
 
 	while (!quit)
 	{
@@ -166,9 +164,10 @@ void Game::loop()
 		{
 			if (check_event(event))
 				break;
-			if (!isPaused && !IAMode && update())
+			if (!isPaused && update())
 				break;
-			reset_key();//direction NOMOVE
+			if(!IAMode)
+				reset_key(); //direction NOMOVE
 		}
 		if (now - prev > 50) // timer pour le FPS
 		{
@@ -184,18 +183,22 @@ void Game::loop()
 			}
 			else if (menuMode)
 				win->render(planche->get_surf(), board, false, true);
-			else if (IAMode){
-				quit = IAPlayer->sliceToLeft();
+			else if (IAMode)
+			{
+				IAPlayer->sliceToLeft();
 				win->render(planche->get_surf(), board, false, false);
-				//board->print_piece_to_board();
-				SDL_Delay(5000);
+				// if (board->getCurrentPiece()->getStateFinished())
+				// {
+				// 	board->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
+				// 	board->LineFull();					//Efface les lignes pleines
+				// 	board->setCurrentPiece(board->GenerateRandomShape());
+				// }
+				board->print_piece_to_board();
+				SDL_Delay(1000);
 			}
 			prev = now;
 		}
 	}
-
-
-
 
 	SDL_DestroyWindow(win->get_w());
 	//TTF_CloseFont(police); /* Doit être avant TTF_Quit() */
