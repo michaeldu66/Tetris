@@ -24,9 +24,8 @@ void virtualPlayer::sliceFarLeft()
  * appeler la fonction UP sur la piece 
  * pour l'orientation
  * ***/
-int virtualPlayer::checkBestOrientation()
+void virtualPlayer::checkBestOrientation()
 {
-    int maxScore = 0;
     int score = 0;
     int idx = 0;
     MOV_DIRECTION dir = b->direction;
@@ -34,38 +33,46 @@ int virtualPlayer::checkBestOrientation()
     b->update_direction(UP);
     for (int i = 0; i < 4; i++)
     {
-        if(i)
+        if (i)
             b->TryRotate();
         b->GoFarDown();
         b->print_piece_to_background();
 
         score = b->computeScore(b->nbLineFull());
-        if (score > maxScore)
+        if (score > pos->value)
         {
-            maxScore = score;
-            idx = i;
+            pos->value = score;
+            pos->nbUp = i;
         }
 
         b->deletePieceFromBackground();
         b->GoFarUp();
         b->print_piece_to_background();
     }
-    b->TryRotate();//pour tourner 4 fois et revenir à la phase de depart
+    b->TryRotate(); //pour tourner 4 fois et revenir à la phase de depart
     b->direction = dir;
-    return idx;
+    return;
 }
 
-void virtualPlayer::chkAllCombinaison(){
+void virtualPlayer::chkAllCombinaison()
+{
+    MOV_DIRECTION dir = b->direction;
     bool EndHorizontal = false;
     int cptSlideRight = 0;
-    int idxMaxScorePosX=0,idxMaxScoreOrientation = 0;
-    int score = 0, maxScore=0;
+    int idxMaxScorePosX = 0, idxMaxScoreOrientation = 0;
+    int score = 0, maxScore = 0;
     b->update_direction(RIGHT);
     while (!b->DetectCollision())
     {
         b->moveCurrentPiece();
         cptSlideRight++;
-        score = 
+        checkBestOrientation();
     }
 
+    sliceFarLeft();
+    b->update_direction(RIGHT);
+    for(int i=0; i<cptSlideRight; i++){
+        b->moveCurrentPiece();
+    }
+    b->direction = dir;
 }

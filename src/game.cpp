@@ -187,7 +187,7 @@ void Game::loop()
 				win->render(planche->get_surf(), board, false, true);
 			else if (IAMode)
 			{
-				IAPlayer->sliceFarLeft();
+				IAPlayer->chkAllCombinaison();
 				win->render(planche->get_surf(), board, false, false);
 				board->print_piece_to_board();
 			}

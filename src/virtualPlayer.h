@@ -26,7 +26,7 @@ protected:
 public:
     virtualPlayer(Board *board);
     void sliceFarLeft();
-    int checkBestOrientation();
+    void checkBestOrientation();
     void chkAllCombinaison();
 };
 
