@@ -33,12 +33,17 @@ void virtualPlayer::checkBestOrientation()
     b->update_direction(UP);
     for (int i = 0; i < 4; i++)
     {
-        if (i)
-            b->TryRotate();
+        if (i){
+            b->moveCurrentPiece();
+        }
+        b->deletePieceFromBackground();
         b->GoFarDown();
         b->print_piece_to_background();
+        printf("avant de calculer le score\n");
+        b->print_board();
 
         score = b->computeScore(b->nbLineFull());
+        printf("Score numero %i est egal à %i\n", i, score);
         if (score > pos->value)
         {
             pos->value = score;
@@ -47,10 +52,12 @@ void virtualPlayer::checkBestOrientation()
 
         b->deletePieceFromBackground();
         b->GoFarUp();
-        b->print_piece_to_background();
+        //b->print_piece_to_background();
     }
     b->TryRotate(); //pour tourner 4 fois et revenir à la phase de depart
     b->direction = dir;
+    double monx = b->currentPiece->x - ORIGIN_X;
+    printf("pour ce x : %f, on a la meilleure config a un score de %i\n", monx, pos->value);
     return;
 }
 
@@ -61,18 +68,27 @@ void virtualPlayer::chkAllCombinaison()
     int cptSlideRight = 0;
     int idxMaxScorePosX = 0, idxMaxScoreOrientation = 0;
     int score = 0, maxScore = 0;
-    b->update_direction(RIGHT);
-    while (!b->DetectCollision())
-    {
-        b->moveCurrentPiece();
-        cptSlideRight++;
-        checkBestOrientation();
-    }
-
     sliceFarLeft();
+    printf("heeeeellloooo1\n");
+    b->print_piece_to_background();
+    b->print_board();
     b->update_direction(RIGHT);
-    for(int i=0; i<cptSlideRight; i++){
-        b->moveCurrentPiece();
-    }
-    b->direction = dir;
+
+    checkBestOrientation();
+    // b->moveCurrentPiece();
+    // checkBestOrientation();
+    // while (!b->DetectCollision())
+    // {
+    //     b->moveCurrentPiece();
+    //     cptSlideRight++;
+    //     checkBestOrientation();
+    // }
+
+    // sliceFarLeft();
+    // b->update_direction(RIGHT);
+    // for (int i = 0; i < cptSlideRight; i++)
+    // {
+    //     b->moveCurrentPiece();
+    // }
+    // b->direction = dir;
 }

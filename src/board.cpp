@@ -405,18 +405,23 @@ void Board::GoFarUp()
 {
 	int detected = 0;
 	int aBouger = 0;
+	int val_y;
 	while (detected == 0)
 	{
 		for (int i = 0; i < 4; i++)
 		{
 			for (int j = 0; j < 4; j++)
 			{
+				val_y = currentPiece->y - ORIGIN_Y + i - 1;
+				if (val_y < 0)
+				{
+					detected = 1;
+					break;
+				}
 				if (currentPiece->current_tetr[i][j])
 				{
 					if (LookUp(i, j))
-					{
 						detected = 1;
-					}
 				}
 			}
 		}
