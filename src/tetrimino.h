@@ -12,7 +12,7 @@ typedef enum tetrimino_type
     BARRE,  // cyan
     BLOC,   //jaune
     T_TYPE, //violet
-    L_TYPE, 
+    L_TYPE,
     J_TYPE,
     Z_TYPE,
     S_TYPE
@@ -48,11 +48,12 @@ protected:
     SDL_Color *color;
     tetrimino_type type_t;
     //color_type color_t;
-    int size;
+
     SDL_Rect *shape;
     bool finished; // when the piece is immobile ==> finished = True
 
 public:
+    int size;
     vector<vector<int>> current_tetr;
     double x, y;
     Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_);

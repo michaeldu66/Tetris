@@ -193,6 +193,19 @@ void Board::print_piece_to_board()
 	}
 }
 
+//Pour l'IA
+void Board::deletePieceFromBackground()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			if (currentPiece->current_tetr[i][j])
+				screenBackground[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] = 0;
+		}
+	}
+}
+
 //Affiche les pièces sur le background pour qu'elles restent visibles
 void Board::print_piece_to_background()
 {
@@ -218,7 +231,6 @@ void Board::refresh_screen()
 		}
 	}
 }
-
 
 int Board::DetectCollision()
 {
@@ -266,7 +278,7 @@ int Board::LookDown(int idy, int idx)
 	int val_y = currentPiece->y - ORIGIN_Y + idy + 1;
 	if (val_y < 20) // pour le bord
 	{
-		if (screenBackground[val_y][currentPiece->x - ORIGIN_X + idx] != 0)// ligne juste en dessous
+		if (screenBackground[val_y][currentPiece->x - ORIGIN_X + idx] != 0) // ligne juste en dessous
 		{
 			currentPiece->set_finished();
 			return 1;
@@ -274,6 +286,21 @@ int Board::LookDown(int idy, int idx)
 		return 0;
 	}
 	currentPiece->set_finished();
+	return 1;
+}
+
+// Pour l'IA : Regarde juste au-dessus de la pièce s'il y en a une autre ou le bord
+int Board::LookUp(int idy, int idx)
+{
+	int val_y = currentPiece->y - ORIGIN_Y + idy - 1;
+	if (val_y >= 0) // pour le bord
+	{
+		if (screenBackground[val_y][currentPiece->x - ORIGIN_X + idx] != 0) // ligne juste en dessous
+		{
+			return 1;
+		}
+		return 0;
+	}
 	return 1;
 }
 
@@ -369,10 +396,38 @@ void Board::GoFarDown()
 			}
 		}
 		if (detected == 0)
-		{
 			currentPiece->y++;
+	}
+}
+
+// Pour l'IA
+void Board::GoFarUp()
+{
+	int detected = 0;
+	int aBouger = 0;
+	while (detected == 0)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				if (currentPiece->current_tetr[i][j])
+				{
+					if (LookUp(i, j))
+					{
+						detected = 1;
+					}
+				}
+			}
+		}
+		if (detected == 0)
+		{
+			currentPiece->y--;
+			aBouger = 1;
 		}
 	}
+	if (aBouger)
+		printf(" a bouger\n");
 }
 
 /***
@@ -384,13 +439,12 @@ void Board::GoFarDown()
 int Board::LineFull()
 {
 	int full;
-	int nb_lines = 0;
-	vector<int> linesFull;
-	int i = BOARD_HEIGHT - 1;
-	while (i >= 0)
+	int nbLines = 0;
+
+	for (int i = 0; i < BOARD_HEIGHT; i++)
 	{
 		full = 1;
-		for (int j = BOARD_WIDTH - 1; j >= 0; j--)
+		for (int j = 0; j < BOARD_WIDTH; j++)
 		{
 			if (screenBackground[i][j] == 0)
 			{
@@ -399,37 +453,13 @@ int Board::LineFull()
 		}
 		if (full == 1)
 		{
-			linesFull.push_back(i);
 			cout << "on a une line full la numero : " << i << endl;
-			nb_lines++;
+			nbLines++;
+			BringDownColumns(i);
 		}
-		i--;
 	}
-
-	for (int j = linesFull.size() - 1; j >= 0; j--)
-	{
-		BringDownColumns(linesFull[j]);
-	}
-
-	switch (nb_lines)
-	{
-	case 1:
-		totalScore += 40;
-		break;
-	case 2:
-		totalScore += 100;
-		break;
-	case 3:
-		totalScore += 300;
-		break;
-	case 4:
-		totalScore += 1200;
-		break;
-	default:
-		break;
-	}
-	totalLines += nb_lines;
-	return nb_lines;
+	totalLines += nbLines;
+	return nbLines;
 }
 /***
  * Bring Down Colums for the Row with index i_row 
@@ -437,25 +467,38 @@ int Board::LineFull()
  * **/
 void Board::BringDownColumns(int i_row)
 {
-	int idx_up, k;
-	for (int j = BOARD_WIDTH - 1; j >= 0; j--)
+	int i = i_row;
+	for (int j = 0; j < BOARD_WIDTH; j++)
 	{
-		if (i_row > 0)
+		while (i > 0)
 		{
-			idx_up = i_row - 1;
-			while (screenBackground[idx_up][j] == 0 && idx_up > 0)
-				idx_up--;
-			k = i_row;
-			while (idx_up >= 0)
-			{
-				screenBackground[k][j] = screenBackground[idx_up][j];
-				idx_up--;
-				k--;
-			}
+			screenBackground[i][j] = screenBackground[i - 1][j];
+			i--;
 		}
-		else if (i_row == 0)
-			screenBackground[i_row][j] = 0;
+		screenBackground[0][j] = 0;
+		i = i_row;
 	}
+}
+
+/***
+ * Pour L'IA, ne descend pas les lignes pleines
+ * ***/
+int Board::nbLineFull()
+{
+	int full;
+	int nbLines = 0;
+	for (int i = 0; i < BOARD_HEIGHT; i++)
+	{
+		full = 1;
+		for (int j = 0; j < BOARD_WIDTH; j++)
+		{
+			if (screenBackground[i][j] == 0)
+				full = 0;
+		}
+		if (full == 1)
+			nbLines++;
+	}
+	return nbLines;
 }
 
 tetrimino_type Board::GetRandomShape()
@@ -495,6 +538,43 @@ Tetrimino *Board::GenerateRandomShape()
 		randomTetrimino = new Tetrimino(14, 6, 3, randomShape); // , randomColor);
 	currentPiece = randomTetrimino;
 	return randomTetrimino;
+}
+
+/***
+ * Compute the score of the Current PIece 
+ * (depending of the lines it fills and its y position)
+ * 
+ * This function is called after the piece is in place
+ * and before the new one is generated
+ * ***/
+
+int Board::computeScore(int nbLines)
+{
+	int valYPiece = currentPiece->y - ORIGIN_Y + 1;
+	int score = valYPiece * 2;
+	switch (nbLines)
+	{
+	case 1:
+		score += 100;
+		break;
+	case 2:
+		score += 300;
+		break;
+	case 3:
+		score += 500;
+		break;
+	case 4:
+		score += 1200;
+		break;
+	default:
+		break;
+	}
+	return score;
+}
+
+void Board::setScore(int valueToAdd)
+{
+	this->totalScore += valueToAdd;
 }
 
 int Board::get_score()
@@ -539,7 +619,7 @@ void Board::textInfos(optionInfo infos)
  * ***/
 void Board::printInfosToScreen(SDL_Renderer *rend)
 {
-	for (optionInfo infos = SCORE; infos < 2; infos = optionInfo(int(infos)+1))
+	for (optionInfo infos = SCORE; infos < 2; infos = optionInfo(int(infos) + 1))
 	{
 		textInfos(infos);
 		textSurface = TTF_RenderText_Solid(police, infosMsg, colorPolice);

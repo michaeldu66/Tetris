@@ -17,7 +17,7 @@ void Game::init()
 	music = Mix_LoadMUS("tetrisSong.mp3");
 	if (!music)
 		printf("Mix_LoadMUS(\"music.mp3\"): %s\n", Mix_GetError());
-	Mix_PlayMusic(music, -1);
+	//Mix_PlayMusic(music, -1);
 	menuMode = true;
 
 	IAPlayer = new virtualPlayer(board);
@@ -119,6 +119,7 @@ bool Game::keyboard(const Uint8 key)
 
 bool Game::update()
 {
+	int nbLines;
 	if(!IAMode)
 		board->update_direction(direction);
 	if (board->IsGameOver())
@@ -129,7 +130,8 @@ bool Game::update()
 	else if (board->getCurrentPiece()->getStateFinished())
 	{
 		board->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
-		board->LineFull();					//Efface les lignes pleines
+		nbLines = board->LineFull();					//Efface les lignes pleines
+		board->setScore(board->computeScore(nbLines));
 		piece = board->GenerateRandomShape();
 	}
 	return false;
@@ -185,16 +187,9 @@ void Game::loop()
 				win->render(planche->get_surf(), board, false, true);
 			else if (IAMode)
 			{
-				IAPlayer->sliceToLeft();
+				IAPlayer->sliceFarLeft();
 				win->render(planche->get_surf(), board, false, false);
-				// if (board->getCurrentPiece()->getStateFinished())
-				// {
-				// 	board->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
-				// 	board->LineFull();					//Efface les lignes pleines
-				// 	board->setCurrentPiece(board->GenerateRandomShape());
-				// }
 				board->print_piece_to_board();
-				SDL_Delay(1000);
 			}
 			prev = now;
 		}

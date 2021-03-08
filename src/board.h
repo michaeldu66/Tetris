@@ -31,7 +31,6 @@ typedef enum optionInfo
     LINES,
 } optionInfo;
 
-
 const int BOARD_HEIGHT = 20;
 const int BOARD_WIDTH = 10;
 
@@ -41,9 +40,7 @@ const int ORIGIN_Y = 6;
 class Board
 {
 private:
-    Tetrimino *currentPiece; // La pièce courante se trouvant sur l'aire de jeu
     SDL_Rect *carre_grill;
-    MOV_DIRECTION direction;
     SDL_Color *color[8];
     int totalLines;
     int totalScore;
@@ -56,9 +53,10 @@ private:
 
     SDL_Texture *textTexture;
     char infosMsg[100];
-    //TTF_Font *font;
 
 public:
+    Tetrimino *currentPiece; // La pièce courante se trouvant sur l'aire de jeu
+    MOV_DIRECTION direction;
     vector<vector<int>> screenWithBlock;  // the screen with the falling block
     vector<vector<int>> screenBackground; // the screen without the falling block
     Board();
@@ -68,22 +66,29 @@ public:
     void print_board();
     void draw_board(SDL_Renderer *rend);
     void print_piece_to_board();
+    void deletePieceFromBackground();
     void print_piece_to_background();
     void refresh_screen();
     int DetectCollision();
     int LookDown(int idy, int idx);
+    int LookUp(int idy, int idx);
     int LookRight(int idy, int idx);
     int LookLeft(int idy, int idx);
     int TryRotate();
     bool IsGameOver();
     void GoFarDown();
+    void GoFarUp();
     int LineFull();
     void BringDownColumns(int i_row);
+    int nbLineFull();
     void update_direction(MOV_DIRECTION direction_);
     void moveCurrentPiece();
     void moveBackCurrentPiece();
     tetrimino_type GetRandomShape();
     Tetrimino *GenerateRandomShape();
+
+    int computeScore(int nbLines);
+    void setScore(int valueToAdd);
 
     int get_score();
     void setPositionInfos(optionInfo infos);
