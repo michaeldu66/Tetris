@@ -7,10 +7,12 @@ Board::Board()
 
 	screenWithBlock.resize(BOARD_HEIGHT);  // Allocation des vectors
 	screenBackground.resize(BOARD_HEIGHT); // Allocation des vectors
+	//screenIABackground.resize(BOARD_HEIGHT); // Allocation des vectors
 	for (int i = 0; i < BOARD_HEIGHT; i++)
 	{
 		screenBackground[i].resize(BOARD_WIDTH);
 		screenWithBlock[i].resize(BOARD_WIDTH);
+		//screenIABackground[i].resize(BOARD_WIDTH);
 		for (int j = 0; j < BOARD_WIDTH; j++)
 		{
 			screenBackground[i][j] = FREE;
@@ -230,6 +232,7 @@ void Board::refresh_screen()
 				screenWithBlock[i][j] = screenBackground[i][j];
 		}
 	}
+	//screenIABackground.assign(screenBackground.begin(), screenBackground.end());
 }
 
 int Board::DetectCollision()

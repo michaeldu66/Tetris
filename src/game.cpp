@@ -190,6 +190,7 @@ void Game::loop()
 				IAPlayer->chkAllCombinaison();
 				win->render(planche->get_surf(), board, false, false);
 				board->print_piece_to_board();
+				SDL_Delay(500);
 			}
 			prev = now;
 		}

@@ -43,7 +43,6 @@ private:
     SDL_Rect *carre_grill;
     SDL_Color *color[8];
     int totalLines;
-    int totalScore;
 
     /* display on the screen infos */
     TTF_Font *police;
@@ -59,6 +58,8 @@ public:
     MOV_DIRECTION direction;
     vector<vector<int>> screenWithBlock;  // the screen with the falling block
     vector<vector<int>> screenBackground; // the screen without the falling block
+    //vector<vector<int>> screenIABackground; // screenBackground to try the possibilities for the ia
+    int totalScore;
     Board();
 
     void setCurrentPiece(Tetrimino *tetr);
