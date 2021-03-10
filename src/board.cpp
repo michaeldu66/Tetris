@@ -647,3 +647,26 @@ void Board::freeScoreText()
 	SDL_FreeSurface(textSurface);
 	SDL_DestroyTexture(textTexture);
 }
+
+/****
+ * fonction qui compte les trous
+ * ***/
+
+int Board::getNbHoles()
+{
+	bool startPiece = false;
+	int cptHoles = 0;
+	for (int j = 0; j < BOARD_WIDTH; j++)
+	{
+		for (int i = 0; i < BOARD_HEIGHT; i++)
+		{
+			if (!startPiece && screenBackground[i][j] != 0)
+				startPiece = true;
+
+			if (startPiece && screenBackground[i][j] == 0)
+				cptHoles++;
+		}
+		startPiece = false;
+	}
+	return cptHoles;
+}

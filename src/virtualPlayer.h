@@ -9,11 +9,16 @@ using namespace std;
 // 1) Celle qui fait le plus de ligne compléte
 // 2) Si y en a pas, celle qui monte le moins haut et fait le moins de trou
 
+
+
+
 typedef struct posTetr
 {
     int x;
+    int y;
     int nbUp;
     int value;
+    int nbHoles;
 } posTetr;
 
 class virtualPlayer

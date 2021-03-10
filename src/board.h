@@ -96,6 +96,9 @@ public:
     void textInfos(optionInfo infos);
     void printInfosToScreen(SDL_Renderer *rend);
     void freeScoreText();
+
+
+    int getNbHoles();
 };
 
 #endif
