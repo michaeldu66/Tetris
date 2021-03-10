@@ -22,6 +22,7 @@ presque en position finished (genre un timer avant d'enclencher le finish quand 
 -fonction pour l'IA : faire une fonction qui compte le nombre de trous
 et ajouter la condition sur le nombre de trous minimum (en plus du score max) 
 pour prioriser telle ou telle fonnctionnalités
+==> j'ai une idée pour coder la fonction de trous je le fais viteuf ce soir (10/03)
 
 -ajouter le mode multijoueur contre l'IA : il faut séparé entre plusieurs fenêtres
 la fenetre du joueur et celle de l'IA
