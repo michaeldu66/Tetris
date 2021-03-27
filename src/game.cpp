@@ -12,6 +12,7 @@ void Game::init()
 	board = new Board();
 	piece = board->getCurrentPiece();
 	direction = NO_MOVE;
+	board->print_piece_to_next();
 	isPaused = false;
 
 	music = Mix_LoadMUS("tetrisSong.mp3");
@@ -111,6 +112,9 @@ bool Game::keyboard(const Uint8 key)
 	case SDL_SCANCODE_SPACE:
 		direction = FAR_DOWN;
 		break;
+	case SDL_SCANCODE_C:
+		board->changePiece();
+		break;
 	default:
 		break;
 	}
@@ -131,8 +135,11 @@ bool Game::update()
 	{
 		board->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
 		nbLines = board->LineFull();					//Efface les lignes pleines
+		board->UpdateLevel();
 		board->setScore(board->computeScore(nbLines));
-		piece = board->GenerateRandomShape();
+		board->nbHold = 0;
+		board->update_screenNextPieces();
+		piece = board->currentPiece;
 	}
 	return false;
 }

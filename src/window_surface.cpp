@@ -21,6 +21,7 @@ WindowSurface::WindowSurface() : Surface()
     positionMenuInfos = new SDL_Rect();
     textButtonSurface = new SDL_Surface();
 
+    //menuBackgroundSprite = IMG_Load("src/tetrisLogo.png");
     menuBackgroundSprite = IMG_Load("src/tetrisLogo.png");
     if (menuBackgroundSprite == nullptr)
     {

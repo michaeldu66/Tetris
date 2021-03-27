@@ -28,8 +28,7 @@ enum
 typedef enum optionInfo
 {
     SCORE,
-    //LINES,
-    LEVEL,
+    LINES,
 } optionInfo;
 
 const int BOARD_HEIGHT = 20;
@@ -56,17 +55,11 @@ private:
 
 public:
     Tetrimino *currentPiece; // La pièce courante se trouvant sur l'aire de jeu
-    Tetrimino * holdPiece; // La pièce qui est gardée via la touche C
-    Tetrimino * NextPieces[3]; // Les 3 prochaines pièces
-    int nbHold; // Nombre de fois qu'on a utilisé le hold par pièce (une seule fois autorisée par pièce)
     MOV_DIRECTION direction;
     vector<vector<int>> screenWithBlock;  // the screen with the falling block
     vector<vector<int>> screenBackground; // the screen without the falling block
-    vector<vector<int>> screenHold; // the screen with the hold piece
-    vector<vector<int>> screenNextPieces; // the screen with the 3 next pieces
     //vector<vector<int>> screenIABackground; // screenBackground to try the possibilities for the ia
     int totalScore;
-    int Level;
     Board();
 
     void setCurrentPiece(Tetrimino *tetr);
@@ -76,9 +69,6 @@ public:
     void print_piece_to_board();
     void deletePieceFromBackground();
     void print_piece_to_background();
-    void print_piece_to_hold();
-    void print_piece_to_next();
-    void update_screenNextPieces();
     void refresh_screen();
     int DetectCollision();
     int LookDown(int idy, int idx);
@@ -92,11 +82,9 @@ public:
     int LineFull();
     void BringDownColumns(int i_row);
     int nbLineFull();
-    void UpdateLevel();
     void update_direction(MOV_DIRECTION direction_);
     void moveCurrentPiece();
     void moveBackCurrentPiece();
-    void changePiece();
     tetrimino_type GetRandomShape();
     Tetrimino *GenerateRandomShape();
 

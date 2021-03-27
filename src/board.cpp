@@ -7,7 +7,25 @@ Board::Board()
 
 	screenWithBlock.resize(BOARD_HEIGHT);  // Allocation des vectors
 	screenBackground.resize(BOARD_HEIGHT); // Allocation des vectors
+	screenHold.resize(4);
+	screenNextPieces.resize(12);
 	//screenIABackground.resize(BOARD_HEIGHT); // Allocation des vectors
+	for (int i = 0; i < 4; i++)
+	{
+		screenHold[i].resize(4);
+		for (int j = 0; j < 4; j++)
+		{
+			screenHold[i][j] = FREE;
+		}
+	}
+	for (int i = 0; i < 12; i++)
+	{
+		screenNextPieces[i].resize(4);
+		for (int j = 0; j < 4; j++)
+		{
+			screenNextPieces[i][j] = FREE;
+		}
+	}
 	for (int i = 0; i < BOARD_HEIGHT; i++)
 	{
 		screenBackground[i].resize(BOARD_WIDTH);
@@ -21,6 +39,11 @@ Board::Board()
 	}
 
 	currentPiece = GenerateRandomShape();
+	NextPieces[0] = GenerateRandomShape();
+	NextPieces[1] = GenerateRandomShape();
+	NextPieces[2] = GenerateRandomShape();
+	holdPiece = nullptr;
+	nbHold = 0;
 	direction = NO_MOVE;
 
 	for (int i = 0; i < 8; i++)
@@ -80,6 +103,7 @@ Board::Board()
 
 	totalScore = 0;
 	totalLines = 0;
+	Level = 0;
 	police = TTF_OpenFont("src/GUNSHIP2.TTF", 20);
 	colorPolice = {74, 69, 68};
 	positionInfos = new SDL_Rect();
@@ -180,6 +204,36 @@ void Board::draw_board(SDL_Renderer *rend)
 			SDL_RenderDrawRect(rend, carre_grill); //borderline of squares (in white)
 		}
 	}
+
+	// Pour le screenHold
+	for (int i = 0; i < 4; i++) 
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			carre_grill->x = (ORIGIN_X - 6 + j) * TETR_SIZE;
+			carre_grill->y = (ORIGIN_Y + i) * TETR_SIZE;
+			nb_color = screenHold[i][j];
+			SDL_SetRenderDrawColor(rend, color[nb_color]->r, color[nb_color]->g, color[nb_color]->b, 255); // inside of squares black
+			SDL_RenderFillRect(rend, carre_grill);
+			SDL_SetRenderDrawColor(rend, 75, 75, 75, 0);
+			SDL_RenderDrawRect(rend, carre_grill); //borderline of squares (in white)
+		}
+	}
+
+	// Pour le screenNextPieces
+	for (int i = 0; i < 12; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			carre_grill->x = (ORIGIN_X + 12 + j) * TETR_SIZE;
+			carre_grill->y = (ORIGIN_Y + i) * TETR_SIZE;
+			nb_color = screenNextPieces[i][j];
+			SDL_SetRenderDrawColor(rend, color[nb_color]->r, color[nb_color]->g, color[nb_color]->b, 255); // inside of squares black
+			SDL_RenderFillRect(rend, carre_grill);
+			SDL_SetRenderDrawColor(rend, 75, 75, 75, 0);
+			SDL_RenderDrawRect(rend, carre_grill); //borderline of squares (in white)
+		}
+	}
 }
 
 void Board::print_piece_to_board()
@@ -208,7 +262,7 @@ void Board::deletePieceFromBackground()
 	}
 }
 
-//Affiche les pièces sur le background pour qu'elles restent visibles
+// Affiche les pièces sur le background pour qu'elles restent visibles
 void Board::print_piece_to_background()
 {
 	//refresh_screen();
@@ -220,6 +274,60 @@ void Board::print_piece_to_background()
 				screenBackground[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] = currentPiece->current_tetr[i][j];
 		}
 	}
+}
+
+// Affiche la pièce hold sur le screenHold
+void Board::print_piece_to_hold()
+{
+	//refresh_screen();
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			screenHold[i][j] = 0;
+			if (currentPiece->current_tetr[i][j])
+				screenHold[i][j] = currentPiece->current_tetr[i][j];
+		}
+	}
+}
+
+// Affiche les 3 prochaines pièces sur le screenNextPieces
+void Board::print_piece_to_next()
+{
+	//refresh_screen();
+	for (int i = 0; i < 12; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			screenNextPieces[i][j] = 0;
+			if (i < 4) {
+				if (NextPieces[0]->current_tetr[i][j]) {
+					screenNextPieces[i][j] = NextPieces[0]->current_tetr[i][j];
+				}
+
+			}
+			else if (i < 8) {
+				if (NextPieces[1]->current_tetr[i - 4][j]) {
+					screenNextPieces[i][j] = NextPieces[1]->current_tetr[i - 4][j];
+				}
+			}			
+			else {
+				if (NextPieces[2]->current_tetr[i - 8][j]) {
+					screenNextPieces[i][j] = NextPieces[2]->current_tetr[i - 8][j];
+
+				}
+			}
+		}
+	}
+}
+
+void Board::update_screenNextPieces()
+{
+	currentPiece = NextPieces[0];
+	NextPieces[0] = NextPieces[1];
+	NextPieces[1] = NextPieces[2];
+	NextPieces[2] = GenerateRandomShape();
+	print_piece_to_next();
 }
 
 void Board::refresh_screen()
@@ -259,11 +367,11 @@ int Board::DetectCollision()
 					break;
 				case DOWN:
 					if (LookDown(i, j))
-						detected = 1;
+						detected = 2;
 					break;
 				case NO_MOVE:
 					if (LookDown(i, j))
-						detected = 1;
+						detected = 2;
 					break;
 				default:
 					break;
@@ -403,6 +511,36 @@ void Board::GoFarDown()
 	}
 }
 
+void Board::changePiece()
+{
+	if (nbHold == 1)
+	{
+		return;
+	}
+	nbHold = 1;
+	print_piece_to_hold();
+	currentPiece->set_coord(14, 6);
+	switch (currentPiece->get_type())
+	{
+	case BARRE:
+		currentPiece->set_coord(13, 6); 
+	case BLOC:
+		currentPiece->set_coord(15, 6);
+	default :
+		currentPiece->set_coord(14, 6);
+	}
+	Tetrimino * intermPiece = currentPiece;
+	if (holdPiece == nullptr)
+	{
+		holdPiece = currentPiece;
+		update_screenNextPieces();
+		return;
+	}
+	currentPiece = holdPiece;
+	holdPiece = intermPiece;
+	return;
+}
+
 // Pour l'IA
 void Board::GoFarUp()
 {
@@ -509,6 +647,14 @@ int Board::nbLineFull()
 	return nbLines;
 }
 
+void Board::UpdateLevel()
+{
+	if (Level < 30)
+	{
+		Level = totalLines / 10;
+	}
+}
+
 tetrimino_type Board::GetRandomShape()
 {
 	srand(time(NULL));
@@ -539,12 +685,12 @@ Tetrimino *Board::GenerateRandomShape()
 	Tetrimino *randomTetrimino;
 	tetrimino_type randomShape = GetRandomShape();
 	if (randomShape == BARRE)
-		randomTetrimino = new Tetrimino(14, 6, 4, randomShape); //, randomColor);
+		randomTetrimino = new Tetrimino(13, 6, 4, randomShape); //, randomColor);
 	else if (randomShape == BLOC)
-		randomTetrimino = new Tetrimino(14, 6, 2, randomShape); // , randomColor);
+		randomTetrimino = new Tetrimino(15, 6, 2, randomShape); // , randomColor);
 	else
 		randomTetrimino = new Tetrimino(14, 6, 3, randomShape); // , randomColor);
-	currentPiece = randomTetrimino;
+	//currentPiece = randomTetrimino;
 	return randomTetrimino;
 }
 
@@ -563,16 +709,16 @@ int Board::computeScore(int nbLines)
 	switch (nbLines)
 	{
 	case 1:
-		score += 100;
+		score += (100 * Level + 1);
 		break;
 	case 2:
-		score += 300;
+		score += (300 * Level + 1);
 		break;
 	case 3:
-		score += 500;
+		score += (500 * Level + 1);
 		break;
 	case 4:
-		score += 1200;
+		score += (1200 * Level + 1);
 		break;
 	default:
 		break;
@@ -600,8 +746,11 @@ void Board::setPositionInfos(optionInfo infos)
 	case SCORE:
 		positionInfos->y = (BOARD_HEIGHT + 3) * TETR_SIZE;
 		break;
-	case LINES:
-		positionInfos->y = (BOARD_HEIGHT)*TETR_SIZE;
+	//case LINES:
+	//	positionInfos->y = (BOARD_HEIGHT)*TETR_SIZE;
+	//	break;
+	case LEVEL:
+		positionInfos->y = (BOARD_HEIGHT) * TETR_SIZE;
 		break;
 	}
 }
@@ -615,8 +764,11 @@ void Board::textInfos(optionInfo infos)
 	case SCORE:
 		snprintf(infosMsg, 100, "Score : %i", totalScore);
 		break;
-	case LINES:
-		snprintf(infosMsg, 100, "Lines : %i", totalLines);
+	//case LINES:
+	//	snprintf(infosMsg, 100, "Lines : %i", totalLines);
+	//	break;
+	case LEVEL:
+		snprintf(infosMsg, 100, "Level : %i", Level);
 		break;
 	}
 	infosMsg[strlen(infosMsg)] = '\0';

@@ -1,8 +1,8 @@
 #include "tetrimino.h"
 
 vector<vector<vector<int>>> Tetrimino::matrix2{
-    {{1, 1, 1, 1},
-     {0, 0, 0, 0},
+    {{0, 0, 0, 0},
+     {1, 1, 1, 1},
      {0, 0, 0, 0},
      {0, 0, 0, 0}},
 
@@ -66,7 +66,7 @@ Tetrimino::Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_)
 
     case L_TYPE:
         color->r = 255;
-        color->g = 165;
+        color->g = 128;
         color->b = 0;
         break;
 
@@ -182,6 +182,11 @@ void Tetrimino::set_coord(double x_, double y_)
         x = x_;
     if (y_ != -1)
         y = y_;
+}
+
+tetrimino_type Tetrimino::get_type()
+{
+    return type_t;
 }
 
 void Tetrimino::print_coord()

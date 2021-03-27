@@ -64,7 +64,6 @@ public:
     void reverseCols(void);
     void rotate(void);
 
-    tetrimino_type get_type();
     void set_coord(double x_, double y_); // si -1 on touche pas à la coord
                                           /**
      * On utilise toujours les coordonnes x et y de la classe et pas ceux de shape, 
