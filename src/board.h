@@ -41,9 +41,14 @@ const int ORIGIN_Y = 6;
 class Board
 {
 private:
+    static vector<vector<vector<int>>> tetr_wallkick_barre;
+    static vector<vector<vector<int>>> tetr_wallkick_reste;
+
     SDL_Rect *carre_grill;
     SDL_Color *color[8];
     int totalLines;
+    int Level;
+
 
     /* display on the screen infos */
     TTF_Font *police;
@@ -66,7 +71,6 @@ public:
     vector<vector<int>> screenNextPieces; // the screen with the 3 next pieces
     //vector<vector<int>> screenIABackground; // screenBackground to try the possibilities for the ia
     int totalScore;
-    int Level;
     Board();
 
     void setCurrentPiece(Tetrimino *tetr);
@@ -78,6 +82,7 @@ public:
     void print_piece_to_background();
     void print_piece_to_hold();
     void print_piece_to_next();
+    void print_projection();
     void update_screenNextPieces();
     void refresh_screen();
     int DetectCollision();
@@ -85,7 +90,7 @@ public:
     int LookUp(int idy, int idx);
     int LookRight(int idy, int idx);
     int LookLeft(int idy, int idx);
-    int TryRotate();
+    void TryRotate();
     bool IsGameOver();
     void GoFarDown();
     void GoFarUp();
@@ -93,6 +98,7 @@ public:
     void BringDownColumns(int i_row);
     int nbLineFull();
     void UpdateLevel();
+    int get_level();
     void update_direction(MOV_DIRECTION direction_);
     void moveCurrentPiece();
     void moveBackCurrentPiece();

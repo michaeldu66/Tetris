@@ -51,6 +51,7 @@ protected:
 public:
     WindowSurface();
     SDL_Window *get_w();
+    SDL_Renderer* get_rend();
     void backgroundRender(SDL_Surface *spriteBg);
     void render(SDL_Surface *spriteBg, Board *board, bool isPaused, bool menuMode);
     void textMenuInfos(menuInfo infos);

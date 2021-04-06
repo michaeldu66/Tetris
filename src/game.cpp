@@ -97,15 +97,21 @@ bool Game::keyboard(const Uint8 key)
 		return false; // pour empecher les touches de changer qqchose
 	switch (key)
 	{
+	case SDL_SCANCODE_A:
 	case SDL_SCANCODE_LEFT:
 		direction = LEFT;
 		break;
+	case SDL_SCANCODE_D:
 	case SDL_SCANCODE_RIGHT:
 		direction = RIGHT;
 		break;
 	case SDL_SCANCODE_UP:
-		direction = UP;
+		direction = ROT_R;
 		break;
+	case SDL_SCANCODE_W:
+		direction = ROT_L;
+		break;
+	case SDL_SCANCODE_S:
 	case SDL_SCANCODE_DOWN:
 		direction = DOWN;
 		break;
@@ -131,8 +137,53 @@ bool Game::update()
 
 	if (!IAMode && !board->DetectCollision())
 		board->moveCurrentPiece();
-	else if (board->getCurrentPiece()->getStateFinished())
+	/*else if (board->DetectCollision() == 2)
 	{
+		board->getCurrentPiece()->set_finished();
+		board->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
+		nbLines = board->LineFull();					//Efface les lignes pleines
+		board->UpdateLevel();
+		board->setScore(board->computeScore(nbLines));
+		board->nbHold = 0;
+		board->update_screenNextPieces();
+		piece = board->currentPiece;
+	}*/
+	else if (board->DetectCollision() == 2)
+	{
+		int now = SDL_GetTicks();
+		int aBouge = 1;
+		int intervalle = 1000 / (1 + (board->get_level() + 1) / 15);
+		//timer_fixation = SDL_AddTimer(intervalle, update_timer_fixation_callback, &aBouge);
+		//while (SDL_GetTicks() - now < 4 * intervalle && timer_fixation)
+		if (!board->getCurrentPiece()->getStateFinished())
+		{
+			while (SDL_GetTicks() - now < 4 * intervalle && aBouge != 0)
+			{
+				SDL_Event event;
+				if (SDL_PollEvent(&event))
+				{
+					check_event(event);
+					if (!IAMode)
+					{
+						board->update_direction(direction);
+						if (direction == NO_MOVE)
+						{
+							aBouge = 0;
+						}
+						else if (!board->DetectCollision())
+						{
+							aBouge = 1;
+							board->moveCurrentPiece();
+							win->render(planche->get_surf(), board, false, false);
+							board->print_piece_to_board();
+							board->print_projection();
+						}
+					}
+				}
+			}
+		}
+		//SDL_RemoveTimer(timer_fixation);
+		board->getCurrentPiece()->set_finished();
 		board->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
 		nbLines = board->LineFull();					//Efface les lignes pleines
 		board->UpdateLevel();
@@ -144,16 +195,29 @@ bool Game::update()
 	return false;
 }
 
-Uint32 Game::update_timer_callback(Uint32 intervalle, void *parametre)
+Uint32 Game::update_timer_fixation_callback(Uint32 intervalle, void* parametre)
+{
+	int * aBouge = static_cast<int*>(parametre);
+	if (*aBouge != 0)
+	{
+		*aBouge = 0;
+		return intervalle;
+	}
+	return 0;
+}
+
+Uint32 Game::update_timer_descente_callback(Uint32 intervalle, void *parametre)
 {
 	Board *myboard = static_cast<Board *>(parametre);
 	if (!isPaused && !menuMode)
 	{
 		myboard->update_direction(DOWN);
 		if (!myboard->DetectCollision())
+		{
 			myboard->moveCurrentPiece();
+		}
 	}
-	return intervalle;
+	return (1000 / (1 + (myboard->get_level() + 1) / 15));
 }
 
 void Game::loop()
@@ -161,7 +225,7 @@ void Game::loop()
 	int prev = 0, now = 0;
 	bool quit = false;
 
-	timer = SDL_AddTimer(1000, update_timer_callback, board); /* faire descendre la piece toutes les secondes*/
+	timer_descente = SDL_AddTimer(1000, update_timer_descente_callback, board); /* faire descendre la piece toutes les secondes*/
 
 	while (!quit)
 	{
@@ -185,6 +249,7 @@ void Game::loop()
 				quit = update();
 				win->render(planche->get_surf(), board, false, false);
 				board->print_piece_to_board();
+				board->print_projection();
 			}
 			else if (isPaused && !menuMode)
 			{
@@ -197,6 +262,7 @@ void Game::loop()
 				IAPlayer->chkAllCombinaison();
 				win->render(planche->get_surf(), board, false, false);
 				board->print_piece_to_board();
+				board->print_projection();
 				SDL_Delay(500);
 			}
 			prev = now;

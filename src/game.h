@@ -18,8 +18,9 @@ private:
 	Tetrimino *piece;
 	Board *board;
 	MOV_DIRECTION direction;
-	SDL_TimerID timer;
-	SDL_TimerID timer_screen;
+	SDL_TimerID timer_descente;
+	SDL_TimerID timer_fixation;
+	//SDL_TimerID timer_screen;
 	static bool isPaused;
 	static bool menuMode;
 	static bool IAMode;
@@ -48,7 +49,8 @@ public:
 
 	bool check_event(SDL_Event event);
 
-	static Uint32 update_timer_callback(Uint32 intervalle, void *parametre);
+	static Uint32 update_timer_descente_callback(Uint32 intervalle, void *parametre);
+	static Uint32 update_timer_fixation_callback(Uint32 intervalle, void* parametre);
 	static Uint32 refresh_screen_callback(Uint32 intervalle, void *parametre);
 };
 #endif

@@ -29,7 +29,7 @@ void virtualPlayer::checkBestOrientation(int cptSlideRight)
     int score = 0;
     MOV_DIRECTION dir = b->direction;
 
-    b->update_direction(UP);
+    b->update_direction(ROT_R);
     for (int i = 0; i < 4; i++)
     {
         if (i)
@@ -39,14 +39,14 @@ void virtualPlayer::checkBestOrientation(int cptSlideRight)
         //b->deletePieceFromBackground(); //on a pas besoin de la print avant donc pas besoin de la supprimé
         b->GoFarDown();
         b->print_piece_to_background();
-        printf("avant de calculer le score\n");
-        b->print_board();
+        //printf("avant de calculer le score\n");
+        //b->print_board();
 
         score = b->totalScore + b->computeScore(b->nbLineFull());
-        printf("pour le tableau précédent, Score numero %i est egal à %i\n", i, score);
+        //printf("pour le tableau précédent, Score numero %i est egal à %i\n", i, score);
         if (score > pos->value)
         {
-            printf("eyaaaa");
+            //printf("eyaaaa");
             pos->value = score;
             pos->nbUp = i;
             pos->x = cptSlideRight;
@@ -59,7 +59,7 @@ void virtualPlayer::checkBestOrientation(int cptSlideRight)
     b->moveCurrentPiece(); //pour tourner 4 fois et revenir à la phase de depart
     b->direction = dir;
     //double monx = b->currentPiece->x - ORIGIN_X;
-    printf("pour ce x : %i, ce nbUp %i, on a la meilleure config a un score de %i\n", pos->x, pos->nbUp, pos->value);
+    //printf("pour ce x : %i, ce nbUp %i, on a la meilleure config a un score de %i\n", pos->x, pos->nbUp, pos->value);
     return;
 }
 
@@ -93,7 +93,7 @@ void virtualPlayer::chkAllCombinaison()
             b->moveCurrentPiece();
         }
 
-        b->update_direction(UP);
+        b->update_direction(ROT_R);
         for (int j = 0; j < pos->nbUp; j++)
         {
             b->moveCurrentPiece();
@@ -102,11 +102,11 @@ void virtualPlayer::chkAllCombinaison()
         b->update_direction(FAR_DOWN);
         b->moveCurrentPiece();
         b->currentPiece->set_finished();
-        printf("les valeurs max: \n");
-        printf("score : %i\n", pos->value);
-        printf("valeur x : %i\n", pos->x);
-        printf("nbUp : %i\n", pos->nbUp);
-        printf("fin de chkAllCombinaison\n");
+        //printf("les valeurs max: \n");
+        //printf("score : %i\n", pos->value);
+        //printf("valeur x : %i\n", pos->x);
+        //printf("nbUp : %i\n", pos->nbUp);
+        //printf("fin de chkAllCombinaison\n");
         b->update_direction(NO_MOVE);
     }
     // sliceFarLeft();

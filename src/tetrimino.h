@@ -36,7 +36,8 @@ typedef enum MOV_DIRECTION
     LEFT,
     RIGHT,
     DOWN,
-    UP,
+    ROT_R,
+    ROT_L,
     NO_MOVE,
     FAR_DOWN
 } MOV_DIRECTION;
@@ -44,9 +45,11 @@ typedef enum MOV_DIRECTION
 class Tetrimino
 {
 protected:
-    static vector<vector<vector<int>>> matrix2; // contain all the tetriminos
+    static vector<vector<vector<vector<int>>>> matrix2; // contain all the tetriminos
+    static vector<vector<vector<vector<int>>>> tetr_wallkick;
     SDL_Color *color;
     tetrimino_type type_t;
+    int num_rot;
     //color_type color_t;
 
     SDL_Rect *shape;
@@ -58,13 +61,14 @@ public:
     double x, y;
     Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_);
     ~Tetrimino();
-    void draw(SDL_Renderer *rend);
+    //void draw(SDL_Renderer *rend);
     void print_tetrimino();
-    void transpose(void);
-    void reverseCols(void);
-    void rotate(void);
-
+    //void transpose(void);
+    //void reverseCols(void);
+    void rotate(MOV_DIRECTION direction_);
     tetrimino_type get_type();
+    int get_num_rot();
+    vector<vector<vector<vector<int>>>> get_wallkick();
     void set_coord(double x_, double y_); // si -1 on touche pas à la coord
                                           /**
      * On utilise toujours les coordonnes x et y de la classe et pas ceux de shape, 

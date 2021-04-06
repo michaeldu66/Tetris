@@ -34,6 +34,11 @@ SDL_Window *WindowSurface::get_w()
     return this->pWindow;
 }
 
+SDL_Renderer* WindowSurface::get_rend()
+{
+    return this->rend;
+}
+
 void WindowSurface::backgroundRender(SDL_Surface *spriteBg)
 {
     SDL_Rect srcBg = {0, 128, 96, 128};
