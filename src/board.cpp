@@ -42,11 +42,13 @@ Board::Board()
 	}
 
 	currentPiece = GenerateRandomShape();
+	currentPiece->y += 2;
 	NextPieces[0] = GenerateRandomShape();
 	NextPieces[1] = GenerateRandomShape();
 	NextPieces[2] = GenerateRandomShape();
 	holdPiece = nullptr;
 	nbHold = 0;
+	IsOut = false;
 	direction = NO_MOVE;
 
 	for (int i = 0; i < 8; i++)
@@ -148,6 +150,7 @@ void Board::moveCurrentPiece()
 		break;
 	case FAR_DOWN:
 		GoFarDown();
+		currentPiece->set_finished();
 		break;
 	case NO_MOVE:
 		//cout << "on bouge pas la piece" << endl;
@@ -267,7 +270,7 @@ void Board::print_piece_to_board()
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			if (currentPiece->current_tetr[i][j])
+			 if (currentPiece->current_tetr[i][j] && currentPiece->y - ORIGIN_Y + i >= 0)
 				screenWithBlock[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] = currentPiece->current_tetr[i][j];
 		}
 	}
@@ -280,10 +283,11 @@ void Board::deletePieceFromBackground()
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			if (currentPiece->current_tetr[i][j])
+			if (currentPiece->current_tetr[i][j] && currentPiece->y - ORIGIN_Y + i >= 0)
 				screenBackground[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] = 0;
 		}
 	}
+	IsOut = false;
 }
 
 // Affiche les pièces sur le background pour qu'elles restent visibles
@@ -294,7 +298,11 @@ void Board::print_piece_to_background()
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			if (currentPiece->current_tetr[i][j])
+			if (currentPiece->current_tetr[i][j] && currentPiece->y - ORIGIN_Y + i < 0)
+			{
+				IsOut = true;
+			}
+			else if (currentPiece->current_tetr[i][j] && currentPiece->y - ORIGIN_Y + i >= 0)
 				screenBackground[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] = currentPiece->current_tetr[i][j];
 		}
 	}
@@ -377,7 +385,7 @@ void Board::print_projection()
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			if (currentPiece->current_tetr[i][j])
+			if (currentPiece->current_tetr[i][j] && currentPiece->y + new_y - ORIGIN_Y + i >= 0)
 			{
 				if (screenWithBlock[currentPiece->y + new_y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] == 0)
 				{
@@ -390,7 +398,24 @@ void Board::print_projection()
 
 void Board::update_screenNextPieces()
 {
+	//currentPiece->~Tetrimino();
 	currentPiece = NextPieces[0];
+
+	for (int i = 0; i < 2; i++)
+	{
+		int ok = 0;
+		for (int j = 0; j < 10; j++)
+		{
+			if (screenBackground[i][j] != 0)
+			{
+				ok = 1;
+			}
+		}
+		if (ok == 0)
+		{
+			currentPiece->y++;
+		}
+	}
 	NextPieces[0] = NextPieces[1];
 	NextPieces[1] = NextPieces[2];
 	NextPieces[2] = GenerateRandomShape();
@@ -454,7 +479,11 @@ int Board::DetectCollision()
 int Board::LookDown(int idy, int idx)
 {
 	int val_y = currentPiece->y - ORIGIN_Y + idy + 1;
-	if (val_y < 20) // pour le bord
+	if (val_y < 0)
+	{
+		return 0;
+	}
+	else if (val_y < 20) // pour le bord
 	{
 		if (screenBackground[val_y][currentPiece->x - ORIGIN_X + idx] != 0) // ligne juste en dessous
 		{
@@ -484,9 +513,15 @@ int Board::LookUp(int idy, int idx)
 int Board::LookRight(int idy, int idx)
 {
 	int val_x = currentPiece->x - ORIGIN_X + idx + 1;
+	int val_y = currentPiece->y - ORIGIN_Y + idy;
+		
 	if (val_x < 10)
 	{
-		if (screenBackground[currentPiece->y - ORIGIN_Y + idy][val_x] != 0)
+		if (val_y < 0)
+		{
+			return 0;
+		}
+		if (screenBackground[val_y][val_x] != 0)
 		{
 			return 1;
 		}
@@ -499,9 +534,15 @@ int Board::LookRight(int idy, int idx)
 int Board::LookLeft(int idy, int idx)
 {
 	int val_x = currentPiece->x - ORIGIN_X + idx - 1;
+	int val_y = currentPiece->y - ORIGIN_Y + idy;
+	
 	if (val_x > -1)
 	{
-		if (screenBackground[currentPiece->y - ORIGIN_Y + idy][val_x] != 0)
+		if (val_y < 0)
+		{
+			return 0;
+		}
+		if (screenBackground[val_y][val_x] != 0)
 		{
 			return 1;
 		}
@@ -570,24 +611,27 @@ void Board::TryRotate()
 						if (currentPiece->current_tetr[i][j])
 						{
 							if (currentPiece->x - ORIGIN_X + j < 0 || currentPiece->x - ORIGIN_X + j > 9 
-								|| currentPiece->y - ORIGIN_Y + i < 0 || currentPiece->y - ORIGIN_Y + i > 19)
+								|| currentPiece->y - ORIGIN_Y + i > 19) //|| currentPiece->y - ORIGIN_Y + i < 0
 							{
 								currentPiece->x -= currentPiece->get_wallkick()[num_wall][k][l][0]; // on retourne à la position initiale
 								currentPiece->y += currentPiece->get_wallkick()[num_wall][k][l][1]; // on retourne à la position initiale
 								ok = 1;
 							}
-							else if (screenBackground[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] != 0)
+							else if (currentPiece->y - ORIGIN_Y + i >= 0)
+							{
+							if (screenBackground[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] != 0)
 							{
 								currentPiece->x -= currentPiece->get_wallkick()[num_wall][k][l][0]; // on retourne à la position initiale
 								currentPiece->y += currentPiece->get_wallkick()[num_wall][k][l][1]; // on retourne à la position initiale
 								ok = 1;
+							}
 							}
 						}
 					}
 				}
 				if (ok == 0)
 				{
-					return; // on retourne en laissant la pièce dans sa nouvelle position
+					return; // on return en laissant la pièce dans sa nouvelle position
 				}
 			}
 		}
@@ -599,15 +643,26 @@ void Board::TryRotate()
 	return;
 }
 
-bool Board::IsGameOver()
+/*bool Board::IsGameOver()
 {
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			if (currentPiece->current_tetr[i][j] && currentPiece->y - ORIGIN_Y + i < 0)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
 	for (int i = 0; i < BOARD_WIDTH; i++)
 	{
 		if (screenBackground[0][i] != 0)
 			return true;
 	}
 	return false;
-}
+}*/
 
 // Permet de descendre une pièce le plus bas possible en ligne droite grace à la touche espace
 void Board::GoFarDown()
@@ -631,7 +686,7 @@ void Board::GoFarDown()
 		if (detected == 0)
 			currentPiece->y++;
 	}
-	currentPiece->set_finished();
+	//currentPiece->set_finished();
 }
 
 void Board::changePiece()
@@ -642,7 +697,7 @@ void Board::changePiece()
 	}
 	nbHold = 1;
 	print_piece_to_hold();
-	currentPiece->set_coord(14, 5);
+	currentPiece->set_coord(14, 3);
 	/*switch (currentPiece->get_type())
 	{
 	case BARRE:
@@ -659,6 +714,7 @@ void Board::changePiece()
 		update_screenNextPieces();
 		return;
 	}
+	//holdPiece->set_coord(14, 5);
 	currentPiece = holdPiece;
 	holdPiece = intermPiece;
 	return;
@@ -676,12 +732,12 @@ void Board::GoFarUp()
 		{
 			for (int j = 0; j < 4; j++)
 			{
-				val_y = currentPiece->y - ORIGIN_Y + i - 1;
+				/*val_y = currentPiece->y - ORIGIN_Y + i - 1;
 				if (val_y < 0)
 				{
 					detected = 1;
 					break;
-				}
+				}*/
 				if (currentPiece->current_tetr[i][j])
 				{
 					if (LookUp(i, j))
@@ -695,6 +751,7 @@ void Board::GoFarUp()
 			aBouger = 1;
 		}
 	}
+	//currentPiece->y -= 2;
 	//if (aBouger)
 		//printf(" a bouger\n");
 }
@@ -776,11 +833,28 @@ void Board::UpdateLevel()
 	{
 		Level = totalLines / 10;
 	}
+	return;
 }
 
 int Board::get_level()
 {
 	return Level;
+}
+
+void Board::set_nbHold(int new_nbHold)
+{
+	nbHold = new_nbHold;
+	return;
+}
+
+int Board::get_nbHold()
+{
+	return nbHold;
+}
+
+bool Board::get_IsOut()
+{
+	return IsOut;
 }
 
 
@@ -809,16 +883,16 @@ tetrimino_type Board::GetRandomShape()
 	return BARRE;
 }
 
-Tetrimino *Board::GenerateRandomShape()
+Tetrimino * Board::GenerateRandomShape()
 {
 	Tetrimino *randomTetrimino;
 	tetrimino_type randomShape = GetRandomShape();
 	if (randomShape == BARRE)
-		randomTetrimino = new Tetrimino(14, 5, 4, randomShape); //, randomColor);
+		randomTetrimino = new Tetrimino(14, 3, 4, randomShape); //, randomColor);
 	else if (randomShape == BLOC)
-		randomTetrimino = new Tetrimino(14, 5, 2, randomShape); // , randomColor);
+		randomTetrimino = new Tetrimino(14, 3, 2, randomShape); // , randomColor);
 	else
-		randomTetrimino = new Tetrimino(14, 5, 3, randomShape); // , randomColor);
+		randomTetrimino = new Tetrimino(14, 3, 3, randomShape); // , randomColor);
 	//currentPiece = randomTetrimino;
 	return randomTetrimino;
 }
@@ -838,13 +912,13 @@ int Board::computeScore(int nbLines)
 	switch (nbLines)
 	{
 	case 1:
-		score += (100 * Level + 1);
+		score += (40 * Level + 1);
 		break;
 	case 2:
-		score += (300 * Level + 1);
+		score += (100 * Level + 1);
 		break;
 	case 3:
-		score += (500 * Level + 1);
+		score += (300 * Level + 1);
 		break;
 	case 4:
 		score += (1200 * Level + 1);

@@ -90,7 +90,7 @@ void WindowSurface::textMenuInfos(menuInfo infos)
         snprintf(menuMsg, 100, "QUIT");
         break;
     case COPYRIGHT:
-        snprintf(menuMsg, 100, "MaADE By Hofmann Michael AND Berthault Dylan");
+        snprintf(menuMsg, 100, "MADE By Hofmann Michael AND Berthault Dylan");
         break;
     case PLAY:
         snprintf(menuMsg, 100, "PLAY");

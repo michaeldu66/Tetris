@@ -185,7 +185,7 @@ vector<vector<vector<vector<int>>>> Tetrimino::tetr_wallkick
     }
 };
 
-Tetrimino::Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_)
+Tetrimino::Tetrimino(int x_, int y_, int size_, tetrimino_type type_t_)
     : x(x_), y(y_), size(size_), type_t(type_t_)
 {
     num_rot = 0;
@@ -340,7 +340,7 @@ void Tetrimino::rotate(MOV_DIRECTION direction_)
     return;
 }
 
-void Tetrimino::set_coord(double x_, double y_)
+void Tetrimino::set_coord(int x_, int y_)
 {
     if (x_ != -1)
         x = x_;

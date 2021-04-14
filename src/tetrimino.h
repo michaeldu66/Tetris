@@ -58,8 +58,8 @@ protected:
 public:
     int size;
     vector<vector<int>> current_tetr;
-    double x, y;
-    Tetrimino(double x_, double y_, int size_, tetrimino_type type_t_);
+    int x, y;
+    Tetrimino(int x_, int y_, int size_, tetrimino_type type_t_);
     ~Tetrimino();
     //void draw(SDL_Renderer *rend);
     void print_tetrimino();
@@ -69,7 +69,7 @@ public:
     tetrimino_type get_type();
     int get_num_rot();
     vector<vector<vector<vector<int>>>> get_wallkick();
-    void set_coord(double x_, double y_); // si -1 on touche pas à la coord
+    void set_coord(int x_, int y_); // si -1 on touche pas à la coord
                                           /**
      * On utilise toujours les coordonnes x et y de la classe et pas ceux de shape, 
      * les coord de shapes sont actualisées à chaque draw

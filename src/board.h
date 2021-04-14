@@ -46,8 +46,10 @@ private:
 
     SDL_Rect *carre_grill;
     SDL_Color *color[8];
+    int nbHold; // Nombre de fois qu'on a utilisé le hold par pièce (une seule fois autorisée par pièce)
     int totalLines;
     int Level;
+    bool IsOut;
 
 
     /* display on the screen infos */
@@ -60,10 +62,9 @@ private:
     char infosMsg[100];
 
 public:
-    Tetrimino *currentPiece; // La pièce courante se trouvant sur l'aire de jeu
+    Tetrimino * currentPiece; // La pièce courante se trouvant sur l'aire de jeu
     Tetrimino * holdPiece; // La pièce qui est gardée via la touche C
     Tetrimino * NextPieces[3]; // Les 3 prochaines pièces
-    int nbHold; // Nombre de fois qu'on a utilisé le hold par pièce (une seule fois autorisée par pièce)
     MOV_DIRECTION direction;
     vector<vector<int>> screenWithBlock;  // the screen with the falling block
     vector<vector<int>> screenBackground; // the screen without the falling block
@@ -91,7 +92,7 @@ public:
     int LookRight(int idy, int idx);
     int LookLeft(int idy, int idx);
     void TryRotate();
-    bool IsGameOver();
+    //bool IsGameOver();
     void GoFarDown();
     void GoFarUp();
     int LineFull();
@@ -99,12 +100,15 @@ public:
     int nbLineFull();
     void UpdateLevel();
     int get_level();
+    void set_nbHold(int new_nbHold);
+    int get_nbHold();
+    bool get_IsOut();
     void update_direction(MOV_DIRECTION direction_);
     void moveCurrentPiece();
-    void moveBackCurrentPiece();
+    //void moveBackCurrentPiece();
     void changePiece();
     tetrimino_type GetRandomShape();
-    Tetrimino *GenerateRandomShape();
+    Tetrimino * GenerateRandomShape();
 
     int computeScore(int nbLines);
     void setScore(int valueToAdd);

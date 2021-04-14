@@ -43,6 +43,8 @@ public:
 
 	void loop();
 
+	bool IsGameOver();
+
 	bool update();
 
 	void reset_key();
