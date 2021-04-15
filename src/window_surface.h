@@ -10,8 +10,8 @@ using namespace std;
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
-#define WIN_W 990
-#define WIN_H 990
+#define WIN_W 600//1320//990
+#define WIN_H 600
 
 typedef enum menuInfo
 {
@@ -49,11 +49,12 @@ protected:
     SDL_Surface* menuBackgroundSprite;
 
 public:
-    WindowSurface();
+    WindowSurface(bool IAMode);
     SDL_Window *get_w();
     SDL_Renderer* get_rend();
-    void backgroundRender(SDL_Surface *spriteBg);
-    void render(SDL_Surface *spriteBg, Board *board, bool isPaused, bool menuMode);
+    SDL_Window* ResizeWindow(SDL_Window* win);
+    void backgroundRender(SDL_Surface *spriteBg, bool IAMode);
+    void render(SDL_Surface *spriteBg, Board *board, bool isPaused, bool menuMode, bool IAmode);
     void textMenuInfos(menuInfo infos);
     void setPositionInfos(menuInfo infos);
     void drawBackgroundPauseScreen();

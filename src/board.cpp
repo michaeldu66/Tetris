@@ -1,12 +1,14 @@
 #include "board.h"
 
-/* Problème rotation avec BARRe quand tout en haut du board*/
+//int ORIGIN_X = 10; //11
 
-Board::Board()
+Board::Board(int origin_x)
 {
 	carre_grill = new SDL_Rect();
 	carre_grill->h = TETR_SIZE;
 	carre_grill->w = TETR_SIZE;
+
+	ORIGIN_X = origin_x;
 
 	screenWithBlock.resize(BOARD_HEIGHT);  // Allocation des vectors
 	screenBackground.resize(BOARD_HEIGHT); // Allocation des vectors
@@ -194,10 +196,11 @@ void Board::print_board()
 	cout << endl;
 }
 
-void Board::draw_board(SDL_Renderer *rend)
+void Board::draw_board(SDL_Renderer *rend, bool IAMode)
 {
 	//print_board();
 	int nb_color = -1;
+
 	for (int i = 0; i < BOARD_HEIGHT; i++) //centrée en hauteur
 	{
 		for (int j = 0; j < BOARD_WIDTH; j++)
@@ -697,7 +700,7 @@ void Board::changePiece()
 	}
 	nbHold = 1;
 	print_piece_to_hold();
-	currentPiece->set_coord(14, 3);
+	currentPiece->set_coord(ORIGIN_X + 3, ORIGIN_Y - 3);
 	/*switch (currentPiece->get_type())
 	{
 	case BARRE:
@@ -888,11 +891,11 @@ Tetrimino * Board::GenerateRandomShape()
 	Tetrimino *randomTetrimino;
 	tetrimino_type randomShape = GetRandomShape();
 	if (randomShape == BARRE)
-		randomTetrimino = new Tetrimino(14, 3, 4, randomShape); //, randomColor);
+		randomTetrimino = new Tetrimino(ORIGIN_X + 3, ORIGIN_Y - 3, 4, randomShape); //, randomColor);
 	else if (randomShape == BLOC)
-		randomTetrimino = new Tetrimino(14, 3, 2, randomShape); // , randomColor);
+		randomTetrimino = new Tetrimino(ORIGIN_X + 3, ORIGIN_Y - 3, 2, randomShape); // , randomColor);
 	else
-		randomTetrimino = new Tetrimino(14, 3, 3, randomShape); // , randomColor);
+		randomTetrimino = new Tetrimino(ORIGIN_X + 3, ORIGIN_Y - 3, 3, randomShape); // , randomColor);
 	//currentPiece = randomTetrimino;
 	return randomTetrimino;
 }
@@ -943,7 +946,7 @@ void Board::setPositionInfos(optionInfo infos)
 {
 	positionInfos->w = (BOARD_WIDTH * TETR_SIZE) / 2;
 	positionInfos->h = 3 * TETR_SIZE;
-	positionInfos->x = (ORIGIN_X * 30) / 4;
+	positionInfos->x = ((ORIGIN_X - 7) * TETR_SIZE);  //((ORIGIN_X + 4) * TETR_SIZE) / 4;
 	switch (infos)
 	{
 	case SCORE:

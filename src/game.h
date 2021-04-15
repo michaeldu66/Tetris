@@ -16,10 +16,11 @@ private:
 	WindowSurface *win;
 	Sprite *planche;
 	Tetrimino *piece;
-	Board *board;
+	Board * Player_board;
+	Board * IA_board;
 	MOV_DIRECTION direction;
-	SDL_TimerID timer_descente;
-	SDL_TimerID timer_fixation;
+	SDL_TimerID timer_descente_Player;
+	SDL_TimerID timer_descente_IA;
 	//SDL_TimerID timer_screen;
 	static bool isPaused;
 	static bool menuMode;
@@ -43,9 +44,9 @@ public:
 
 	void loop();
 
-	bool IsGameOver();
+	bool IsGameOver(Board* board_);
 
-	bool update();
+	bool update(Board* board_);
 
 	void reset_key();
 

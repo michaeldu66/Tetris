@@ -35,8 +35,8 @@ typedef enum optionInfo
 const int BOARD_HEIGHT = 20;
 const int BOARD_WIDTH = 10;
 
-const int ORIGIN_X = 11;
-const int ORIGIN_Y = 6;
+//int ORIGIN_X = 10; //11
+const int ORIGIN_Y = 7; //6
 
 class Board
 {
@@ -50,6 +50,7 @@ private:
     int totalLines;
     int Level;
     bool IsOut;
+    int ORIGIN_X;
 
 
     /* display on the screen infos */
@@ -72,12 +73,12 @@ public:
     vector<vector<int>> screenNextPieces; // the screen with the 3 next pieces
     //vector<vector<int>> screenIABackground; // screenBackground to try the possibilities for the ia
     int totalScore;
-    Board();
+    Board(int origin_x);
 
     void setCurrentPiece(Tetrimino *tetr);
     Tetrimino *getCurrentPiece();
     void print_board();
-    void draw_board(SDL_Renderer *rend);
+    void draw_board(SDL_Renderer *rend, bool IAMode);
     void print_piece_to_board();
     void deletePieceFromBackground();
     void print_piece_to_background();

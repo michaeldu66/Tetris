@@ -5,7 +5,7 @@ using namespace std;
 #include <SDL.h>
 #include <vector>
 
-#define TETR_SIZE 30
+#define TETR_SIZE 20
 
 typedef enum tetrimino_type
 {

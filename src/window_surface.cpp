@@ -1,7 +1,7 @@
 #include "window_surface.h"
 #include "tetrimino.h"
 
-WindowSurface::WindowSurface() : Surface()
+WindowSurface::WindowSurface(bool IAMode) : Surface()
 {
     this->pWindow = SDL_CreateWindow("Tetris", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIN_W, WIN_H, SDL_WINDOW_SHOWN);
     rend = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -10,9 +10,9 @@ WindowSurface::WindowSurface() : Surface()
     cout << "winSurface created" << endl;
 
     pauseRect = new SDL_Rect();
-    pauseRect->h = WIN_W / 3;
-    pauseRect->w = WIN_H / 2;
-    pauseRect->y = WIN_W / 2 - pauseRect->h / 2;
+    pauseRect->h = WIN_H / 3;
+    pauseRect->w = WIN_W / 2;
+    pauseRect->y = WIN_H / 2 - pauseRect->h / 2;
     pauseRect->x = WIN_W / 2 - pauseRect->w / 2;
 
     //Affichage du mode menu
@@ -29,6 +29,38 @@ WindowSurface::WindowSurface() : Surface()
     }
 }
 
+SDL_Window* WindowSurface::ResizeWindow(SDL_Window* win)
+{
+    /*int win_w;
+    int win_h;
+    int win_x;
+    int win_y;
+
+    SDL_GetWindowSize(win, &win_w, &win_h);
+    SDL_SetWindowSize(win, 2*win_w, win_h);
+    SDL_GetWindowPosition(win, &win_x, &win_y);
+    SDL_SetWindowPosition(win, win_x/4, win_y);*/
+    int win_w;
+    int win_h;
+    int win_x;
+    int win_y;
+
+    SDL_GetWindowSize(win, &win_w, &win_h);
+    SDL_SetWindowSize(win, 2 * win_w, win_h);
+    SDL_GetWindowPosition(win, &win_x, &win_y);
+    SDL_SetWindowPosition(win, win_x / 4, win_y);
+
+    /*SDL_GetWindowSize(pWindow, &win_w, &win_h);
+    SDL_SetWindowSize(pWindow, 2 * win_w, win_h);
+    SDL_GetWindowPosition(pWindow, &win_x, &win_y);
+    SDL_SetWindowPosition(pWindow, win_x / 4, win_y);*/
+
+    SDL_DestroyRenderer(rend);
+    rend = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    return win;
+}
+
+
 SDL_Window *WindowSurface::get_w()
 {
     return this->pWindow;
@@ -39,27 +71,61 @@ SDL_Renderer* WindowSurface::get_rend()
     return this->rend;
 }
 
-void WindowSurface::backgroundRender(SDL_Surface *spriteBg)
+void WindowSurface::backgroundRender(SDL_Surface *spriteBg, bool IAMode)
 {
-    SDL_Rect srcBg = {0, 128, 96, 128};
+    SDL_Rect srcBg = { 0, 128, 96, 128 };
     Bg = SDL_CreateTextureFromSurface(rend, spriteBg); // récupère la surface du sprite en tant que texture
     if (Bg == nullptr)
         printf("error creation texture\n");
-
-    SDL_Rect dest = {0, 0, 128, 96};
-    for (int i = 0; i < get_surf()->h; i += 128)
+    SDL_RenderCopy(rend, Bg, &srcBg, NULL);
+   /* if (!IAMode)
     {
-        for (int j = 0; j < get_surf()->w; j += 96)
+        SDL_Rect srcBg = {0, 128, 96, 128};
+        Bg = SDL_CreateTextureFromSurface(rend, spriteBg); // récupère la surface du sprite en tant que texture
+        if (Bg == nullptr)
+            printf("error creation texture\n");
+
+        SDL_Rect dest = {0, 0, 128, 96};
+        for (int i = 0; i < get_surf()->h; i += 128)
         {
-            dest.x = i;
-            dest.y = j;
-            // copie depuis la planche de sprite vers le render
-            SDL_RenderCopy(rend, Bg, &srcBg, &dest);
+            for (int j = 0; j < get_surf()->w; j += 96)
+            {
+                dest.x = i;
+                dest.y = j;
+                // copie depuis la planche de sprite vers le render
+                SDL_RenderCopy(rend, Bg, &srcBg, &dest);
+            }
         }
     }
+    else
+    {
+        SDL_Rect srcBg = { 0, 128, 96, 128 };
+        Bg = SDL_CreateTextureFromSurface(rend, spriteBg); // récupère la surface du sprite en tant que texture
+        if (Bg == nullptr)
+            printf("error creation texture\n");
+
+        /*SDL_Rect dest = { 0, 0, 128, 96 };
+        for (int i = 0; i < get_surf()->h; i += 128)
+        {
+            for (int j = 0; j < get_surf()->w; j += 96)
+            {
+                dest.x = i;
+                dest.y = j;
+                // copie depuis la planche de sprite vers le render
+                SDL_RenderCopy(rend, Bg, &srcBg, &dest);
+            }
+        }*/
+        /*SDL_Rect* carre;
+        carre->w = 20;
+        carre->x = 20;
+        SDL_SetRenderDrawColor(rend, 75, 75, 75, 0);
+        SDL_RenderFillRect(rend, carre);
+        SDL_RenderDrawRect(rend, carre); //borderline of squares (in white);
+        SDL_RenderCopy(rend, Bg, &srcBg, NULL);
+    }*/
 }
 
-void WindowSurface::render(SDL_Surface *spriteBg, Board *board, bool isPaused, bool menuMode)
+void WindowSurface::render(SDL_Surface *spriteBg, Board *board, bool isPaused, bool menuMode, bool IAMode)
 {
     if (menuMode)
     {
@@ -67,8 +133,8 @@ void WindowSurface::render(SDL_Surface *spriteBg, Board *board, bool isPaused, b
         SDL_RenderPresent(rend);
         return;
     }
-    backgroundRender(spriteBg);
-    board->draw_board(rend);
+    backgroundRender(spriteBg, IAMode);
+    board->draw_board(rend, IAMode);
     board->printInfosToScreen(rend);
     if (isPaused)
         drawPauseScreen();
