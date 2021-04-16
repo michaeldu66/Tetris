@@ -53,8 +53,8 @@ public:
     SDL_Window *get_w();
     SDL_Renderer* get_rend();
     SDL_Window* ResizeWindow(SDL_Window* win);
-    void backgroundRender(SDL_Surface *spriteBg, bool IAMode);
-    void render(SDL_Surface *spriteBg, Board *board, bool isPaused, bool menuMode, bool IAmode);
+    void backgroundRender(SDL_Surface *spriteBg);
+    void render(SDL_Surface *spriteBg, Board* board1, Board* board2, bool isPaused, bool menuMode);
     void textMenuInfos(menuInfo infos);
     void setPositionInfos(menuInfo infos);
     void drawBackgroundPauseScreen();

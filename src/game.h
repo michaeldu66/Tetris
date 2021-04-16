@@ -46,8 +46,9 @@ public:
 
 	bool IsGameOver(Board* board_);
 
-	bool update(Board* board_);
-
+	bool update();
+	//bool update(Board* board_);
+	//bool update(Board* Playerboard_, Board* IAboard_);
 	void reset_key();
 
 	bool check_event(SDL_Event event);

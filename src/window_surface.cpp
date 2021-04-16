@@ -71,7 +71,7 @@ SDL_Renderer* WindowSurface::get_rend()
     return this->rend;
 }
 
-void WindowSurface::backgroundRender(SDL_Surface *spriteBg, bool IAMode)
+void WindowSurface::backgroundRender(SDL_Surface *spriteBg)
 {
     SDL_Rect srcBg = { 0, 128, 96, 128 };
     Bg = SDL_CreateTextureFromSurface(rend, spriteBg); // récupère la surface du sprite en tant que texture
@@ -125,7 +125,7 @@ void WindowSurface::backgroundRender(SDL_Surface *spriteBg, bool IAMode)
     }*/
 }
 
-void WindowSurface::render(SDL_Surface *spriteBg, Board *board, bool isPaused, bool menuMode, bool IAMode)
+void WindowSurface::render(SDL_Surface *spriteBg, Board * board1, Board * board2, bool isPaused, bool menuMode)
 {
     if (menuMode)
     {
@@ -133,13 +133,20 @@ void WindowSurface::render(SDL_Surface *spriteBg, Board *board, bool isPaused, b
         SDL_RenderPresent(rend);
         return;
     }
-    backgroundRender(spriteBg, IAMode);
-    board->draw_board(rend, IAMode);
-    board->printInfosToScreen(rend);
+    backgroundRender(spriteBg);
+    board1->draw_board(rend);
+    board1->printInfosToScreen(rend);
+    if (board2 != nullptr)
+    {
+        board2->draw_board(rend);
+        board2->printInfosToScreen(rend);
+    }
     if (isPaused)
         drawPauseScreen();
     SDL_RenderPresent(rend); /* show the result on the screen */
-    board->freeScoreText();
+    board1->freeScoreText();
+    if (board2 != nullptr)
+        board2->freeScoreText();
 }
 
 /***

@@ -28,8 +28,10 @@ enum
 typedef enum optionInfo
 {
     SCORE,
-    //LINES,
+    LINES,
     LEVEL,
+    HOLD,
+    NEXT
 } optionInfo;
 
 const int BOARD_HEIGHT = 20;
@@ -78,7 +80,7 @@ public:
     void setCurrentPiece(Tetrimino *tetr);
     Tetrimino *getCurrentPiece();
     void print_board();
-    void draw_board(SDL_Renderer *rend, bool IAMode);
+    void draw_board(SDL_Renderer *rend);
     void print_piece_to_board();
     void deletePieceFromBackground();
     void print_piece_to_background();

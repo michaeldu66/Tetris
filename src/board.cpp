@@ -114,7 +114,7 @@ Board::Board(int origin_x)
 	police = TTF_OpenFont("src/GUNSHIP2.TTF", 20);
 	colorPolice = {74, 69, 68};
 	positionInfos = new SDL_Rect();
-	cout << "BOARD constructor" << endl;
+	//cout << "BOARD constructor" << endl;
 }
 
 void Board::setCurrentPiece(Tetrimino *tetr)
@@ -196,7 +196,7 @@ void Board::print_board()
 	cout << endl;
 }
 
-void Board::draw_board(SDL_Renderer *rend, bool IAMode)
+void Board::draw_board(SDL_Renderer *rend)
 {
 	//print_board();
 	int nb_color = -1;
@@ -865,7 +865,7 @@ tetrimino_type Board::GetRandomShape()
 {
 	//srand(time(NULL));
 	int Shape = rand() % 7;
-	cout << "the random Shape is : " << Shape << endl;
+	//cout << "the random Shape is : " << Shape << endl;
 	switch (Shape)
 	{
 	case 0:
@@ -950,13 +950,21 @@ void Board::setPositionInfos(optionInfo infos)
 	switch (infos)
 	{
 	case SCORE:
-		positionInfos->y = (BOARD_HEIGHT + 3) * TETR_SIZE;
+		positionInfos->y = (ORIGIN_Y + BOARD_HEIGHT - 10) * TETR_SIZE;
 		break;
-	//case LINES:
-	//	positionInfos->y = (BOARD_HEIGHT)*TETR_SIZE;
-	//	break;
 	case LEVEL:
-		positionInfos->y = (BOARD_HEIGHT) * TETR_SIZE;
+		positionInfos->y = (ORIGIN_Y + BOARD_HEIGHT - 6.5) * TETR_SIZE;
+		break;
+	case LINES:
+		positionInfos->y = (ORIGIN_Y + BOARD_HEIGHT - 3) * TETR_SIZE;
+		break;
+	case HOLD:
+		positionInfos->y = (ORIGIN_Y + BOARD_HEIGHT - 23.5) * TETR_SIZE;
+		positionInfos->x = (ORIGIN_X - 6.5) * TETR_SIZE;
+		break;
+	case NEXT:
+		positionInfos->y = (ORIGIN_Y + BOARD_HEIGHT - 23.5) * TETR_SIZE;
+		positionInfos->x = (ORIGIN_X + BOARD_WIDTH + 1.5) * TETR_SIZE;
 		break;
 	}
 }
@@ -970,11 +978,17 @@ void Board::textInfos(optionInfo infos)
 	case SCORE:
 		snprintf(infosMsg, 100, "Score : %i", totalScore);
 		break;
-	//case LINES:
-	//	snprintf(infosMsg, 100, "Lines : %i", totalLines);
-	//	break;
 	case LEVEL:
 		snprintf(infosMsg, 100, "Level : %i", Level);
+		break;
+	case LINES:
+		snprintf(infosMsg, 100, "Lines : %i", totalLines);
+		break;	
+	case HOLD:
+		snprintf(infosMsg, 100, "Hold");
+		break;
+	case NEXT:
+		snprintf(infosMsg, 100, "Next");
 		break;
 	}
 	infosMsg[strlen(infosMsg)] = '\0';
@@ -985,7 +999,7 @@ void Board::textInfos(optionInfo infos)
  * ***/
 void Board::printInfosToScreen(SDL_Renderer *rend)
 {
-	for (optionInfo infos = SCORE; infos < 2; infos = optionInfo(int(infos) + 1))
+	for (optionInfo infos = SCORE; infos < 5; infos = optionInfo(int(infos) + 1))
 	{
 		textInfos(infos);
 		textSurface = TTF_RenderText_Solid(police, infosMsg, colorPolice);

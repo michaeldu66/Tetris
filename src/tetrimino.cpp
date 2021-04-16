@@ -250,7 +250,7 @@ Tetrimino::Tetrimino(int x_, int y_, int size_, tetrimino_type type_t_)
     finished = false;
     //print_tetrimino();
     //print_coord();
-    cout << "Tetrimino constructor" << endl;
+   // cout << "Tetrimino constructor" << endl;
 };
 
 Tetrimino::~Tetrimino()
@@ -261,7 +261,7 @@ Tetrimino::~Tetrimino()
     delete shape;
     matrix2.clear();
     matrix2.shrink_to_fit();
-    cout << "Tetrimino Destructor" << endl;
+    //cout << "Tetrimino Destructor" << endl;
 }
 
 

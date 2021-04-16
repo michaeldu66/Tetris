@@ -10,7 +10,7 @@ void Game::init()
 	win = new WindowSurface(false);
 	planche = new Sprite("src/sprites.bmp");
 	Player_board = new Board(10);
-	IA_board = new Board(10+WIN_W);
+	IA_board = new Board(10 + WIN_W/TETR_SIZE);//+WIN_W
 	piece = Player_board->getCurrentPiece();
 	direction = NO_MOVE;
 	Player_board->print_piece_to_next();
@@ -137,22 +137,26 @@ bool Game::keyboard(const Uint8 key)
 
 bool Game::IsGameOver(Board* board_)
 {
-	if (board_->get_IsOut() == true)
+	if (board_ != nullptr)
 	{
-		return true;
+		if (board_->get_IsOut() == true)
+		{
+			return true;
+		}
 	}
 	return false;
 }
 
-bool Game::update(Board * board_)
+/*bool Game::update(Board * board_)
 {
 	if (board_ == nullptr)
 	{
 		return false;
 	}
 	int nbLines;
-	if(board_ != IA_board)
-		board_->update_direction(direction);
+	//Player_board->update_direction(direction);
+	//if(board_ != IA_board)
+	//	board_->update_direction(direction);
 	if (IsGameOver(board_))
 	{
 		printf("GAME OVER\n");
@@ -162,24 +166,11 @@ bool Game::update(Board * board_)
 
 	if (board_ != IA_board && !board_->DetectCollision())
 		board_->moveCurrentPiece();
-	/*else if (board->DetectCollision() == 2)
-	{
-		board->getCurrentPiece()->set_finished();
-		board->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
-		nbLines = board->LineFull();					//Efface les lignes pleines
-		board->UpdateLevel();
-		board->setScore(board->computeScore(nbLines));
-		board->nbHold = 0;
-		board->update_screenNextPieces();
-		piece = board->currentPiece;
-	}*/
+	//if (!Player_board->DetectCollision())
+	//	Player_board->moveCurrentPiece();
+
 	else if (board_->DetectCollision() == 2)
 	{
-		/*int now = SDL_GetTicks();
-		int aBouge = 1;
-		int intervalle = 1000 / (1 + (board->get_level() + 1) / 15);*/
-		//timer_fixation = SDL_AddTimer(intervalle, update_timer_fixation_callback, &aBouge);
-		//while (SDL_GetTicks() - now < 4 * intervalle && timer_fixation)
 		if (!board_->getCurrentPiece()->getStateFinished())
 		{
 			int now = SDL_GetTicks();
@@ -193,23 +184,17 @@ bool Game::update(Board * board_)
 				if (SDL_PollEvent(&event))
 				{
 					aBouge = 1;
-					/*if (check_event(event))
-						break;*/
 					check_event(event);
 					//if (!IAMode)
 					reset_key();
 					//if (!IAMode)
 					//{
 					board_->update_direction(direction);
-					/*if (direction == NO_MOVE)
-					{
-						aBouge = 0;
-					}*/
 					if (!board_->DetectCollision())
 					{
 						aBouge = 1;
 						board_->moveCurrentPiece();
-						win->render(planche->get_surf(), board_, false, false, false);
+						win->render(planche->get_surf(), board_, nullptr, false, false, false);
 						board_->print_piece_to_board();
 						board_->print_projection();
 					}
@@ -221,29 +206,158 @@ bool Game::update(Board * board_)
 		//board->getCurrentPiece()->set_finished();
 		board_->GoFarDown();
 		board_->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
-		/*if (board->IsGameOver())
-		{
-			return true;
-		}*/
 		nbLines = board_->LineFull();					//Efface les lignes pleines
 		board_->UpdateLevel();
 		board_->setScore(board_->computeScore(nbLines));
 		board_->set_nbHold(0);
 		board_->update_screenNextPieces();
-		//piece = board_->currentPiece;
+		piece = board_->currentPiece;
 	}
 	return false;
-}
+}*/
 
-Uint32 Game::update_timer_fixation_callback(Uint32 intervalle, void* parametre)
+/*bool Game::update(Board* Playerboard_, Board * IAboard_)
 {
-	int * aBouge = static_cast<int*>(parametre);
-	if (*aBouge != 0)
+	int nbLines;
+	Playerboard_->update_direction(Player_board->direction);
+	if (IsGameOver(Playerboard_) == true || IsGameOver(IAboard_) == true);
 	{
-		*aBouge = 0;
-		return intervalle;
+		printf("GAME OVER\n");
+		return true;
 	}
-	return 0;
+
+		if (!Playerboard_->DetectCollision())
+			Playerboard_->moveCurrentPiece();
+
+		if (Playerboard_->DetectCollision() == 2)
+		{
+			if (!Playerboard_->getCurrentPiece()->getStateFinished())
+			{
+				int now = SDL_GetTicks();
+				int aBouge = 1;
+				int intervalle = 1000 / (1 + (Playerboard_->get_level() + 1) / 15);
+				while (SDL_GetTicks() - now < 4 * intervalle && aBouge != 0)
+				{
+					aBouge = 0;
+					//board->update_direction(NO_MOVE);
+					SDL_Event event;
+					if (SDL_PollEvent(&event))
+					{
+						aBouge = 1;
+						check_event(event);
+						//if (!IAMode)
+						reset_key();
+						//if (!IAMode)
+						//{
+						Playerboard_->update_direction(direction);
+						if (!Playerboard_->DetectCollision())
+						{
+							aBouge = 1;
+							Playerboard_->moveCurrentPiece();
+							win->render(planche->get_surf(), Playerboard_, IAboard_, false, false, false);
+							Playerboard_->print_piece_to_board();
+							Playerboard_->print_projection();
+						}
+						//}
+					}
+				}
+			}
+			//SDL_RemoveTimer(timer_fixation);
+			//board->getCurrentPiece()->set_finished();
+			Playerboard_->GoFarDown();
+			Playerboard_->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
+			nbLines = Playerboard_->LineFull();					//Efface les lignes pleines
+			Playerboard_->UpdateLevel();
+			Playerboard_->setScore(Playerboard_->computeScore(nbLines));
+			Playerboard_->set_nbHold(0);
+			Playerboard_->update_screenNextPieces();
+			//piece = board_->currentPiece;
+		}
+		if (IAboard_ != nullptr) 
+		{
+			if (IAboard_->DetectCollision() == 2)
+			{
+				IAboard_->GoFarDown();
+				IAboard_->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
+				nbLines = IAboard_->LineFull();					//Efface les lignes pleines
+				IAboard_->UpdateLevel();
+				IAboard_->setScore(IAboard_->computeScore(nbLines));
+				IAboard_->set_nbHold(0);
+				IAboard_->update_screenNextPieces();
+				//piece = board_->currentPiece;
+			}
+	}
+	return false;
+}*/
+
+bool Game::update()
+{
+	int nbLines;
+	Player_board->update_direction(direction);
+	if (IsGameOver(Player_board) == true || IsGameOver(IA_board) == true)
+	{
+		printf("GAME OVER\n");
+		return true;
+	}
+
+	if (!Player_board->DetectCollision())
+		Player_board->moveCurrentPiece();
+
+	if (Player_board->DetectCollision() == 2)
+	{
+		if (!Player_board->getCurrentPiece()->getStateFinished())
+		{
+			int now = SDL_GetTicks();
+			int aBouge = 1;
+			int intervalle = 1000 / (1 + (Player_board->get_level() + 1) / 15);
+			while (SDL_GetTicks() - now < 4 * intervalle && aBouge != 0)
+			{
+				reset_key();
+				if (SDL_GetTicks() - now > intervalle)
+				{
+					aBouge = 0;
+				}
+				//board->update_direction(NO_MOVE);
+				SDL_Event event;
+				if (SDL_PollEvent(&event))
+				{
+					//aBouge = 1;
+					check_event(event);
+					Player_board->update_direction(direction);
+					if (!Player_board->DetectCollision())
+					{
+						aBouge = 1;
+						Player_board->moveCurrentPiece();
+						win->render(planche->get_surf(), Player_board, IA_board, false, false);
+						Player_board->print_piece_to_board();
+						Player_board->print_projection();
+					}
+				}
+			}
+		}
+		//board->getCurrentPiece()->set_finished();
+		Player_board->GoFarDown();
+		Player_board->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
+		nbLines = Player_board->LineFull();					//Efface les lignes pleines
+		Player_board->UpdateLevel();
+		Player_board->setScore(Player_board->computeScore(nbLines));
+		Player_board->set_nbHold(0);
+		Player_board->update_screenNextPieces();
+	}
+	if (IA_board != nullptr)
+	{
+		if (IA_board->DetectCollision() == 2)
+		{
+			IA_board->GoFarDown();
+			IA_board->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
+			nbLines = IA_board->LineFull();					//Efface les lignes pleines
+			IA_board->UpdateLevel();
+			IA_board->setScore(IA_board->computeScore(nbLines));
+			IA_board->set_nbHold(0);
+			IA_board->update_screenNextPieces();
+		}
+	}
+	return false;
 }
 
 Uint32 Game::update_timer_descente_callback(Uint32 intervalle, void *parametre)
@@ -263,16 +377,14 @@ Uint32 Game::update_timer_descente_callback(Uint32 intervalle, void *parametre)
 void Game::loop()
 {
 	int prev = 0, now = 0;
-	bool quit_Player = false;
-	bool quit_IA = false;
+	bool quit = false;
 
 	timer_descente_Player = SDL_AddTimer(1000, update_timer_descente_callback, Player_board); /* faire descendre la piece toutes les secondes*/
-	timer_descente_IA = SDL_AddTimer(1000, update_timer_descente_callback, IA_board); /* faire descendre la piece toutes les secondes*/
 
-	while (quit_Player == false && quit_IA == false)
+	//while (quit_Player == false && quit_IA == false)
+	while (quit == false)
 	{
 		now = SDL_GetTicks();
-
 		//update();
 		SDL_Event event;
 		if (SDL_PollEvent(&event))
@@ -281,21 +393,34 @@ void Game::loop()
 				break;
 			if (!isPaused)
 			{
-				update(Player_board);
-				//printf("Player");
-				update(IA_board);
-				//printf("IA");
+				update();
 			}
-			//if(!IAMode)
 				reset_key(); //direction NOMOVE
 		}
 		if (now - prev > 50) // timer pour le FPS
 		{
 			if (!isPaused && !menuMode) // Partie où on update le Player_board et l'IA_board
 			{
-				//printf("Player");
-				quit_Player = update(Player_board);
-				win->render(planche->get_surf(), Player_board, false, false, false);
+				if (IA_board == nullptr) 
+				{
+					quit = update();
+
+					win->render(planche->get_surf(), Player_board, IA_board, false, false);
+					Player_board->print_piece_to_board();
+					Player_board->print_projection();
+				}
+				else
+				{
+					quit = update();
+					win->render(planche->get_surf(), Player_board, IA_board, false, false);
+					Player_board->print_piece_to_board();
+					Player_board->print_projection();
+					IA_board->print_piece_to_board();
+					IAPlayer->chkAllCombinaison();
+					//SDL_Delay(1000 / (1 + (IA_board->get_level() + 1) / 15));
+				}
+				/*quit_Player = update(Player_board);
+				win->render(planche->get_surf(), Player_board, IA_board, false, false, false);
 				Player_board->print_piece_to_board();
 				Player_board->print_projection();
 
@@ -303,36 +428,20 @@ void Game::loop()
 				{
 					//printf("IA");
 					quit_IA = update(IA_board);
-					win->render(planche->get_surf(), IA_board, false, false, true);
+					win->render(planche->get_surf(), Player_board, IA_board, false, false, true);
 					IA_board->print_piece_to_board();
 					IAPlayer->chkAllCombinaison();
 					SDL_Delay(1000 / (1 + (IA_board->get_level() + 1) / 15));
-				}
+				}*/
 			}
 			else if (isPaused && !menuMode)
 			{
-				//if (IAMode)
-				//	win->render(planche->get_surf(), IA_board, true, false, IAMode);
-				//else
-					win->render(planche->get_surf(), Player_board, true, false, false);
-
-				//prev = now;
+					win->render(planche->get_surf(), Player_board, IA_board, true, false);
 			}
 			else if (menuMode)
 			{
-				win->render(planche->get_surf(), Player_board, false, true, false);
-				//prev = now;
+				win->render(planche->get_surf(), Player_board, IA_board, false, true);
 			}
-			/*else if (IAMode) // Partie où on update l'IA
-			{
-				quit = update(IA_board);
-				win->render(planche->get_surf(), IA_board, false, false, IAMode);
-				IA_board->print_piece_to_board();
-				IAPlayer->chkAllCombinaison();
-				//board->print_piece_to_board();
-				SDL_Delay(1000 / (1 + (IA_board->get_level() + 1) / 15));
-				//SDL_Delay(1000);
-			}*/
 			prev = now;
 		}
 	}
