@@ -13,10 +13,16 @@
 class Game
 {
 private:
-	/***
-	 * planche is for the blue background
-	 * piece is the current piece mooving down
-	 * direction represent the key the player is playing (RIGHT, LEFT,...)
+	/*** 
+	 * win : the window of the game
+	 * planche : sprite for the blue background
+	 * piece : the current piece mooving down
+	 * Player_board and IA_board : the boards of the player and the AI
+	 * direction : the key the player is pressing (RIGHT, LEFT,...)
+	 * time_descente_player : a timer to move the piece down at a regular pace
+	 * isPause, menuMode, IAMode : bools to know in which state/menu we are
+	 * music : the background music
+	 * IAPlayer : the AI class
 	 * ***/
 	WindowSurface *win;
 	Sprite *planche;
@@ -25,19 +31,12 @@ private:
 	Board * IA_board;
 	MOV_DIRECTION direction;
 	SDL_TimerID timer_descente_Player;
-	SDL_TimerID timer_descente_IA;
 
-	//SDL_TimerID timer_screen;
 	static bool isPaused;
 	static bool menuMode;
 	static bool IAMode;
 
-	Mix_Music *music; //Création du pointeur de type Mix_Music
-
-	/***
-	 * partie IA
-	 * ***/
-
+	Mix_Music *music; 
 	virtualPlayer* IAPlayer;
 
 
@@ -88,6 +87,5 @@ public:
 	 * (it moves the piece down)
 	 * ***/
 	static Uint32 update_timer_descente_callback(Uint32 intervalle, void *parametre);
-	static Uint32 refresh_screen_callback(Uint32 intervalle, void *parametre);
 };
 #endif

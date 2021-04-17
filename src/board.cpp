@@ -1,7 +1,5 @@
 #include "board.h"
 
-//int ORIGIN_X = 10; //11
-
 Board::Board(int origin_x)
 {
 	carre_grill = new SDL_Rect();
@@ -10,11 +8,10 @@ Board::Board(int origin_x)
 
 	ORIGIN_X = origin_x;
 
-	screenWithBlock.resize(BOARD_HEIGHT);  // Allocation des vectors
-	screenBackground.resize(BOARD_HEIGHT); // Allocation des vectors
+	screenWithBlock.resize(BOARD_HEIGHT);  
+	screenBackground.resize(BOARD_HEIGHT); 
 	screenHold.resize(4);
 	screenNextPieces.resize(12);
-	//screenIABackground.resize(BOARD_HEIGHT); // Allocation des vectors
 	for (int i = 0; i < 4; i++)
 	{
 		screenHold[i].resize(4);
@@ -35,7 +32,6 @@ Board::Board(int origin_x)
 	{
 		screenBackground[i].resize(BOARD_WIDTH);
 		screenWithBlock[i].resize(BOARD_WIDTH);
-		//screenIABackground[i].resize(BOARD_WIDTH);
 		for (int j = 0; j < BOARD_WIDTH; j++)
 		{
 			screenBackground[i][j] = FREE;
@@ -114,7 +110,6 @@ Board::Board(int origin_x)
 	police = TTF_OpenFont("src/GUNSHIP2.TTF", 20);
 	colorPolice = {74, 69, 68};
 	positionInfos = new SDL_Rect();
-	//cout << "BOARD constructor" << endl;
 }
 
 void Board::setCurrentPiece(Tetrimino *tetr)
@@ -154,53 +149,15 @@ void Board::moveCurrentPiece()
 		currentPiece->set_finished();
 		break;
 	case NO_MOVE:
-		//cout << "on bouge pas la piece" << endl;
 		break;
 	}
-}
-
-/*void Board::moveBackCurrentPiece()
-{
-	switch (direction)
-	{
-	case LEFT:
-		currentPiece->x++;
-		break;
-	case RIGHT:
-		currentPiece->x--;
-		break;
-	case DOWN:
-		currentPiece->y--;
-		break;
-	case UP:
-		currentPiece->rotate();
-		currentPiece->rotate();
-		currentPiece->rotate();
-		break;
-	}
-}*/
-
-void Board::print_board()
-{
-	cout << "affichage du background board" << endl;
-	for (int i = 0; i < BOARD_HEIGHT; i++)
-	{
-		for (int j = 0; j < BOARD_WIDTH; j++)
-		{
-			cout << screenBackground[i][j];
-			cout << " ";
-		}
-		cout << endl;
-	}
-	cout << endl;
 }
 
 void Board::draw_board(SDL_Renderer *rend)
 {
-	//print_board();
 	int nb_color = -1;
 
-	for (int i = 0; i < BOARD_HEIGHT; i++) //centrée en hauteur
+	for (int i = 0; i < BOARD_HEIGHT; i++) 
 	{
 		for (int j = 0; j < BOARD_WIDTH; j++)
 		{
@@ -209,17 +166,17 @@ void Board::draw_board(SDL_Renderer *rend)
 			nb_color = screenWithBlock[i][j];
 			if (nb_color != 9)
 			{
-				SDL_SetRenderDrawColor(rend, color[nb_color]->r, color[nb_color]->g, color[nb_color]->b, 255); // inside of squares black
+				SDL_SetRenderDrawColor(rend, color[nb_color]->r, color[nb_color]->g, color[nb_color]->b, 255); 
 				SDL_RenderFillRect(rend, carre_grill);
 				if (nb_color != 0)
 				{
 					SDL_SetRenderDrawColor(rend, 75, 75, 75, 0);
-					SDL_RenderDrawRect(rend, carre_grill); //borderline of squares (in white);
+					SDL_RenderDrawRect(rend, carre_grill); 
 				}
 			}
-			else // on dessine la projection de la pièce
+			else 
 			{
-				SDL_SetRenderDrawColor(rend, 0, 0, 0, 255); // inside of squares black
+				SDL_SetRenderDrawColor(rend, 0, 0, 0, 255); 
 				SDL_RenderFillRect(rend, carre_grill);
 				SDL_SetRenderDrawColor(rend, color[currentPiece->get_type() + 1]->r, color[currentPiece->get_type() + 1]->g,
 									   color[currentPiece->get_type() + 1]->b, 255);
@@ -228,7 +185,6 @@ void Board::draw_board(SDL_Renderer *rend)
 		}
 	}
 
-	// Pour le screenHold
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -236,17 +192,16 @@ void Board::draw_board(SDL_Renderer *rend)
 			carre_grill->x = (ORIGIN_X - 6 + j) * TETR_SIZE;
 			carre_grill->y = (ORIGIN_Y + i) * TETR_SIZE;
 			nb_color = screenHold[i][j];
-			SDL_SetRenderDrawColor(rend, color[nb_color]->r, color[nb_color]->g, color[nb_color]->b, 255); // inside of squares black
+			SDL_SetRenderDrawColor(rend, color[nb_color]->r, color[nb_color]->g, color[nb_color]->b, 255); 
 			SDL_RenderFillRect(rend, carre_grill);
 			if (nb_color != 0)
 			{
 				SDL_SetRenderDrawColor(rend, 75, 75, 75, 0);
-				SDL_RenderDrawRect(rend, carre_grill); //borderline of squares (in white);
+				SDL_RenderDrawRect(rend, carre_grill); 
 			}
 		}
 	}
 
-	// Pour le screenNextPieces
 	for (int i = 0; i < 12; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -254,12 +209,12 @@ void Board::draw_board(SDL_Renderer *rend)
 			carre_grill->x = (ORIGIN_X + 12 + j) * TETR_SIZE;
 			carre_grill->y = (ORIGIN_Y + i) * TETR_SIZE;
 			nb_color = screenNextPieces[i][j];
-			SDL_SetRenderDrawColor(rend, color[nb_color]->r, color[nb_color]->g, color[nb_color]->b, 255); // inside of squares black
+			SDL_SetRenderDrawColor(rend, color[nb_color]->r, color[nb_color]->g, color[nb_color]->b, 255); 
 			SDL_RenderFillRect(rend, carre_grill);
 			if (nb_color != 0)
 			{
 				SDL_SetRenderDrawColor(rend, 75, 75, 75, 0);
-				SDL_RenderDrawRect(rend, carre_grill); //borderline of squares (in white);
+				SDL_RenderDrawRect(rend, carre_grill); 
 			}
 		}
 	}
@@ -278,7 +233,6 @@ void Board::print_piece_to_board()
 	}
 }
 
-//Pour l'IA
 void Board::deletePieceFromBackground()
 {
 	for (int i = 0; i < 4; i++)
@@ -294,7 +248,6 @@ void Board::deletePieceFromBackground()
 
 void Board::print_piece_to_background()
 {
-	//refresh_screen();
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -309,10 +262,8 @@ void Board::print_piece_to_background()
 	}
 }
 
-// Affiche la pièce hold sur le screenHold
 void Board::print_piece_to_hold()
 {
-	//refresh_screen();
 	while (currentPiece->get_num_rot() != 0)
 	{
 		currentPiece->rotate(ROT_R);
@@ -328,10 +279,8 @@ void Board::print_piece_to_hold()
 	}
 }
 
-// Affiche les 3 prochaines pièces sur le screenNextPieces
 void Board::print_piece_to_next()
 {
-	//refresh_screen();
 	for (int i = 0; i < 12; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -397,7 +346,6 @@ void Board::print_projection()
 
 void Board::update_screenNextPieces()
 {
-	//currentPiece->~Tetrimino();
 	currentPiece = NextPieces[0];
 
 	for (int i = 0; i < 2; i++)
@@ -431,15 +379,12 @@ void Board::refresh_screen()
 				screenWithBlock[i][j] = screenBackground[i][j];
 		}
 	}
-	//screenIABackground.assign(screenBackground.begin(), screenBackground.end());
 }
 
 int Board::DetectCollision()
 {
 	int detected = 0;
 
-	//if (direction == ROT_L || direction == ROT_R)
-	//	return TryRotate();
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -482,9 +427,9 @@ int Board::LookDown(int idy, int idx)
 	{
 		return 0;
 	}
-	else if (val_y < 20) // pour le bord
+	else if (val_y < 20)
 	{
-		if (screenBackground[val_y][currentPiece->x - ORIGIN_X + idx] != 0) // ligne juste en dessous
+		if (screenBackground[val_y][currentPiece->x - ORIGIN_X + idx] != 0)
 		{
 			return 1;
 		}
@@ -497,9 +442,9 @@ int Board::LookDown(int idy, int idx)
 int Board::LookUp(int idy, int idx)
 {
 	int val_y = currentPiece->y - ORIGIN_Y + idy - 1;
-	if (val_y >= 0) // pour le bord
+	if (val_y >= 0)
 	{
-		if (screenBackground[val_y][currentPiece->x - ORIGIN_X + idx] != 0) // ligne juste en dessous
+		if (screenBackground[val_y][currentPiece->x - ORIGIN_X + idx] != 0) 
 		{
 			return 1;
 		}
@@ -508,7 +453,6 @@ int Board::LookUp(int idy, int idx)
 	return 1;
 }
 
-// Regarde juste à droite de la pièce s'il y en a une autre ou le bord
 int Board::LookRight(int idy, int idx)
 {
 	int val_x = currentPiece->x - ORIGIN_X + idx + 1;
@@ -529,7 +473,6 @@ int Board::LookRight(int idy, int idx)
 	return 1;
 }
 
-// Regarde juste à gauche de la pièce s'il y en a une autre ou le bord
 int Board::LookLeft(int idy, int idx)
 {
 	int val_x = currentPiece->x - ORIGIN_X + idx - 1;
@@ -549,38 +492,6 @@ int Board::LookLeft(int idy, int idx)
 	}
 	return 1;
 }
-/***
- * Essaye de tourner la pièce et regarde si ça ne dépasse pas du board ou sur une autre pièce 
- * fonctionne mais pour quand c'est proche d'une pièce voisine faut prendre en compte
- * le timer genre laisser un délai avec une confition if (blabla && timer >1sec)
- * A rajouter plus tard pck pour l'instant flemme * 
- * ***/
-
-/*int Board::TryRotate()
-{
-	moveCurrentPiece();
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			if (currentPiece->current_tetr[i][j])
-			{
-				if (currentPiece->x - ORIGIN_X + j < 0 || currentPiece->x - ORIGIN_X + j > 9 || currentPiece->y - ORIGIN_Y + i > 19)
-				{
-					moveBackCurrentPiece();
-					return 1;
-				}
-				else if (screenBackground[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] != 0)
-				{
-					moveBackCurrentPiece();
-					return 1;
-				}
-			}
-		}
-	}
-	moveBackCurrentPiece();
-	return 0;
-}*/
 
 void Board::TryRotate()
 {
@@ -611,16 +522,16 @@ void Board::TryRotate()
 						{
 							if (currentPiece->x - ORIGIN_X + j < 0 || currentPiece->x - ORIGIN_X + j > 9 || currentPiece->y - ORIGIN_Y + i > 19) //|| currentPiece->y - ORIGIN_Y + i < 0
 							{
-								currentPiece->x -= currentPiece->get_wallkick()[num_wall][k][l][0]; // on retourne à la position initiale
-								currentPiece->y += currentPiece->get_wallkick()[num_wall][k][l][1]; // on retourne à la position initiale
+								currentPiece->x -= currentPiece->get_wallkick()[num_wall][k][l][0];
+								currentPiece->y += currentPiece->get_wallkick()[num_wall][k][l][1]; 
 								ok = 1;
 							}
 							else if (currentPiece->y - ORIGIN_Y + i >= 0)
 							{
 								if (screenBackground[currentPiece->y - ORIGIN_Y + i][currentPiece->x - ORIGIN_X + j] != 0)
 								{
-									currentPiece->x -= currentPiece->get_wallkick()[num_wall][k][l][0]; // on retourne à la position initiale
-									currentPiece->y += currentPiece->get_wallkick()[num_wall][k][l][1]; // on retourne à la position initiale
+									currentPiece->x -= currentPiece->get_wallkick()[num_wall][k][l][0]; 
+									currentPiece->y += currentPiece->get_wallkick()[num_wall][k][l][1];
 									ok = 1;
 								}
 							}
@@ -629,38 +540,17 @@ void Board::TryRotate()
 				}
 				if (ok == 0)
 				{
-					return; // on return en laissant la pièce dans sa nouvelle position
+					return;
 				}
 			}
 		}
 	}
 	while (currentPiece->get_num_rot() != num_rot_ini)
 	{
-		currentPiece->rotate(ROT_R); // on retourne dans la rotation d'origine
+		currentPiece->rotate(ROT_R);
 	}
 	return;
 }
-
-/*bool Board::IsGameOver()
-{
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			if (currentPiece->current_tetr[i][j] && currentPiece->y - ORIGIN_Y + i < 0)
-			{
-				return true;
-			}
-		}
-	}
-	return false;
-	for (int i = 0; i < BOARD_WIDTH; i++)
-	{
-		if (screenBackground[0][i] != 0)
-			return true;
-	}
-	return false;
-}*/
 
 void Board::GoFarDown()
 {
@@ -683,7 +573,6 @@ void Board::GoFarDown()
 		if (detected == 0)
 			currentPiece->y++;
 	}
-	//currentPiece->set_finished();
 }
 
 void Board::changePiece()
@@ -695,15 +584,6 @@ void Board::changePiece()
 	nbHold = 1;
 	print_piece_to_hold();
 	currentPiece->set_coord(ORIGIN_X + 3, ORIGIN_Y - 3);
-	/*switch (currentPiece->get_type())
-	{
-	case BARRE:
-		currentPiece->set_coord(13, 6); 
-	case BLOC:
-		currentPiece->set_coord(15, 6);
-	default :
-		currentPiece->set_coord(14, 6);
-	}*/
 	Tetrimino *intermPiece = currentPiece;
 	if (holdPiece == nullptr)
 	{
@@ -711,13 +591,11 @@ void Board::changePiece()
 		update_screenNextPieces();
 		return;
 	}
-	//holdPiece->set_coord(14, 5);
 	currentPiece = holdPiece;
 	holdPiece = intermPiece;
 	return;
 }
 
-// Pour l'IA
 void Board::GoFarUp()
 {
 	int detected = 0;
@@ -729,12 +607,6 @@ void Board::GoFarUp()
 		{
 			for (int j = 0; j < 4; j++)
 			{
-				/*val_y = currentPiece->y - ORIGIN_Y + i - 1;
-				if (val_y < 0)
-				{
-					detected = 1;
-					break;
-				}*/
 				if (currentPiece->current_tetr[i][j])
 				{
 					if (LookUp(i, j))
@@ -748,9 +620,6 @@ void Board::GoFarUp()
 			aBouger = 1;
 		}
 	}
-	//currentPiece->y -= 2;
-	//if (aBouger)
-	//printf(" a bouger\n");
 }
 
 
@@ -771,7 +640,6 @@ int Board::LineFull()
 		}
 		if (full == 1)
 		{
-			//cout << "on a une line full la numero : " << i << endl;
 			nbLines++;
 			BringDownColumns(i);
 		}
@@ -854,7 +722,6 @@ bool Board::get_IsOut()
 
 tetrimino_type Board::GetRandomShape()
 {
-	//srand(time(NULL));
 	int Shape = rand() % 7;
 	switch (Shape)
 	{
@@ -881,12 +748,11 @@ Tetrimino *Board::GenerateRandomShape()
 	Tetrimino *randomTetrimino;
 	tetrimino_type randomShape = GetRandomShape();
 	if (randomShape == BARRE)
-		randomTetrimino = new Tetrimino(ORIGIN_X + 3, ORIGIN_Y - 3, 4, randomShape); //, randomColor);
+		randomTetrimino = new Tetrimino(ORIGIN_X + 3, ORIGIN_Y - 3, randomShape); 
 	else if (randomShape == BLOC)
-		randomTetrimino = new Tetrimino(ORIGIN_X + 3, ORIGIN_Y - 3, 2, randomShape); // , randomColor);
+		randomTetrimino = new Tetrimino(ORIGIN_X + 3, ORIGIN_Y - 3, randomShape);
 	else
-		randomTetrimino = new Tetrimino(ORIGIN_X + 3, ORIGIN_Y - 3, 3, randomShape); // , randomColor);
-	//currentPiece = randomTetrimino;
+		randomTetrimino = new Tetrimino(ORIGIN_X + 3, ORIGIN_Y - 3, randomShape);
 	return randomTetrimino;
 }
 
@@ -930,7 +796,7 @@ void Board::setPositionInfos(optionInfo infos)
 {
 	positionInfos->w = (BOARD_WIDTH * TETR_SIZE) / 2;
 	positionInfos->h = 3 * TETR_SIZE;
-	positionInfos->x = ((ORIGIN_X - 7) * TETR_SIZE); //((ORIGIN_X + 4) * TETR_SIZE) / 4;
+	positionInfos->x = ((ORIGIN_X - 7) * TETR_SIZE);
 	switch (infos)
 	{
 	case SCORE:
@@ -977,11 +843,6 @@ void Board::textInfos(optionInfo infos)
 	infosMsg[strlen(infosMsg)] = '\0';
 }
 
-
-/***
- * Affiche les options (Score et lines faites pour l'instant)
- * sur l'écran avec une police d'écriture toussa
- * ***/
 void Board::printInfosToScreen(SDL_Renderer *rend)
 {
 	for (optionInfo infos = SCORE; infos < 5; infos = optionInfo(int(infos) + 1))
@@ -991,7 +852,7 @@ void Board::printInfosToScreen(SDL_Renderer *rend)
 		setPositionInfos(infos);
 		textTexture = SDL_CreateTextureFromSurface(rend, textSurface);
 
-		SDL_SetRenderDrawColor(rend, 213, 213, 213, 255); // background of text
+		SDL_SetRenderDrawColor(rend, 213, 213, 213, 255);
 		SDL_RenderFillRect(rend, positionInfos);
 		SDL_RenderDrawRect(rend, positionInfos);
 

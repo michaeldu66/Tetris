@@ -4,39 +4,15 @@
 using namespace std;
 #include "board.h"
 
-// 	Tester toutes les positions tourner dans tous les sens et prendre la meilleur.
-// La meilleur étant d'abord :
-// 1) Celle qui fait le plus de ligne compléte
-// 2) Si y en a pas, celle qui monte le moins haut et fait le moins de trou
-
-/*typedef struct posTetr
-{
-    int x;
-    int nbUp;
-    int value;
-} posTetr;
-
-class virtualPlayer
-{
-protected:
-    Board *b;
-    MOV_DIRECTION direction; //la direction que choisit l'IA
-    posTetr *pos;
-
-public:
-    virtualPlayer(Board *board);
-    void sliceFarLeft();
-    void checkBestOrientation(int cptSlideRight);
-    void chkAllCombinaison();
-};*/
-
 typedef struct posTetr
 {
     int best_pos_tetr_x;
-    int best_pos_tetr_y;
+    int best_plusbas;
     int best_numrot;
     int nbTrouMin;
-    int score;
+    int best_score;
+    bool IsFirst;
+    bool IsHold;
 } posTetr;
 
 class virtualPlayer
@@ -45,8 +21,7 @@ protected:
 
     /***
  * b : board of the IA_Player
- * direction : SERT A RIEN JE CROIS
- * pos : SERT A RIEN POUR L'INSTANT
+ * pos : structure in which the variables are
  * best_pos_tetr_x : position x of the best piece
  * best_plusbas : position y of the lowest part of the best piece 
  * best_numrot : rotation number of the best position (of the best piece)
@@ -57,7 +32,6 @@ protected:
  * IsHold : a bool stating if the piece we are testing is the Hold one or not
  * ***/
     Board* b;
-    MOV_DIRECTION direction; 
     posTetr* pos;
     int best_pos_tetr_x;
     int best_plusbas;

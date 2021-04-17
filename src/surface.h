@@ -4,6 +4,7 @@ using namespace std;
 #include <SDL.h>
 #include <string>
 #include <iostream>
+
 class Sprite;
 
 class Surface

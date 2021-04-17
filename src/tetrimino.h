@@ -5,21 +5,30 @@ using namespace std;
 #include <SDL.h>
 #include <vector>
 
+/***
+ * size that determines the size of the squares composing the board and
+ * the tetriminos
+ * ***/
 #define TETR_SIZE 20
 
+
+ /***
+  * all the tetriminos types
+  * ***/
 typedef enum tetrimino_type
 {
-    BARRE,  // cyan
-    BLOC,   //jaune
-    T_TYPE, //violet
+    BARRE,  
+    BLOC,   
+    T_TYPE, 
     L_TYPE,
     J_TYPE,
     Z_TYPE,
     S_TYPE
 } tetrimino_type;
 
-// Used in the Window_surface ==> more convenient
-// but transform in SDL_Color afterward
+/***
+ * all the tetriminos colors
+ * ***/
 typedef enum color_type
 {
     CYAN,
@@ -31,6 +40,10 @@ typedef enum color_type
     GREEN
 } color_type;
 
+/***
+ * all the tetriminos direction (NO_MOVE is the default direction,
+ * FAR_DOWN is the hard drop of a piece)
+ * ***/
 typedef enum MOV_DIRECTION
 {
     LEFT,
@@ -69,24 +82,17 @@ protected:
 public:
 
     /***
- * size : SERT A RIEN
  * current_tetr : the current tetrimino shape and rotation state
  * x, y : positions of the tetrimino
  * ***/
-    int size;
     vector<vector<int>> current_tetr;
     int x, y;
 
     /***
  * tetrimino constructor and destructor
  * ***/
-    Tetrimino(int x_, int y_, int size_, tetrimino_type type_t_);
+    Tetrimino(int x_, int y_, tetrimino_type type_t_);
     ~Tetrimino();
-
-    /***
- * SERT A RIEN
- * ***/
-    void print_tetrimino();
 
    /***
  * rotate the tetrimino according to the direction_ (left or right rotation)
@@ -113,11 +119,7 @@ public:
     /***
  * change the coordinates of the current tetrimino
  * ***/
-    void set_coord(int x_, int y_); // si -1 on touche pas à la coord
-                                          /**
-     * On utilise toujours les coordonnes x et y de la classe et pas ceux de shape, 
-     * les coord de shapes sont actualisées à chaque draw
-    **/
+    void set_coord(int x_, int y_); 
 
     /***
  * set the state of the piece as "finished" (called when the piece is landed)
@@ -128,11 +130,6 @@ public:
  * return true if the state is "finished" (the piece is immobile) or false if not
  * ***/
     bool getStateFinished();
-
-    /***
- * SERT A RIEN
- * ***/
-    void print_coord();
 };
 
 #endif

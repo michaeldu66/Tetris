@@ -1,7 +1,7 @@
 #include "window_surface.h"
 #include "tetrimino.h"
 
-WindowSurface::WindowSurface(bool IAMode) : Surface()
+WindowSurface::WindowSurface() : Surface()
 {
     this->pWindow = SDL_CreateWindow("Tetris", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIN_W, WIN_H, SDL_WINDOW_SHOWN);
     rend = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -15,13 +15,11 @@ WindowSurface::WindowSurface(bool IAMode) : Surface()
     pauseRect->y = WIN_H / 2 - pauseRect->h / 2;
     pauseRect->x = WIN_W / 2 - pauseRect->w / 2;
 
-    //Affichage du mode menu
     police = TTF_OpenFont("src/GUNSHIP2.TTF", 20);
     colorPolice = {74, 69, 68};
     positionMenuInfos = new SDL_Rect();
     textButtonSurface = new SDL_Surface();
 
-    //menuBackgroundSprite = IMG_Load("src/tetrisLogo.png");
     menuBackgroundSprite = IMG_Load("src/tetrisLogo.png");
     if (menuBackgroundSprite == nullptr)
     {
@@ -60,55 +58,10 @@ SDL_Renderer* WindowSurface::get_rend()
 void WindowSurface::backgroundRender(SDL_Surface *spriteBg)
 {
     SDL_Rect srcBg = { 0, 128, 96, 128 };
-    Bg = SDL_CreateTextureFromSurface(rend, spriteBg); // récupère la surface du sprite en tant que texture
+    Bg = SDL_CreateTextureFromSurface(rend, spriteBg);
     if (Bg == nullptr)
         printf("error creation texture\n");
     SDL_RenderCopy(rend, Bg, &srcBg, NULL);
-   /* if (!IAMode)
-    {
-        SDL_Rect srcBg = {0, 128, 96, 128};
-        Bg = SDL_CreateTextureFromSurface(rend, spriteBg); // récupère la surface du sprite en tant que texture
-        if (Bg == nullptr)
-            printf("error creation texture\n");
-
-        SDL_Rect dest = {0, 0, 128, 96};
-        for (int i = 0; i < get_surf()->h; i += 128)
-        {
-            for (int j = 0; j < get_surf()->w; j += 96)
-            {
-                dest.x = i;
-                dest.y = j;
-                // copie depuis la planche de sprite vers le render
-                SDL_RenderCopy(rend, Bg, &srcBg, &dest);
-            }
-        }
-    }
-    else
-    {
-        SDL_Rect srcBg = { 0, 128, 96, 128 };
-        Bg = SDL_CreateTextureFromSurface(rend, spriteBg); // récupère la surface du sprite en tant que texture
-        if (Bg == nullptr)
-            printf("error creation texture\n");
-
-        /*SDL_Rect dest = { 0, 0, 128, 96 };
-        for (int i = 0; i < get_surf()->h; i += 128)
-        {
-            for (int j = 0; j < get_surf()->w; j += 96)
-            {
-                dest.x = i;
-                dest.y = j;
-                // copie depuis la planche de sprite vers le render
-                SDL_RenderCopy(rend, Bg, &srcBg, &dest);
-            }
-        }*/
-        /*SDL_Rect* carre;
-        carre->w = 20;
-        carre->x = 20;
-        SDL_SetRenderDrawColor(rend, 75, 75, 75, 0);
-        SDL_RenderFillRect(rend, carre);
-        SDL_RenderDrawRect(rend, carre); //borderline of squares (in white);
-        SDL_RenderCopy(rend, Bg, &srcBg, NULL);
-    }*/
 }
 
 void WindowSurface::render(SDL_Surface *spriteBg, Board * board1, Board * board2, bool isPaused, bool menuMode)
@@ -120,6 +73,7 @@ void WindowSurface::render(SDL_Surface *spriteBg, Board * board1, Board * board2
         return;
     }
     backgroundRender(spriteBg);
+
     board1->draw_board(rend);
     board1->printInfosToScreen(rend);
     if (board2 != nullptr)
@@ -127,17 +81,17 @@ void WindowSurface::render(SDL_Surface *spriteBg, Board * board1, Board * board2
         board2->draw_board(rend);
         board2->printInfosToScreen(rend);
     }
+
     if (isPaused)
         drawPauseScreen();
-    SDL_RenderPresent(rend); /* show the result on the screen */
+
+    SDL_RenderPresent(rend); 
+
     board1->freeScoreText();
     if (board2 != nullptr)
         board2->freeScoreText();
 }
 
-/***
- *Ecris le texte d'affichage de l'option dans un buffer 
- ***/
 void WindowSurface::textMenuInfos(menuInfo infos)
 {
     switch (infos)
@@ -166,8 +120,6 @@ void WindowSurface::textMenuInfos(menuInfo infos)
 
 void WindowSurface::setPositionInfos(menuInfo infos)
 {
-    /*laisser copyright en premier dans la liste des affichages
-    de boutons et pas à la fin sinon les clikc bug je ne sais pk*/
     if (infos != COPYRIGHT)
     {
         positionMenuInfos->w = pauseRect->w / 2;
@@ -184,7 +136,7 @@ void WindowSurface::setPositionInfos(menuInfo infos)
     positionMenuInfos->x = WIN_W / 2;
     positionMenuInfos->y = WIN_H - positionMenuInfos->h;
 }
-// affiche le grand rectangle du mode pause
+
 void WindowSurface::drawBackgroundPauseScreen()
 {
     SDL_SetRenderDrawColor(rend, 213, 213, 213, 255);
@@ -200,16 +152,15 @@ void WindowSurface::drawButtonsPauseScreen()
         setPositionInfos(infos);
         textButtonTexture = SDL_CreateTextureFromSurface(rend, textButtonSurface);
 
-        SDL_SetRenderDrawColor(rend, 213, 213, 213, 255); // background of text
+        SDL_SetRenderDrawColor(rend, 213, 213, 213, 255); 
         SDL_RenderFillRect(rend, positionMenuInfos);
-        SDL_SetRenderDrawColor(rend, 150, 150, 150, 255); //contour du menu
+        SDL_SetRenderDrawColor(rend, 150, 150, 150, 255);
         SDL_RenderDrawRect(rend, positionMenuInfos);
 
         SDL_RenderCopy(rend, textButtonTexture, NULL, positionMenuInfos);
     }
 }
 
-// Affiche les différents boutons
 void WindowSurface::drawPauseScreen()
 {
     drawBackgroundPauseScreen();
@@ -218,14 +169,11 @@ void WindowSurface::drawPauseScreen()
 
 bool WindowSurface::xInsideResumeButton(int x)
 {
-    //printf("valeur x: %i, valeur du x à dépasser %i, valeur width position menu infos : %i\n", x, positionMenuInfos->x, positionMenuInfos->w);
     return x > positionMenuInfos->x && x < positionMenuInfos->x + positionMenuInfos->w ? true : false;
 }
 
 bool WindowSurface::yInsideResumeButton(int y, menuInfo infosM)
 {
-    // printf("\nvaleur infoM dans me insideY que l'on test%i\n", int(infosM));
-    // printf("valeur y: %i, valeur du y à dépasser %i, valeur height position menu infos : %i\n", y, positionMenuInfos->y, positionMenuInfos->h);
     if (int(infosM) > COPYRIGHT)
         return (y > (pauseRect->h + (int(infosM)) * (positionMenuInfos->h + pauseRect->h / 7)) && (y < (pauseRect->h + (int(infosM)) * (positionMenuInfos->h + pauseRect->h / 7) + positionMenuInfos->h))) ? true : false;
     return (y > (pauseRect->h + (int(infosM) + 1) * (positionMenuInfos->h + pauseRect->h / 7)) && (y < (pauseRect->h + (int(infosM) + 1) * (positionMenuInfos->h + pauseRect->h / 7) + positionMenuInfos->h))) ? true : false;
@@ -238,7 +186,6 @@ bool WindowSurface::isInsideResumeButtom(int x, int y, menuInfo infosM)
 
 void WindowSurface::drawBackgroundMenuScreen()
 {
-    //background light white
     SDL_Rect menuBg;
     menuBg.x = 0;
     menuBg.y = 0;
@@ -249,9 +196,8 @@ void WindowSurface::drawBackgroundMenuScreen()
     SDL_RenderFillRect(rend, &menuBg);
     SDL_RenderDrawRect(rend, &menuBg);
 
-    //IMAGE
     SDL_Rect srcMenuBg = {128, 57, 568, 198};
-    Bg = SDL_CreateTextureFromSurface(rend, menuBackgroundSprite); // récupère la surface du sprite en tant que texture
+    Bg = SDL_CreateTextureFromSurface(rend, menuBackgroundSprite); 
     if (Bg == nullptr)
         printf("error creation texture\n");
 
@@ -261,14 +207,14 @@ void WindowSurface::drawBackgroundMenuScreen()
 
 void WindowSurface::drawButtonsMenuScreen()
 {
-    for (menuInfo infos = COPYRIGHT; infos < 6; infos = menuInfo(int(infos) + 1)) // si je met 6 ici yaura un bug pour l'affichaeg de IA
+    for (menuInfo infos = COPYRIGHT; infos < 6; infos = menuInfo(int(infos) + 1))
     {
         textMenuInfos(infos);
         textButtonSurface = TTF_RenderText_Solid(police, menuMsg, colorPolice);
         setPositionInfos(infos);
         textButtonTexture = SDL_CreateTextureFromSurface(rend, textButtonSurface);
 
-        SDL_SetRenderDrawColor(rend, 150, 150, 150, 255); // background of text
+        SDL_SetRenderDrawColor(rend, 150, 150, 150, 255); 
         SDL_RenderDrawRect(rend, positionMenuInfos);
         SDL_RenderCopy(rend, textButtonTexture, NULL, positionMenuInfos);
     }

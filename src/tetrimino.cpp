@@ -1,8 +1,5 @@
 #include "tetrimino.h"
 
-/* size sert à rien je crois*/
-
-
 vector<vector<vector<vector<int>>>> Tetrimino::matrix2
 {
     {
@@ -185,8 +182,8 @@ vector<vector<vector<vector<int>>>> Tetrimino::tetr_wallkick
     }
 };
 
-Tetrimino::Tetrimino(int x_, int y_, int size_, tetrimino_type type_t_)
-    : x(x_), y(y_), size(size_), type_t(type_t_)
+Tetrimino::Tetrimino(int x_, int y_, tetrimino_type type_t_)
+    : x(x_), y(y_), type_t(type_t_)
 {
     num_rot = 0;
     color = new SDL_Color();
@@ -238,7 +235,7 @@ Tetrimino::Tetrimino(int x_, int y_, int size_, tetrimino_type type_t_)
         break;
     }
 
-    current_tetr.resize(4); // Allocation des vectors
+    current_tetr.resize(4); 
     for (int i = 0; i < 4; i++)
     {
         current_tetr[i].resize(4);
@@ -248,9 +245,6 @@ Tetrimino::Tetrimino(int x_, int y_, int size_, tetrimino_type type_t_)
         }
     }
     finished = false;
-    //print_tetrimino();
-    //print_coord();
-   // cout << "Tetrimino constructor" << endl;
 };
 
 Tetrimino::~Tetrimino()
@@ -261,63 +255,7 @@ Tetrimino::~Tetrimino()
     delete shape;
     matrix2.clear();
     matrix2.shrink_to_fit();
-    //cout << "Tetrimino Destructor" << endl;
 }
-
-
-// Just to check if te matrix of the tetrimino is ok in the terminal
-void Tetrimino::print_tetrimino()
-{
-    cout << "affichage du tetrimino  " << type_t << endl;
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            cout << current_tetr[i][j];
-            cout << " ";
-        }
-        cout << endl;
-    }
-}
-
-/*void Tetrimino::transpose(void)
-{
-    vector<vector<int>> tmp;
-    tmp.resize(4);
-    for (int i = 0; i < size; i++)
-    {
-        tmp[i].resize(4);
-        for (int j = 0; j < size; j++)
-        {
-            tmp[i][j] = current_tetr[i][j];
-        }
-    }
-
-    for (int i = 0; i < size; i++)
-    {
-        for (int j = 0; j < size; j++)
-        {
-            current_tetr[i][j] = tmp[j][i];
-        }
-    }
-    tmp.clear();
-    tmp.shrink_to_fit();
-    return;
-}*/
-
-/*void Tetrimino::reverseCols(void)
-{
-    int tempval;
-    for (int i = 0; i < size; i++)
-    {
-        for (int j = 0; j < size / 2; j++)
-        {
-            tempval = current_tetr[i][j];
-            current_tetr[i][j] = current_tetr[i][size - j - 1];
-            current_tetr[i][size - j - 1] = tempval;
-        }
-    }
-}*/
 
 void Tetrimino::rotate(MOV_DIRECTION direction_)
 {
@@ -361,11 +299,6 @@ int Tetrimino::get_num_rot()
 vector<vector<vector<vector<int>>>> Tetrimino::get_wallkick()
 {
     return tetr_wallkick;
-}
-
-void Tetrimino::print_coord()
-{
-    cout << "(" << x <<"," << y << ")" << endl;
 }
 
 void Tetrimino::set_finished()

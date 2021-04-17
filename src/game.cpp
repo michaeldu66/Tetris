@@ -1,16 +1,16 @@
 // rayanlegris@gmail.com
 #include "game.h"
 
-bool Game::isPaused; // car variable static pour l'utiliser dans le callback
-bool Game::menuMode; // car variable static pour l'utiliser dans le callback
+bool Game::isPaused; 
+bool Game::menuMode;
 bool Game::IAMode;
 
 void Game::init()
 {
-	win = new WindowSurface(false);
+	win = new WindowSurface();
 	planche = new Sprite("src/sprites.bmp");
 	Player_board = new Board(10);
-	IA_board = new Board(10 + WIN_W/TETR_SIZE);//+WIN_W
+	IA_board = new Board(10 + WIN_W/TETR_SIZE);
 	piece = Player_board->getCurrentPiece();
 	direction = NO_MOVE;
 	Player_board->print_piece_to_next();
@@ -19,7 +19,7 @@ void Game::init()
 	music = Mix_LoadMUS("tetrisSong.mp3");
 	if (!music)
 		printf("Mix_LoadMUS(\"music.mp3\"): %s\n", Mix_GetError());
-	//Mix_PlayMusic(music, -1);
+	Mix_PlayMusic(music, -1);
 	menuMode = true;
 
 	IAPlayer = new virtualPlayer(IA_board);
@@ -35,8 +35,6 @@ bool Game::check_event(SDL_Event event)
 {
 	bool quit = false;
 	int xMouse, yMouse;
-	// if(event.window.event == SDL_WINDOWEVENT_CLOSE)
-	// 	return true;
 
 	switch (event.type)
 	{
@@ -51,8 +49,6 @@ bool Game::check_event(SDL_Event event)
 			infos = PLAY;
 			if (win->isInsideResumeButtom(xMouse, yMouse, infos))
 			{
-				//delete IA_board;
-				//delete IAPlayer;
 				IA_board = nullptr;
 				menuMode = false;
 			}
@@ -63,7 +59,6 @@ bool Game::check_event(SDL_Event event)
 				IAMode = true;
 				win->ResizeWindow(win->get_w());
 				IA_board->print_piece_to_next();
-				printf("mode IA enclenché\n");
 			}
 			infos = EXIT;
 			if (win->isInsideResumeButtom(xMouse, yMouse, infos))
@@ -80,9 +75,8 @@ bool Game::check_event(SDL_Event event)
 				quit = true;
 			}
 		}
-		//printf("mouse click %d\n", event.button.button);
 		break;
-	case SDL_KEYUP: //DOWN
+	case SDL_KEYUP:
 		quit = keyboard(event.key.keysym.scancode);
 	}
 	return quit;
@@ -97,12 +91,9 @@ bool Game::keyboard(const Uint8 key)
 		isPaused = !isPaused;
 	if (key == SDL_SCANCODE_ESCAPE)
 	{
-		printf("escape");
 		return true;
 	}
 
-	//if (IAMode)
-		//return false; // pour empecher les touches de changer qqchose
 	switch (key)
 	{
 	case SDL_SCANCODE_A:
@@ -147,154 +138,11 @@ bool Game::IsGameOver(Board* board_)
 	return false;
 }
 
-/*bool Game::update(Board * board_)
-{
-	if (board_ == nullptr)
-	{
-		return false;
-	}
-	int nbLines;
-	//Player_board->update_direction(direction);
-	//if(board_ != IA_board)
-	//	board_->update_direction(direction);
-	if (IsGameOver(board_))
-	{
-		printf("GAME OVER\n");
-		return true;
-	}
-	
-
-	if (board_ != IA_board && !board_->DetectCollision())
-		board_->moveCurrentPiece();
-	//if (!Player_board->DetectCollision())
-	//	Player_board->moveCurrentPiece();
-
-	else if (board_->DetectCollision() == 2)
-	{
-		if (!board_->getCurrentPiece()->getStateFinished())
-		{
-			int now = SDL_GetTicks();
-			int aBouge = 1;
-			int intervalle = 1000 / (1 + (board_->get_level() + 1) / 15);
-			while (SDL_GetTicks() - now < 4 * intervalle && aBouge != 0)
-			{
-				aBouge = 0;
-				//board->update_direction(NO_MOVE);
-				SDL_Event event;
-				if (SDL_PollEvent(&event))
-				{
-					aBouge = 1;
-					check_event(event);
-					//if (!IAMode)
-					reset_key();
-					//if (!IAMode)
-					//{
-					board_->update_direction(direction);
-					if (!board_->DetectCollision())
-					{
-						aBouge = 1;
-						board_->moveCurrentPiece();
-						win->render(planche->get_surf(), board_, nullptr, false, false, false);
-						board_->print_piece_to_board();
-						board_->print_projection();
-					}
-					//}
-				}
-			}
-		}
-		//SDL_RemoveTimer(timer_fixation);
-		//board->getCurrentPiece()->set_finished();
-		board_->GoFarDown();
-		board_->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
-		nbLines = board_->LineFull();					//Efface les lignes pleines
-		board_->UpdateLevel();
-		board_->setScore(board_->computeScore(nbLines));
-		board_->set_nbHold(0);
-		board_->update_screenNextPieces();
-		piece = board_->currentPiece;
-	}
-	return false;
-}*/
-
-/*bool Game::update(Board* Playerboard_, Board * IAboard_)
-{
-	int nbLines;
-	Playerboard_->update_direction(Player_board->direction);
-	if (IsGameOver(Playerboard_) == true || IsGameOver(IAboard_) == true);
-	{
-		printf("GAME OVER\n");
-		return true;
-	}
-
-		if (!Playerboard_->DetectCollision())
-			Playerboard_->moveCurrentPiece();
-
-		if (Playerboard_->DetectCollision() == 2)
-		{
-			if (!Playerboard_->getCurrentPiece()->getStateFinished())
-			{
-				int now = SDL_GetTicks();
-				int aBouge = 1;
-				int intervalle = 1000 / (1 + (Playerboard_->get_level() + 1) / 15);
-				while (SDL_GetTicks() - now < 4 * intervalle && aBouge != 0)
-				{
-					aBouge = 0;
-					//board->update_direction(NO_MOVE);
-					SDL_Event event;
-					if (SDL_PollEvent(&event))
-					{
-						aBouge = 1;
-						check_event(event);
-						//if (!IAMode)
-						reset_key();
-						//if (!IAMode)
-						//{
-						Playerboard_->update_direction(direction);
-						if (!Playerboard_->DetectCollision())
-						{
-							aBouge = 1;
-							Playerboard_->moveCurrentPiece();
-							win->render(planche->get_surf(), Playerboard_, IAboard_, false, false, false);
-							Playerboard_->print_piece_to_board();
-							Playerboard_->print_projection();
-						}
-						//}
-					}
-				}
-			}
-			//SDL_RemoveTimer(timer_fixation);
-			//board->getCurrentPiece()->set_finished();
-			Playerboard_->GoFarDown();
-			Playerboard_->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
-			nbLines = Playerboard_->LineFull();					//Efface les lignes pleines
-			Playerboard_->UpdateLevel();
-			Playerboard_->setScore(Playerboard_->computeScore(nbLines));
-			Playerboard_->set_nbHold(0);
-			Playerboard_->update_screenNextPieces();
-			//piece = board_->currentPiece;
-		}
-		if (IAboard_ != nullptr) 
-		{
-			if (IAboard_->DetectCollision() == 2)
-			{
-				IAboard_->GoFarDown();
-				IAboard_->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
-				nbLines = IAboard_->LineFull();					//Efface les lignes pleines
-				IAboard_->UpdateLevel();
-				IAboard_->setScore(IAboard_->computeScore(nbLines));
-				IAboard_->set_nbHold(0);
-				IAboard_->update_screenNextPieces();
-				//piece = board_->currentPiece;
-			}
-	}
-	return false;
-}*/
-
 bool Game::update()
 {
 	int nbLines;
 	Player_board->update_direction(direction);
-	if (IsGameOver(Player_board) == true)// || IsGameOver(IA_board) == true)
+	if (IsGameOver(Player_board) == true)
 	{
 		printf("GAME OVER\n");
 		return true;
@@ -317,11 +165,9 @@ bool Game::update()
 				{
 					aBouge = 0;
 				}
-				//board->update_direction(NO_MOVE);
 				SDL_Event event;
 				if (SDL_PollEvent(&event))
 				{
-					//aBouge = 1;
 					check_event(event);
 					Player_board->update_direction(direction);
 					if (!Player_board->DetectCollision())
@@ -335,10 +181,9 @@ bool Game::update()
 				}
 			}
 		}
-		//board->getCurrentPiece()->set_finished();
 		Player_board->GoFarDown();
-		Player_board->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
-		nbLines = Player_board->LineFull();					//Efface les lignes pleines
+		Player_board->print_piece_to_background(); 
+		nbLines = Player_board->LineFull();					
 		Player_board->UpdateLevel();
 		Player_board->setScore(Player_board->computeScore(nbLines));
 		Player_board->set_nbHold(0);
@@ -350,8 +195,8 @@ bool Game::update()
 		if (IA_board->DetectCollision() == 2)
 		{
 			IA_board->GoFarDown();
-			IA_board->print_piece_to_background(); // print la pièce dans le background avant de générer la suivante
-			nbLines = IA_board->LineFull();					//Efface les lignes pleines
+			IA_board->print_piece_to_background(); 
+			nbLines = IA_board->LineFull();				
 			IA_board->UpdateLevel();
 			IA_board->setScore(IA_board->computeScore(nbLines));
 			IA_board->set_nbHold(0);
@@ -380,13 +225,11 @@ void Game::loop()
 	int prev = 0, now = 0;
 	bool quit = false;
 
-	timer_descente_Player = SDL_AddTimer(1000, update_timer_descente_callback, Player_board); /* faire descendre la piece toutes les secondes*/
+	timer_descente_Player = SDL_AddTimer(1000, update_timer_descente_callback, Player_board);
 
-	//while (quit_Player == false && quit_IA == false)
 	while (quit == false)
 	{
 		now = SDL_GetTicks();
-		//update();
 		SDL_Event event;
 		if (SDL_PollEvent(&event))
 		{
@@ -396,11 +239,11 @@ void Game::loop()
 			{
 				update();
 			}
-				reset_key(); //direction NOMOVE
+				reset_key();
 		}
-		if (now - prev > 50) // timer pour le FPS
+		if (now - prev > 50) 
 		{
-			if (!isPaused && !menuMode) // Partie où on update le Player_board et l'IA_board
+			if (!isPaused && !menuMode) 
 			{
 				if (IA_board == nullptr) 
 				{
@@ -418,22 +261,7 @@ void Game::loop()
 					Player_board->print_projection();
 					if (IsGameOver(IA_board) == false)
 						IA_board->print_piece_to_board();
-						//IAPlayer->chkAllCombinaison();
-				}
-				/*quit_Player = update(Player_board);
-				win->render(planche->get_surf(), Player_board, IA_board, false, false, false);
-				Player_board->print_piece_to_board();
-				Player_board->print_projection();
-
-				if (IA_board != nullptr)
-				{
-					//printf("IA");
-					quit_IA = update(IA_board);
-					win->render(planche->get_surf(), Player_board, IA_board, false, false, true);
-					IA_board->print_piece_to_board();
-					IAPlayer->chkAllCombinaison();
-					SDL_Delay(1000 / (1 + (IA_board->get_level() + 1) / 15));
-				}*/
+				}				
 			}
 			else if (isPaused && !menuMode)
 			{
@@ -448,9 +276,8 @@ void Game::loop()
 	}
 
 	SDL_DestroyWindow(win->get_w());
-	//TTF_CloseFont(police); /* Doit être avant TTF_Quit() */
-	Mix_FreeMusic(music); //Libération de la musique
-	Mix_CloseAudio();	  //Fermeture de l'API
+	Mix_FreeMusic(music); 
+	Mix_CloseAudio();	  
 	TTF_Quit();
 	SDL_Quit();
 }
@@ -468,7 +295,7 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) //Initialisation de l'API Mixer
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) 
 	{
 		printf("%s", Mix_GetError());
 	}
@@ -477,5 +304,5 @@ int main(int argc, char **argv)
 
 	g.init();
 	g.loop();
-	cout << "fin du jeu" << endl;
+	cout << "Fin du jeu" << endl;
 }

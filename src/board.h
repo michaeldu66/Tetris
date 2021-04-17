@@ -7,14 +7,6 @@ using namespace std;
 #include <SDL2/SDL_ttf.h>
 #include "SDL2/SDL_mixer.h"
 
-/***
- *score:
-  -ligne : 40 points 
-  -deux lignes  :100 points
-  -trois lignes : 300 points
-  -quatre lignes : 1200 points .
- * **/
-
 /**
  * FREE : grill case empty
  *  FILLED : grill case filled 
@@ -29,7 +21,6 @@ enum
  * option Info mainly used
  * for the menuMode
  * ***/
-
 typedef enum optionInfo
 {
     SCORE,
@@ -46,23 +37,28 @@ typedef enum optionInfo
 const int BOARD_HEIGHT = 20;
 const int BOARD_WIDTH = 10;
 
-const int ORIGIN_Y = 7; //6
+/***
+ * y coordinate of the board top
+ * ***/
+const int ORIGIN_Y = 7;
 
 class Board
 {
 private:
-    /***
- * Two matrixes representing the possibilities a Tetrimino has when it wants to rotate 
- * (following the Super Rotation System)
- * The first matrix is for the L-Tetrimino, and the second for the others
- * ***/
-    //static vector<vector<vector<int>>> tetr_wallkick_barre;
-    //static vector<vector<vector<int>>> tetr_wallkick_reste;
 
-    SDL_Rect *carre_grill; //a square of the general grill
-    SDL_Color *color[8];   //the color of the 8 possibles blocks (7 tetrimino and the grill)
-    int nbHold;            // Nb of times we used a hold for a piece (only one allowed)
-    int totalLines;        //nb of lines done
+    /***
+     * carre_grill : square of the general grill
+     * color[8] : color of the 8 possibles blocks (7 tetrimino and the grill)
+     * nbHold : number of times we used a hold for a piece (only one allowed per piece)
+     * totalLines : number of lines done
+     * Level : current level of the game
+     * IsOut : bool stating if the piece is out of the board (for the Game Over)
+     * ORIGIN_X : x coordinate of the position of the board
+     * ***/
+    SDL_Rect *carre_grill; 
+    SDL_Color *color[8];   
+    int nbHold;            
+    int totalLines;       
     int Level;
     bool IsOut;
     int ORIGIN_X;
@@ -74,21 +70,36 @@ private:
     SDL_Color colorPolice;
     SDL_Surface *textSurface;
     SDL_Rect *positionInfos;
-
     SDL_Texture *textTexture;
-    char infosMsg[100]; // contains the text displayed on the menu mode
+    char infosMsg[100]; 
 
 public:
-    Tetrimino *currentPiece;  // current piece which is falling in the screen
-    Tetrimino *holdPiece;     // the piece which is hold with the C key
-    Tetrimino *NextPieces[3]; // the nexts 3 pieces
+
+    /***
+     * currentPiece : current piece which is falling in the screen
+     * holdPiece : the piece which is hold with the C key
+     * NextPieces[3] : the nexts 3 pieces
+     * direction : direction of the current piece
+     * screenWithBlock : the screen with the falling block
+     * screenBackground : the screen without the falling block
+     * screenHold : the screen of the hold piece
+     * screenNextPieces : the screen of the 3 next pieces
+     * totalScore : current score of the game
+     * ***/
+    Tetrimino *currentPiece;  
+    Tetrimino *holdPiece;     
+    Tetrimino *NextPieces[3]; 
     MOV_DIRECTION direction;
-    vector<vector<int>> screenWithBlock;  // the screen with the falling block
-    vector<vector<int>> screenBackground; // the screen without the falling block
-    vector<vector<int>> screenHold;       // the screen with the hold piece
-    vector<vector<int>> screenNextPieces; // the screen with the 3 next pieces
-    //vector<vector<int>> screenIABackground; // screenBackground to try the possibilities for the ia
+    vector<vector<int>> screenWithBlock;  
+    vector<vector<int>> screenBackground; 
+    vector<vector<int>> screenHold;      
+    vector<vector<int>> screenNextPieces; 
     int totalScore;
+
+    /***
+     * board constructor, the parameter is used to settled the x coordinate of 
+     * the beginning of the board (which differs whether it's solo or vsIA mode)
+     * ***/
     Board(int origin_x);
 
     /***
@@ -100,12 +111,6 @@ public:
      * get the current piece 
      * ***/
     Tetrimino *getCurrentPiece();
-
-    /***
-     * print the board in the terminal, 
-     * function for debeug
-     * ***/
-    void print_board();
 
     /***
      * print on the render the screenWithBlock (background + curent Piece)
@@ -265,9 +270,6 @@ public:
      * moove the current Piece depending on the current direction 
      * ***/
     void moveCurrentPiece();
-
-    //cette fonction a été mise en com du coup j'y touche pas pour l'instant
-    //void moveBackCurrentPiece();
 
     /***
      * when a hold is requested and its the first time, change current piece
