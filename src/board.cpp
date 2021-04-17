@@ -841,6 +841,12 @@ int Board::get_nbHold()
 	return nbHold;
 }
 
+void Board::set_IsOut(bool new_IsOut)
+{
+	IsOut = new_IsOut;
+	return;
+}
+
 bool Board::get_IsOut()
 {
 	return IsOut;

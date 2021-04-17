@@ -252,6 +252,11 @@ public:
     bool get_IsOut();
 
     /***
+     * set the IsOut value, used by the IA_Player
+     * ***/
+    void set_IsOut(bool new_IsOut);
+
+    /***
      * set the direction of the current round of the tetris
      * ***/
     void update_direction(MOV_DIRECTION direction_);

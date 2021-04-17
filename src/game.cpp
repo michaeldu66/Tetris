@@ -294,7 +294,7 @@ bool Game::update()
 {
 	int nbLines;
 	Player_board->update_direction(direction);
-	if (IsGameOver(Player_board) == true || IsGameOver(IA_board) == true)
+	if (IsGameOver(Player_board) == true)// || IsGameOver(IA_board) == true)
 	{
 		printf("GAME OVER\n");
 		return true;
@@ -344,8 +344,9 @@ bool Game::update()
 		Player_board->set_nbHold(0);
 		Player_board->update_screenNextPieces();
 	}
-	if (IA_board != nullptr)
+	if (IA_board != nullptr && IsGameOver(IA_board) == false)
 	{
+		IAPlayer->chkAllCombinaison();
 		if (IA_board->DetectCollision() == 2)
 		{
 			IA_board->GoFarDown();
@@ -409,15 +410,15 @@ void Game::loop()
 					Player_board->print_piece_to_board();
 					Player_board->print_projection();
 				}
-				else
+				else 
 				{
 					quit = update();
 					win->render(planche->get_surf(), Player_board, IA_board, false, false);
 					Player_board->print_piece_to_board();
 					Player_board->print_projection();
-					IA_board->print_piece_to_board();
-					IAPlayer->chkAllCombinaison();
-					//SDL_Delay(1000 / (1 + (IA_board->get_level() + 1) / 15));
+					if (IsGameOver(IA_board) == false)
+						IA_board->print_piece_to_board();
+						//IAPlayer->chkAllCombinaison();
 				}
 				/*quit_Player = update(Player_board);
 				win->render(planche->get_surf(), Player_board, IA_board, false, false, false);

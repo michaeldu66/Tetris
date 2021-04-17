@@ -392,6 +392,7 @@ void virtualPlayer::chkAllCombinaison()
     //SDL_Delay(1000 / (1 + (b->get_level() + 1) / 15));
 
     b->GoFarDown();
+    b->set_IsOut(false);
     b->currentPiece->set_finished();
     b->update_direction(NO_MOVE);
 

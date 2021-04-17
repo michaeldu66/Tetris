@@ -31,15 +31,6 @@ WindowSurface::WindowSurface(bool IAMode) : Surface()
 
 SDL_Window* WindowSurface::ResizeWindow(SDL_Window* win)
 {
-    /*int win_w;
-    int win_h;
-    int win_x;
-    int win_y;
-
-    SDL_GetWindowSize(win, &win_w, &win_h);
-    SDL_SetWindowSize(win, 2*win_w, win_h);
-    SDL_GetWindowPosition(win, &win_x, &win_y);
-    SDL_SetWindowPosition(win, win_x/4, win_y);*/
     int win_w;
     int win_h;
     int win_x;
@@ -49,11 +40,6 @@ SDL_Window* WindowSurface::ResizeWindow(SDL_Window* win)
     SDL_SetWindowSize(win, 2 * win_w, win_h);
     SDL_GetWindowPosition(win, &win_x, &win_y);
     SDL_SetWindowPosition(win, win_x / 4, win_y);
-
-    /*SDL_GetWindowSize(pWindow, &win_w, &win_h);
-    SDL_SetWindowSize(pWindow, 2 * win_w, win_h);
-    SDL_GetWindowPosition(pWindow, &win_x, &win_y);
-    SDL_SetWindowPosition(pWindow, win_x / 4, win_y);*/
 
     SDL_DestroyRenderer(rend);
     rend = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
