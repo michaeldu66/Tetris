@@ -44,7 +44,7 @@ class virtualPlayer
 protected:
     Board* b;
     MOV_DIRECTION direction; //la direction que choisit l'IA
-    //posTetr* pos;
+    posTetr* pos;
     int best_pos_tetr_x;
     int best_pos_tetr_y;
     int best_numrot;

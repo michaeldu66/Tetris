@@ -13,6 +13,11 @@
 class Game
 {
 private:
+	/***
+	 * planche is for the blue background
+	 * piece is the current piece mooving down
+	 * direction represent the key the player is playing (RIGHT, LEFT,...)
+	 * ***/
 	WindowSurface *win;
 	Sprite *planche;
 	Tetrimino *piece;
@@ -21,6 +26,7 @@ private:
 	MOV_DIRECTION direction;
 	SDL_TimerID timer_descente_Player;
 	SDL_TimerID timer_descente_IA;
+
 	//SDL_TimerID timer_screen;
 	static bool isPaused;
 	static bool menuMode;
@@ -38,12 +44,27 @@ private:
 public:
 	inline Game(){}
 
+	/***
+	 * Create the windows, blue background, board(s)
+	 * and launch the music.
+	 * ***/
 	void init();
 
+	/***
+	 * collect all the key pressed by the player
+	 * ***/
 	bool keyboard(const Uint8 key);
 
+	/***
+	 * Launch the whole process of the game,
+	 * deals with timer, FPS, menuMode, detection, etc..
+	 * ***/
 	void loop();
 
+	/***
+	 * Indicate when the game is done 
+	 * ie a piece touch the top of the screen
+	 * ***/
 	bool IsGameOver(Board* board_);
 
 	bool update();
