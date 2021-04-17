@@ -15,7 +15,14 @@ class Surface
     public:
     Surface(void);
     SDL_Surface* get_surf();
+    /***
+     * set the surface with a link from a sprite
+     * ***/
     void set_surf(const char* link_sprite);
+    
+    /***
+     * set the surface with a SDL_Windows*
+     * ***/
     void set_surf(SDL_Window* pWindow);
 };
 

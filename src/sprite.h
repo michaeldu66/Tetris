@@ -13,6 +13,10 @@ class Sprite : public Surface
 {
     public :
     SDL_Rect srcBg = { 0,128, 96,128 }; 
+
+    /***
+     * set the sprite for the blue background with the link
+     * ***/
     Sprite(const char* link_sprite);
 };
 #endif

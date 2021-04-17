@@ -126,7 +126,7 @@ void WindowSurface::setPositionInfos(menuInfo infos)
         positionMenuInfos->h = pauseRect->h / 7;
         positionMenuInfos->x = pauseRect->x + (pauseRect->w / 2 - positionMenuInfos->w / 2);
         if (infos > COPYRIGHT)
-            positionMenuInfos->y = pauseRect->h + int(infos) * (positionMenuInfos->h + pauseRect->h / 7);
+            positionMenuInfos->y = pauseRect->h + int(infos) * (positionMenuInfos->h + pauseRect->h / 5);
         else
             positionMenuInfos->y = pauseRect->h + (int(infos) + 1) * (positionMenuInfos->h + pauseRect->h / 7);
         return;
@@ -175,7 +175,7 @@ bool WindowSurface::xInsideResumeButton(int x)
 bool WindowSurface::yInsideResumeButton(int y, menuInfo infosM)
 {
     if (int(infosM) > COPYRIGHT)
-        return (y > (pauseRect->h + (int(infosM)) * (positionMenuInfos->h + pauseRect->h / 7)) && (y < (pauseRect->h + (int(infosM)) * (positionMenuInfos->h + pauseRect->h / 7) + positionMenuInfos->h))) ? true : false;
+        return (y > (pauseRect->h + (int(infosM)) * (positionMenuInfos->h + pauseRect->h / 5)) && (y < (pauseRect->h + (int(infosM)) * (positionMenuInfos->h + pauseRect->h / 5) + positionMenuInfos->h))) ? true : false;
     return (y > (pauseRect->h + (int(infosM) + 1) * (positionMenuInfos->h + pauseRect->h / 7)) && (y < (pauseRect->h + (int(infosM) + 1) * (positionMenuInfos->h + pauseRect->h / 7) + positionMenuInfos->h))) ? true : false;
 }
 
