@@ -4,6 +4,16 @@
 using namespace std;
 #include "board.h"
 
+/***
+* best_pos_tetr_x : position x of the best piece
+* best_plusbas : position y of the lowest part of the best piece
+* best_numrot : rotation number of the best position (of the best piece)
+* nbTrouMin : number of holes left by the best piece
+* best_score : score of the best piece
+* IsFirst : a bool stating if the piece we are testing is the first one or not
+*              (if it is the first, it is put in the Hold)
+* IsHold : a bool stating if the piece we are testing is the Hold one or not
+* ***/
 typedef struct posTetr
 {
     int best_pos_tetr_x;

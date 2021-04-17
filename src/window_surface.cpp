@@ -62,6 +62,8 @@ void WindowSurface::backgroundRender(SDL_Surface *spriteBg)
     if (Bg == nullptr)
         printf("error creation texture\n");
     SDL_RenderCopy(rend, Bg, &srcBg, NULL);
+    SDL_SetRenderDrawColor(rend, 213, 213, 213, 255);
+    SDL_RenderFillRect(rend, NULL);
 }
 
 void WindowSurface::render(SDL_Surface *spriteBg, Board * board1, Board * board2, bool isPaused, bool menuMode)
@@ -120,6 +122,16 @@ void WindowSurface::textMenuInfos(menuInfo infos)
 
 void WindowSurface::setPositionInfos(menuInfo infos)
 {
+    int win_w;
+    int win_h;
+
+    SDL_GetWindowSize(this->pWindow, &win_w, &win_h);
+
+    pauseRect->h = win_h / 3;
+    pauseRect->w = win_w / 2;
+    pauseRect->y = win_h / 2 - pauseRect->h / 2;
+    pauseRect->x = win_w / 2 - pauseRect->w / 2;
+
     if (infos != COPYRIGHT)
     {
         positionMenuInfos->w = pauseRect->w / 2;
@@ -131,16 +143,18 @@ void WindowSurface::setPositionInfos(menuInfo infos)
             positionMenuInfos->y = pauseRect->h + (int(infos) + 1) * (positionMenuInfos->h + pauseRect->h / 7);
         return;
     }
-    positionMenuInfos->w = WIN_W / 2;
+    positionMenuInfos->w = win_w / 2;
     positionMenuInfos->h = pauseRect->h / 7;
-    positionMenuInfos->x = WIN_W / 2;
-    positionMenuInfos->y = WIN_H - positionMenuInfos->h;
+    positionMenuInfos->x = win_w / 2;
+    positionMenuInfos->y = win_h - positionMenuInfos->h;
 }
 
 void WindowSurface::drawBackgroundPauseScreen()
 {
     SDL_SetRenderDrawColor(rend, 213, 213, 213, 255);
     SDL_RenderFillRect(rend, pauseRect);
+    SDL_SetRenderDrawColor(rend, 100, 100, 100, 255);
+    SDL_RenderDrawRect(rend, pauseRect);
 }
 
 void WindowSurface::drawButtonsPauseScreen()
