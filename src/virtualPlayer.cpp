@@ -130,7 +130,7 @@ virtualPlayer::virtualPlayer(Board *board) : b(board)
     pos->best_numrot = 0;
     pos->nbTrouMin = 19;*/
     int best_pos_tetr_x = 0;
-    int best_pos_tetr_y = -1;
+    int best_plusbas = -1;
     int best_numrot = 0;
     int nbTrouMin = 19;
     int best_score = 0;
@@ -187,7 +187,7 @@ int virtualPlayer::PlusBas()
     return plusbas;
 }
 
-void virtualPlayer::checkBestOrientation(bool IsPieceHold)
+void virtualPlayer::checkBestPosition(bool IsPieceHold)
 {
     int nbTrou = 0;
     int plusbas = 0;
@@ -229,20 +229,20 @@ void virtualPlayer::checkBestOrientation(bool IsPieceHold)
         nbTrouMin = nbTrou;
         best_numrot = b->currentPiece->get_num_rot();
         best_pos_tetr_x = ind_x;
-        best_pos_tetr_y = plusbas;
+        best_plusbas = plusbas;
         IsHold = IsPieceHold;
     }
 
-    else if (score == best_score && plusbas > best_pos_tetr_y)
+    else if (score == best_score && plusbas > best_plusbas)
     {
         nbTrouMin = nbTrou;
         best_numrot = b->currentPiece->get_num_rot();
         best_pos_tetr_x = ind_x;
-        best_pos_tetr_y = plusbas;
+        best_plusbas = plusbas;
         IsHold = IsPieceHold;
     }
 
-    else if (score == best_score && plusbas == best_pos_tetr_y && nbTrou < nbTrouMin)
+    else if (score == best_score && plusbas == best_plusbas && nbTrou < nbTrouMin)
     {
         nbTrouMin = nbTrou;
         best_numrot = b->currentPiece->get_num_rot();
@@ -273,7 +273,7 @@ void virtualPlayer::checkBestOrientation(bool IsPieceHold)
             nbTrouMin = nbTrou;
             best_numrot = b->currentPiece->get_num_rot();
             best_pos_tetr_x = ind_x;
-            best_pos_tetr_y = plusbas;
+            best_plusbas = plusbas;
             IsHold = IsPieceHold;
         }
 
@@ -282,15 +282,15 @@ void virtualPlayer::checkBestOrientation(bool IsPieceHold)
             nbTrouMin = nbTrou;
             best_numrot = b->currentPiece->get_num_rot();
             best_pos_tetr_x = ind_x;
-            best_pos_tetr_y = plusbas;
+            best_plusbas = plusbas;
             IsHold = IsPieceHold;
         }
 
-        else if (score == best_score && nbTrou == nbTrouMin && plusbas > best_pos_tetr_y)
+        else if (score == best_score && nbTrou == nbTrouMin && plusbas > best_plusbas)
         {
             best_numrot = b->currentPiece->get_num_rot();
             best_pos_tetr_x = ind_x;
-            best_pos_tetr_y = plusbas;
+            best_plusbas = plusbas;
             IsHold = IsPieceHold;
         }
         /*if (score > pos->score)
@@ -355,7 +355,7 @@ void virtualPlayer::chkAllCombinaison()
     {
         for (int i = 0; i < 4; i++)
         {
-            checkBestOrientation(IsPieceHold);
+            checkBestPosition(IsPieceHold);
             b->update_direction(ROT_R);
             b->moveCurrentPiece();
            // b->currentPiece->rotate(ROT_R);
@@ -373,7 +373,7 @@ void virtualPlayer::chkAllCombinaison()
     IsHold = false;
 
     nbTrouMin = 19;
-    best_pos_tetr_y = -1;
+    best_plusbas = -1;
 
     while (b->currentPiece->get_num_rot() != best_numrot)
     {

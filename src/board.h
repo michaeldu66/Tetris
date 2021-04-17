@@ -46,17 +46,18 @@ typedef enum optionInfo
 const int BOARD_HEIGHT = 20;
 const int BOARD_WIDTH = 10;
 
-//int ORIGIN_X = 10; //11
 const int ORIGIN_Y = 7; //6
 
 class Board
 {
 private:
     /***
- * je sais pas ou elles servent ces variables tu pourras check? 
+ * Two matrixes representing the possibilities a Tetrimino has when it wants to rotate 
+ * (following the Super Rotation System)
+ * The first matrix is for the L-Tetrimino, and the second for the others
  * ***/
-    static vector<vector<vector<int>>> tetr_wallkick_barre;
-    static vector<vector<vector<int>>> tetr_wallkick_reste;
+    //static vector<vector<vector<int>>> tetr_wallkick_barre;
+    //static vector<vector<vector<int>>> tetr_wallkick_reste;
 
     SDL_Rect *carre_grill; //a square of the general grill
     SDL_Color *color[8];   //the color of the 8 possibles blocks (7 tetrimino and the grill)
@@ -140,7 +141,7 @@ public:
 
     /***
      * find where to print the projection and set the value which
-     * correspond to the projectio (9) at the concerned cases
+     * correspond to the projection (9) at the concerned cases
      * ***/
     void print_projection();
     /***
@@ -165,7 +166,7 @@ public:
     int DetectCollision();
 
     /***
-     * Check just behind the current piece if there is another
+     * Check just under the current piece if there is another
      * piece or the border
      * ***/
     int LookDown(int idy, int idx);

@@ -63,19 +63,31 @@ public:
 
 	/***
 	 * Indicate when the game is done 
-	 * ie a piece touch the top of the screen
+	 * (when a piece is printed outside of the board)
 	 * ***/
 	bool IsGameOver(Board* board_);
 
+	/***
+	 * Update the state of the game (get the keys from the player, moving the pieces,
+	 * looking for the game over, etc...)
+	 * ***/
 	bool update();
-	//bool update(Board* board_);
-	//bool update(Board* Playerboard_, Board* IAboard_);
+	
+	/***
+	 * Reset the direction to "NO_MOVE"
+	 * ***/
 	void reset_key();
 
+	/***
+	 * Check the keys the player used, and take action in function of he did
+	 * ***/
 	bool check_event(SDL_Event event);
 
+	/***
+	 * Fonction called to move the piece at regular pace whatever the player do
+	 * (it moves the piece down)
+	 * ***/
 	static Uint32 update_timer_descente_callback(Uint32 intervalle, void *parametre);
-	static Uint32 update_timer_fixation_callback(Uint32 intervalle, void* parametre);
 	static Uint32 refresh_screen_callback(Uint32 intervalle, void *parametre);
 };
 #endif
